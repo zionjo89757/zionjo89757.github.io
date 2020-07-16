@@ -49,57 +49,175 @@
 <h2 class="archive-title tag">Linked List</h2>
 
 
-  <div class="archive">
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-16T03:37:48.000Z"><a href="/2020/07/16/25-Reverse-Nodes-in-k-Group/">2020-07-16</a></time>
-            
-              <h1 class="title"><a href="/2020/07/16/25-Reverse-Nodes-in-k-Group/">25. Reverse Nodes in k-Group</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-16T03:31:00.000Z"><a href="/2020/07/16/24-Swap-Nodes-in-Pairs/">2020-07-16</a></time>
-            
-              <h1 class="title"><a href="/2020/07/16/24-Swap-Nodes-in-Pairs/">24. Swap Nodes in Pairs</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-16T03:24:50.000Z"><a href="/2020/07/16/23-Merge-k-Sorted-Lists/">2020-07-16</a></time>
-            
-              <h1 class="title"><a href="/2020/07/16/23-Merge-k-Sorted-Lists/">23. Merge k Sorted Lists</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-16T03:02:45.000Z"><a href="/2020/07/16/19-Remove-Nth-Node-From-End-of-List/">2020-07-16</a></time>
-            
-              <h1 class="title"><a href="/2020/07/16/19-Remove-Nth-Node-From-End-of-List/">19. Remove Nth Node From End of List</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
+  
+    <article id="post-25-Reverse-Nodes-in-k-Group" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-16T03:37:48.000Z"><a href="/2020/07/16/25-Reverse-Nodes-in-k-Group/">2020-07-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/16/25-Reverse-Nodes-in-k-Group/">25. Reverse Nodes in k-Group</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.</p>
+</blockquote>
+<blockquote>
+<p>k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>每k个去一组，然后反转</li>
+<li>用一个表头来记录，可以让代码更加简洁<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseKGroup</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        ListNode head_temp = <span class="keyword">null</span>;</span><br><span class="line">        ListNode ls_result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode ls_last = ls_result;</span><br><span class="line">        ListNode ls_head = ls_result;</span><br><span class="line">        ListNode temp;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(head != <span class="keyword">null</span>)&#123;</span><br><span class="line">            i = <span class="number">0</span>;</span><br><span class="line">            temp = head;</span><br><span class="line">            <span class="keyword">while</span>(i != k &amp;&amp; temp != <span class="keyword">null</span>)&#123;</span><br><span class="line">                i++;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>( i == k )&#123;</span><br><span class="line">                ls_last = head;</span><br><span class="line">                <span class="keyword">while</span>(head != temp)&#123;</span><br><span class="line">                    head_temp = head;</span><br><span class="line">                    head = head.next;</span><br><span class="line">                    head_temp.next = ls_head.next;</span><br><span class="line">                    ls_head.next = head_temp;    </span><br><span class="line">                &#125;</span><br><span class="line">                ls_head = ls_last;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(temp == <span class="keyword">null</span>)&#123;</span><br><span class="line">               ls_last.next = head;</span><br><span class="line">               head = <span class="keyword">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">                 </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">return</span> ls_result.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
   </div>
+</article>
+
+
+
+  
+    <article id="post-24-Swap-Nodes-in-Pairs" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-16T03:31:00.000Z"><a href="/2020/07/16/24-Swap-Nodes-in-Pairs/">2020-07-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/16/24-Swap-Nodes-in-Pairs/">24. Swap Nodes in Pairs</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given a linked list, swap every two adjacent nodes and return its head.</p>
+</blockquote>
+<blockquote>
+<p>You may not modify the values in the list’s nodes, only nodes itself may be changed.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>双指针</li>
+<li>注意指针的赋值顺序<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">swapPairs</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>) <span class="keyword">return</span> head;</span><br><span class="line">        ListNode node1 = head;</span><br><span class="line">        <span class="keyword">if</span>(head.next == <span class="keyword">null</span>) <span class="keyword">return</span> head;</span><br><span class="line">        ListNode node2 = head.next;</span><br><span class="line">        head = node2;</span><br><span class="line">        ListNode temp_head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">            node1.next = node2.next;</span><br><span class="line">            node2.next = node1;</span><br><span class="line">            <span class="keyword">if</span>(temp_head != <span class="keyword">null</span>) temp_head.next = node2;</span><br><span class="line">            temp_head = node1;</span><br><span class="line">            <span class="keyword">if</span>(temp_head.next == <span class="keyword">null</span>) <span class="keyword">break</span>;</span><br><span class="line">            node1 = temp_head.next;</span><br><span class="line">            <span class="keyword">if</span>(node1.next == <span class="keyword">null</span>) <span class="keyword">break</span>;</span><br><span class="line">            node2 = node1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-23-Merge-k-Sorted-Lists" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-16T03:24:50.000Z"><a href="/2020/07/16/23-Merge-k-Sorted-Lists/">2020-07-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/16/23-Merge-k-Sorted-Lists/">23. Merge k Sorted Lists</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>可以两两归并</li>
+<li>也可以<strong>使用优先队列合并</strong><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeKLists</span><span class="params">(ListNode[] lists)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(lists.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        ListNode result = lists[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i &lt; lists.length; i++)&#123;</span><br><span class="line">            result = mergeTwoLists(result,lists[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeTwoLists</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        ListNode l3 = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode temp = l3;</span><br><span class="line">        <span class="keyword">while</span>(l1 != <span class="keyword">null</span> &amp;&amp; l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(l1.val &gt; l2.val)&#123;</span><br><span class="line">                temp.next = <span class="keyword">new</span> ListNode(l2.val);</span><br><span class="line">                l2 = l2.next;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                temp.next = <span class="keyword">new</span> ListNode(l1.val);</span><br><span class="line">                l1 = l1.next;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            temp.next = l1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            temp.next = l2;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> l3.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-19-Remove-Nth-Node-From-End-of-List" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-16T03:02:45.000Z"><a href="/2020/07/16/19-Remove-Nth-Node-From-End-of-List/">2020-07-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/16/19-Remove-Nth-Node-From-End-of-List/">19. Remove Nth Node From End of List</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given a linked list, remove the n-th node from the end of list and return its head.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>双指针</li>
+<li>一个指向链尾，一个指向链尾前n<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">removeNthFromEnd</span><span class="params">(ListNode head, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        ListNode last = head;</span><br><span class="line">        ListNode frontRemove=<span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(last.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">            len++;</span><br><span class="line">            <span class="keyword">if</span>(len == n)&#123;</span><br><span class="line">                frontRemove = head;   </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(len &gt; n)&#123;</span><br><span class="line">                frontRemove = frontRemove.next;</span><br><span class="line">            &#125;</span><br><span class="line">            last = last.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(frontRemove == <span class="keyword">null</span>)&#123;</span><br><span class="line">            head =  head.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            frontRemove.next = frontRemove.next.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">

@@ -49,33 +49,99 @@
 <h2 class="archive-title tag">git</h2>
 
 
-  <div class="archive">
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-16T00:55:09.000Z"><a href="/2020/07/16/git常用指令/">2020-07-16</a></time>
-            
-              <h1 class="title"><a href="/2020/07/16/git常用指令/">git常用指令</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-15T14:36:54.000Z"><a href="/2020/07/15/git指令大全/">2020-07-15</a></time>
-            
-              <h1 class="title"><a href="/2020/07/15/git指令大全/">git指令大全</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
+  
+    <article id="post-git常用指令" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-16T00:55:09.000Z"><a href="/2020/07/16/git常用指令/">2020-07-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/16/git常用指令/">git常用指令</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h3><ul>
+<li>创建分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git branch [branch-name]</span></span><br></pre></td></tr></table></figure></li>
+<li>切换分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git checkout [branch-name]</span></span><br></pre></td></tr></table></figure></li>
+<li>创建并切换分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git checkout -b [branch-name]</span></span><br></pre></td></tr></table></figure></li>
+<li>合并分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git checkout master</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git merge [branch-name]</span></span><br></pre></td></tr></table></figure></li>
+<li>删除分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git checkout master</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git branch -D [branch-name]</span></span><br></pre></td></tr></table></figure>
+<h3 id="远程分支相关"><a href="#远程分支相关" class="headerlink" title="远程分支相关"></a>远程分支相关</h3></li>
+<li>直接获取<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b dev [url]</span><br></pre></td></tr></table></figure></li>
+<li>和本地仓库进行关联了<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git remote add origin [url]</span></span><br></pre></td></tr></table></figure></li>
+<li>本地库内容推送到远程仓库<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git push origin master</span></span><br></pre></td></tr></table></figure></li>
+<li>合并远程分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git pull origin master</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
   </div>
+</article>
+
+
+
+  
+    <article id="post-git指令大全" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-15T14:36:54.000Z"><a href="/2020/07/15/git指令大全/">2020-07-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/15/git指令大全/">git指令大全</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="关系图"><a href="#关系图" class="headerlink" title="关系图"></a>关系图</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/20200715224022-2020-07-15.png" alt="20200715224022-2020-07-15"></p>
+<ul>
+<li>Workspace：工作区</li>
+<li>Index / Stage：暂存区</li>
+<li>Repository：仓库区（或本地仓库）</li>
+<li>Remote：远程仓库
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/15/git指令大全/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">

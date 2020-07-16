@@ -49,27 +49,65 @@
 <h2 class="archive-title category">DesignPattern</h2>
 
 
-  <div class="archive">
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-15T11:28:48.000Z"><a href="/2020/07/15/Singleton/">2020-07-15</a></time>
-            
-              <h1 class="title"><a href="/2020/07/15/Singleton/">Singleton</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-  </div>
+  
+    <article id="post-Singleton" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-15T11:28:48.000Z"><a href="/2020/07/15/Singleton/">2020-07-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/15/Singleton/">Singleton</a></h1>
+  
 
-<nav id="pagination">
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h3><ol>
+<li>某个类只能有一个实例:构造器私有化</li>
+<li>它必须自行创建这个实例；含有一个该类的静态变量来保存这个唯一的实例</li>
+<li>三是它必须自行向整个系统提供这个实例;对外提供获取该实例对象的方式：<ol>
+<li>直接暴露</li>
+<li>用静态变量的get方法获取</li>
+</ol>
+</li>
+</ol>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><h4 id="饿汉式：直接创建对象，不存在线程安全问题"><a href="#饿汉式：直接创建对象，不存在线程安全问题" class="headerlink" title="饿汉式：直接创建对象，不存在线程安全问题"></a>饿汉式：直接创建对象，不存在线程安全问题</h4><ul>
+<li>直接实例化饿汉式（简洁直观）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton1 INSTANCE = <span class="keyword">new</span> Singleton();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>枚举式（最简洁）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton &#123;</span><br><span class="line"> INSTANCE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>静态代码块饿汉式（适合复杂实例化）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE;</span><br><span class="line">    <span class="keyword">private</span> String info;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Properties pro = <span class="keyword">new</span> Properties();</span><br><span class="line">            </span><br><span class="line">            pro.load(Singleton.class.getClassLoader().getResourceAsStream("single.properties"));</span><br><span class="line">            </span><br><span class="line">            INSTANCE = <span class="keyword">new</span> Singleton(pro.getProperty(<span class="string">"info"</span>));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">(String info)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.info = info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setInfo</span><span class="params">(String info)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.info = info;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Singleton [info="</span> + info + <span class="string">"]"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="懒汉式：延迟创建对象"><a href="#懒汉式：延迟创建对象" class="headerlink" title="懒汉式：延迟创建对象"></a>懒汉式：延迟创建对象</h4></li>
+<li>线程不安全（适用于单线程）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Singleton4 instance;</span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">           </span><br><span class="line">       &#125;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">           <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">               </span><br><span class="line">               <span class="keyword">try</span> &#123;</span><br><span class="line">                   Thread.sleep(<span class="number">100</span>);</span><br><span class="line">               &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                   e.printStackTrace();</span><br><span class="line">               &#125;</span><br><span class="line">               </span><br><span class="line">               instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> instance;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+<li>线程安全（适用于多线程）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton5</span><span class="params">()</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(instance == <span class="keyword">null</span>)&#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        ThreaInterruptedException e) &#123;</span><br><span class="line">                        e.printd.sleep(<span class="number">1000</span>);</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (StackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    </span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>静态内部类形式（适用于多线程）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Inner</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton INSTANCE = <span class="keyword">new</span> Singleton6();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Inner.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
   
   
   <div class="clearfix"></div>
-</nav></div></div>
+</nav>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">

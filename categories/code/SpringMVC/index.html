@@ -49,27 +49,61 @@
 <h2 class="archive-title category">SpringMVC</h2>
 
 
-  <div class="archive">
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2020-07-15T12:31:49.000Z"><a href="/2020/07/15/SpringMVC工作流程/">2020-07-15</a></time>
-            
-              <h1 class="title"><a href="/2020/07/15/SpringMVC工作流程/">SpringMVC工作流程</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-  </div>
+  
+    <article id="post-SpringMVC工作流程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-15T12:31:49.000Z"><a href="/2020/07/15/SpringMVC工作流程/">2020-07-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/15/SpringMVC工作流程/">SpringMVC工作流程</a></h1>
+  
 
-<nav id="pagination">
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/20200715211356-2020-07-15.png" alt="20200715211356-2020-07-15"></p>
+<ol>
+<li>发起请求到前端控制器(<code>DispatcherServlet</code>)</li>
+<li>前端控制器请求<code>HandlerMapping</code>查找 <code>Handler</code> （可以根据xml配置、注解进行查找）</li>
+<li>处理器映射器<code>HandlerMapping</code>向前端控制器返回<code>Handler，HandlerMapping</code>会把请求映射为<code>HandlerExecutionChain</code>对象（包含一个<code>Handler</code>处理器（页面控制器）对象，多个<code>HandlerInterceptor</code>拦截器对象），通过这种策略模式，很容易添加新的映射策略</li>
+<li>前端控制器调用处理器适配器去执行<code>Handler</code></li>
+<li>处理器适配器<code>HandlerAdapter</code>将会根据适配的结果去执行<code>Handler</code></li>
+<li><code>Handler</code>执行完成给适配器返回<code>ModelAndView</code></li>
+<li>处理器适配器向前端控制器返回<code>ModelAndView</code>（<code>ModelAndView</code>是<code>springmvc</code>框架的一个底层对象，包括 <code>Mode</code>l和<code>view</code>）</li>
+<li>前端控制器请求视图解析器去进行视图解析 （根据逻辑视图名解析成真正的视图(<code>jsp</code>)），通过这种策略很容易更换其他视图技术，只需要更改视图解析器即可</li>
+<li>视图解析器向前端控制器返回<code>View</code></li>
+<li>前端控制器进行视图渲染 （视图渲染将模型数据(在<code>ModelAndView</code>对象中)填充到<code>request</code>域）</li>
+<li>前端控制器向用户响应结果</li>
+</ol>
+<h3 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">DispatcherServlet.doDispatch();</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 获取HandlerExecutionChain</span></span><br><span class="line">	mappedHandler = getHandler(processedRequest);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 用HandlerMapping获取</span></span><br><span class="line">		<span class="comment">// 默认有BeanNameUrlHandlerMapping</span></span><br><span class="line">		<span class="comment">// 可配置：RequestMappingHandlerMapping、需配置annotation-driven</span></span><br><span class="line">        <span class="comment">// 可配置：SimpleUrlHandlerMapping(静态资源映射、需配置default-servlet-handler、annotation-driven)</span></span><br><span class="line">		<span class="keyword">for</span> (HandlerMapping hm : <span class="keyword">this</span>.handlerMappings) &#123;</span><br><span class="line">			HandlerExecutionChain handler = hm.getHandler(request);</span><br><span class="line">		&#125;</span><br><span class="line">	<span class="comment">// 获取	HandlerAdapter</span></span><br><span class="line">	<span class="comment">// 解析请求字段、参数赋值、参数映射等工作 MessageConverters、InitBinder</span></span><br><span class="line">	HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 调用拦截器的前置拦截</span></span><br><span class="line">	mappedHandler.applyPreHandle(processedRequest, response);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 执行handler,返回一个ModelAndView</span></span><br><span class="line">	mv = ha.handle(processedRequest, response, mappedHandler.getHandler());</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 调用拦截器的后置拦截</span></span><br><span class="line">	mappedHandler.applyPostHandle(processedRequest, response, mv);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 处理视图</span></span><br><span class="line">	processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);</span><br><span class="line">	</span><br><span class="line">		<span class="comment">// 如果有异常，返回异常视图</span></span><br><span class="line">		mv = processHandlerException(request, response, handler, exception);</span><br><span class="line">			<span class="comment">// 靠HandlerExceptionResolver处理异常</span></span><br><span class="line">			exMv = handlerExceptionResolver.resolveException(request, response, handler, ex);</span><br><span class="line">		<span class="comment">// 渲染视图</span></span><br><span class="line">		render(mv, request, response);</span><br><span class="line">			<span class="comment">// 通过视图名解析视图</span></span><br><span class="line">			view = resolveViewName(mv.getViewName(), mv.getModelInternal(), locale, request);</span><br><span class="line">			</span><br><span class="line">				<span class="comment">// 调用视图解析器解析视图</span></span><br><span class="line">				View view = viewResolver.resolveViewName(viewName, locale);</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 渲染视图	</span></span><br><span class="line">			view.render(mv.getModelInternal(), request, response);</span><br><span class="line">			</span><br><span class="line">				<span class="comment">// 将model放入请求域并转发</span></span><br><span class="line">				renderMergedOutputModel(mergedModel, getRequestToExpose(request), response);</span><br><span class="line">					</span><br><span class="line">					<span class="comment">// 将model放入请求域</span></span><br><span class="line">					exposeModelAsRequestAttributes(model, request);</span><br><span class="line">					</span><br><span class="line">					<span class="comment">// 请求转发，由下一个Servlet完成响应体</span></span><br><span class="line">					RequestDispatcher rd = getRequestDispatcher(request, dispatcherPath);</span><br><span class="line">					rd.forward(request, response);</span><br><span class="line">					</span><br><span class="line">		<span class="comment">// 调用拦截器的请求完成方法</span></span><br><span class="line">		mappedHandler.triggerAfterCompletion(request, response, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
   
   
   <div class="clearfix"></div>
-</nav></div></div>
+</nav>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
