@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>4种引用 | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  <meta name="description" content="对象的生命周期
+创建阶段(Created)
+为对象分配存储空间
+开始构造对象
+从超类到子类对static成员进行初始化超类成员变量按顺序初始化，递归调用超类的构造方法
+子类成员变量按顺序初始化，子类构造方法调用
+一旦对象被创建，并被分派给某些变量赋值，这个对象的状态就切换到了应用阶段
+
+
+应用阶段(In Use) 对象至少被一个强引用持有着
+不可见阶段(Invisible) 当一个对象处于不可见阶段时，说明程序本身不再持有该对象的任何强引用，虽然该这些引用仍然是存在着的。简单说就是程序的执行已经超出了该对象的作用域了。
+不可达阶段(Unreachable)对象处于不可达阶段是指该对象不再被任何GC-root所持有。
+收集阶段(Collected) 当垃圾回收器发现该对象已经处于“不可达阶段”并且垃圾回收器已经对该对象的内存空间重新分配做好准备时，则对象进入了“收集阶段”。如果该对象已经重写了finalize()方法，则会去执行该方法的终端操作。
+终结阶段(Finalized)当对象执行完finalize()方法后仍然处于不可达状态时，则该对象进入终结阶段。在该阶段是等待垃圾回收器对该对象空间进行回收。
+对象空间重分配阶段(De-allocated)垃圾回收器对该对象的所占用的内存空间进行回收或者再分配了，则该对象彻底消失了，称之为“对象空间重新分配阶段”。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="4种引用"/>
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-4种引用" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:11:23.000Z"><a href="/2020/07/18/4种引用/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">4种引用</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="对象的生命周期"><a href="#对象的生命周期" class="headerlink" title="对象的生命周期"></a>对象的生命周期</h3><ol>
+<li>创建阶段(Created)<ol>
+<li>为对象分配存储空间</li>
+<li>开始构造对象</li>
+<li>从超类到子类对static成员进行初始化超类成员变量按顺序初始化，递归调用超类的构造方法</li>
+<li>子类成员变量按顺序初始化，子类构造方法调用</li>
+<li>一旦对象被创建，并被分派给某些变量赋值，这个对象的状态就切换到了应用阶段</li>
+</ol>
+</li>
+<li>应用阶段(In Use) 对象至少被一个强引用持有着</li>
+<li>不可见阶段(Invisible) 当一个对象处于不可见阶段时，说明程序本身不再持有该对象的任何强引用，虽然该这些引用仍然是存在着的。简单说就是程序的执行已经超出了该对象的作用域了。</li>
+<li>不可达阶段(Unreachable)对象处于不可达阶段是指该对象不再被任何GC-root所持有。</li>
+<li>收集阶段(Collected) 当垃圾回收器发现该对象已经处于“不可达阶段”并且垃圾回收器已经对该对象的内存空间重新分配做好准备时，则对象进入了“收集阶段”。如果该对象已经重写了finalize()方法，则会去执行该方法的终端操作。</li>
+<li>终结阶段(Finalized)当对象执行完finalize()方法后仍然处于不可达状态时，则该对象进入终结阶段。在该阶段是等待垃圾回收器对该对象空间进行回收。</li>
+<li>对象空间重分配阶段(De-allocated)垃圾回收器对该对象的所占用的内存空间进行回收或者再分配了，则该对象彻底消失了，称之为“对象空间重新分配阶段”。<a id="more"></a>
+<h3 id="finazlie-方法"><a href="#finazlie-方法" class="headerlink" title="finazlie()方法"></a>finazlie()方法</h3></li>
+</ol>
+<ul>
+<li>会影响JVM的对象分配与回收速度<br>在分配该对象时，JVM需要在垃圾回收器上注册该对象，以便在回收时能够执行该重载方法；在该方法的执行时需要消耗CPU时间且在执行完该方法后才会重新执行回收操作，即至少需要垃圾回收器对该对象执行两次GC。</li>
+<li>可能造成该对象的再次“复活”<br>在finalize()方法中，如果有其它的强引用再次持有该对象，则会导致对象的状态由“收集阶段”又重新变为“应用阶段”。这个已经破坏了Java对象的生命周期进程，且“复活”的对象不利用后续的代码管理。<h3 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h3>强引用是使用最普遍的引用。如果一个对象具有强引用，那垃圾收器绝不会回收它。当内存空间不足，Java虚拟机宁愿抛出OutOfM moryError错误，使程序异常终止，也不会靠随意回收具有强引用 对象来解决内存不足的问题。<h3 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h3>软引用是用来描述一些还有用但并非必须的对象。对于软引用关联着的对象，在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围进行第二次回收。如果这次回收还没有足够的内存，才会抛出内存溢出异常。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 软引用何时被收集</span></span><br><span class="line"><span class="comment"> * 运行参数 -Xmx200m -XX:+PrintGC</span></span><br><span class="line"><span class="comment"> * Created by ccr at 2018/7/14.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SoftReferenceDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="comment">//100M的缓存数据</span></span><br><span class="line">        <span class="keyword">byte</span>[] cacheData = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">100</span> * <span class="number">1024</span> * <span class="number">1024</span>];</span><br><span class="line">        <span class="comment">//将缓存数据用软引用持有</span></span><br><span class="line">        SoftReference&lt;<span class="keyword">byte</span>[]&gt; cacheRef = <span class="keyword">new</span> SoftReference&lt;&gt;(cacheData);</span><br><span class="line">        <span class="comment">//将缓存数据的强引用去除</span></span><br><span class="line">        cacheData = <span class="keyword">null</span>;</span><br><span class="line">        System.out.println(<span class="string">"第一次GC前"</span> + cacheData);</span><br><span class="line">        System.out.println(<span class="string">"第一次GC前"</span> + cacheRef.get());</span><br><span class="line">        <span class="comment">//进行一次GC后查看对象的回收情况</span></span><br><span class="line">        System.gc();</span><br><span class="line">        <span class="comment">//等待GC</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        System.out.println(<span class="string">"第一次GC后"</span> + cacheData);</span><br><span class="line">        System.out.println(<span class="string">"第一次GC后"</span> + cacheRef.get());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在分配一个120M的对象，看看缓存对象的回收情况</span></span><br><span class="line">        <span class="keyword">byte</span>[] newData = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">120</span> * <span class="number">1024</span> * <span class="number">1024</span>];</span><br><span class="line">        System.out.println(<span class="string">"分配后"</span> + cacheData);</span><br><span class="line">        System.out.println(<span class="string">"分配后"</span> + cacheRef.get());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">第一次GC前<span class="keyword">null</span></span><br><span class="line">第一次GC前[B@<span class="number">7</span>d4991ad</span><br><span class="line">[GC (System.gc())  <span class="number">105728</span>K-&gt;<span class="number">103248</span>K(<span class="number">175104</span>K), <span class="number">0.0009623</span> secs]</span><br><span class="line">[<span class="function">Full <span class="title">GC</span> <span class="params">(System.gc()</span>)  103248K-&gt;103139<span class="title">K</span><span class="params">(<span class="number">175104</span>K)</span>, 0.0049909 secs]</span></span><br><span class="line"><span class="function">第一次GC后<span class="keyword">null</span></span></span><br><span class="line"><span class="function">第一次GC后[B@7d4991ad</span></span><br><span class="line"><span class="function">[<span class="title">GC</span> <span class="params">(Allocation Failure)</span>  103805K-&gt;103171<span class="title">K</span><span class="params">(<span class="number">175104</span>K)</span>, 0.0027889 secs]</span></span><br><span class="line"><span class="function">[<span class="title">GC</span> <span class="params">(Allocation Failure)</span>  103171K-&gt;103171<span class="title">K</span><span class="params">(<span class="number">175104</span>K)</span>, 0.0016018 secs]</span></span><br><span class="line"><span class="function">[Full <span class="title">GC</span> <span class="params">(Allocation Failure)</span>  103171K-&gt;103136<span class="title">K</span><span class="params">(<span class="number">175104</span>K)</span>, 0.0089988 secs]</span></span><br><span class="line"><span class="function">[<span class="title">GC</span> <span class="params">(Allocation Failure)</span>  103136K-&gt;103136<span class="title">K</span><span class="params">(<span class="number">199680</span>K)</span>, 0.0009408 secs]</span></span><br><span class="line"><span class="function">[Full <span class="title">GC</span> <span class="params">(Allocation Failure)</span>  103136K-&gt;719<span class="title">K</span><span class="params">(<span class="number">128512</span>K)</span>, 0.0082685 secs]</span></span><br><span class="line"><span class="function">分配后<span class="keyword">null</span></span></span><br><span class="line"><span class="function">分配后<span class="keyword">null</span></span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>像这种如果内存充足，GC时就保留，内存不够，GC再来收集的功能很适合用在缓存的引用场景中。在使用缓存时有一个原则，如果缓存中有就从缓存获取，如果没有就从数据库中获取，缓存的存在是为了加快计算速度，如果因为缓存导致了内存不足进而整个程序崩溃，那就得不偿失了。</p>
+<h3 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h3><p>弱引用也是用来描述非必须对象的，他的强度比软引用更弱一些，被弱引用关联的对象，在垃圾回收时，如果这个对象只被弱引用关联（没有任何强引用关联他），那么这个对象就会被回收。</p>
+<h3 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h3><p>PhantomReference 类实现虚引用。无法通过虚引用获取一个对象的实例，为一个对象设置虚引用关联的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/JVM/">JVM</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/reference/">reference</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+  
+    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

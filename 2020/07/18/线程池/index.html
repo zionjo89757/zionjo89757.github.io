@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>线程池 | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  <meta name="description" content="线程池七大参数123456789101112131415161718192021222324public ThreadPoolExecutor(int corePoolSize,                              int maximumPoolSize,           ">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="线程池"/>
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-线程池" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T04:47:16.000Z"><a href="/2020/07/18/线程池/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">线程池</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="线程池七大参数"><a href="#线程池七大参数" class="headerlink" title="线程池七大参数"></a>线程池七大参数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                              TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                              BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                              ThreadFactory threadFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">                              RejectedExecutionHandler handler)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (corePoolSize &lt; <span class="number">0</span> ||</span><br><span class="line">            maximumPoolSize &lt;= <span class="number">0</span> ||</span><br><span class="line">            maximumPoolSize &lt; corePoolSize ||</span><br><span class="line">            keepAliveTime &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">        <span class="keyword">if</span> (workQueue == <span class="keyword">null</span> || threadFactory == <span class="keyword">null</span> || handler == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        <span class="keyword">this</span>.acc = System.getSecurityManager() == <span class="keyword">null</span> ?</span><br><span class="line">                <span class="keyword">null</span> :</span><br><span class="line">                AccessController.getContext();</span><br><span class="line">        <span class="keyword">this</span>.corePoolSize = corePoolSize;</span><br><span class="line">        <span class="keyword">this</span>.maximumPoolSize = maximumPoolSize;</span><br><span class="line">        <span class="keyword">this</span>.workQueue = workQueue;</span><br><span class="line">        <span class="keyword">this</span>.keepAliveTime = unit.toNanos(keepAliveTime);</span><br><span class="line">        <span class="keyword">this</span>.threadFactory = threadFactory;</span><br><span class="line">        <span class="keyword">this</span>.handler = handler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>corePoolSize：线程池的核心大小，也可以理解为最小的线程池大小。</p>
+</li>
+<li><p>maximumPoolSize：最大线程池大小。</p>
+</li>
+<li><p>keepAliveTime：空余线程存活时间，指的是超过corePoolSize的空余线程达到多长时间才进行销毁。</p>
+</li>
+<li><p>unit：销毁时间单位。</p>
+</li>
+<li><p>workQueue：存储等待执行线程的工作队列。</p>
+</li>
+<li><p>threadFactory：创建线程的工厂，一般用默认即可。</p>
+</li>
+<li><p>handler：拒绝策略，当工作队列、线程池全已满时如何拒绝新任务，默认抛出异常。<br>线程池中的corePoolSize就是线程池中的核心线程数量，这几个核心线程，只是在没有用的时候，也不会被回收，maximumPoolSize就是线程池中可以容纳的最大线程的数量，而keepAliveTime，就是线程池中除了核心线程之外的其他的最长可以保留的时间，因为在线程池中，除了核心线程即使在无任务的情况下也不能被清除，其余的都是有存活时间的，意思就是非核心线程可以保留的最长的空闲时间，而util，就是计算这个时间的一个单位，workQueue，就是等待队列，任务可以储存在任务队列中等待被执行，执行的是FIFIO原则（先进先出）。threadFactory，就是创建线程的线程工厂，最后一个handler,是一种拒绝策略，我们可以在任务满了，拒绝执行某些任务。<br><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E7%BA%BF%E7%A8%8B%E6%B1%A0-2020-07-18-13-39-23.png" alt="线程池-2020-07-18-13-39-23"></p>
+<h3 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h3><p>固定线程池，核心线程数和最大线程数固定相等，而空闲存活时间为0毫秒，说明此参数也无意义，工作队列为最大为Integer.MAX_VALUE大小的阻塞队列。当执行任务时，如果线程都很忙，就会丢到工作队列等有空闲线程时再执行，队列满就执行默认的拒绝策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads, ThreadFactory threadFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                      <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(),</span><br><span class="line">                                      threadFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h3><p>带缓冲线程池，从构造看核心线程数为0，最大线程数为Integer最大值大小，超过0个的空闲线程在60秒后销毁，SynchronousQueue这是一个直接提交的队列，意味着每个新任务都会有线程来执行，如果线程池有可用线程则执行任务，没有的话就创建一个来执行，线程池中的线程数不确定，一般建议执行速度较快较小的线程，不然这个最大线程池边界过大容易造成内存溢出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                      <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h3><p>单线程线程池，核心线程数和最大线程数均为1，空闲线程存活0毫秒同样无意思，意味着每次只执行一个线程，多余的先存储到工作队列，一个一个执行，保证了线程的顺序执行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newSingleThreadExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> FinalizableDelegatedExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newScheduledThreadPool"><a href="#newScheduledThreadPool" class="headerlink" title="newScheduledThreadPool"></a>newScheduledThreadPool</h3><p>调度线程池，即按一定的周期执行任务，即定时任务，对ThreadPoolExecutor进行了包装而已。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h3></li>
+<li><p>AbortPolicy简单粗暴，直接抛出拒绝异常，这也是默认的拒绝策略。</p>
+</li>
+<li><p>CallerRunsPolicy如果线程池未关闭，则会在调用者线程中直接执行新任务，这会导致主线程提交线程性能变慢。</p>
+</li>
+<li><p>DiscardPolicy 从方法看没做任务操作，即表示不处理新任务，即丢弃。</p>
+</li>
+<li><p>DiscardOldestPolicy抛弃最老的任务，就是从队列取出最老的任务然后放入新的任务进行执行。</p>
+<h3 id="submit和execute分别有什么区别呢？"><a href="#submit和execute分别有什么区别呢？" class="headerlink" title="submit和execute分别有什么区别呢？"></a>submit和execute分别有什么区别呢？</h3></li>
+<li><p>execute没有返回值，如果不需要知道线程的结果就使用execute方法，性能会好很多。</p>
+</li>
+<li><p>submit返回一个Future对象，如果想知道线程结果就使用submit提交，而且它能在主线程中通过Future的get方法捕获线程中的异常。</p>
+<h3 id="线程池的关闭"><a href="#线程池的关闭" class="headerlink" title="线程池的关闭"></a>线程池的关闭</h3><p>关闭线程池可以调用shutdownNow和shutdown两个方法来实现</p>
+</li>
+<li><p>shutdownNow：对正在执行的任务全部发出interrupt()，停止执行，对还未开始执行的任务全部取消，并且返回还没开始的任务列表。</p>
+</li>
+<li><p>shutdown：当我们调用shutdown后，线程池将不再接受新的任务，但也不会去强制终止已经提交或者正在执行中的任务。</p>
+<h3 id="初始化线程池时线程数的选择"><a href="#初始化线程池时线程数的选择" class="headerlink" title="初始化线程池时线程数的选择"></a>初始化线程池时线程数的选择</h3><p>如果任务是IO密集型，一般线程数需要设置2倍CPU数以上，以此来尽量利用CPU资源。</p>
+</li>
+</ul>
+<p>如果任务是CPU密集型，一般线程数量只需要设置CPU数加1即可，更多的线程数也只能增加上下文切换，不能增加CPU利用率。</p>
+<h3 id="线程池有什么作用？"><a href="#线程池有什么作用？" class="headerlink" title="线程池有什么作用？"></a>线程池有什么作用？</h3><p>1、提高效率 创建好一定数量的线程放在池中，等需要使用的时候就从池中拿一个，这要比需要的时候创建一个线程对象要快的多。</p>
+<p>2、方便管理 可以编写线程池管理代码对池中的线程同一进行管理，比如说启动时有该程序创建100个线程，每当有请求的时候，就分配一个线程去工作，如果刚好并发有101个请求，那多出的这一个请求可以排队等候，避免因无休止的创建线程导致系统崩溃。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Java/">Java</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/juc/">juc</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+  
+    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

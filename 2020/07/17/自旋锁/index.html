@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>自旋锁 | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  <meta name="description" content="含义自旋锁是指当一个线程尝试获取某个锁时，如果该锁已被其他线程占用，就一直循环检测锁是否被释放，而不是进入线程挂起或睡眠状态。
+实现12345678910111213141516171819202122232425262728293031323334353637383940public class ">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="自旋锁"/>
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-自旋锁" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T15:42:06.000Z"><a href="/2020/07/17/自旋锁/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">自旋锁</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h3><p>自旋锁是指当一个线程尝试获取某个锁时，如果该锁已被其他线程占用，就一直循环检测锁是否被释放，而不是进入线程挂起或睡眠状态。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpinLock</span> <span class="keyword">implements</span> <span class="title">Lock</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  use thread itself as  synchronization state</span></span><br><span class="line"><span class="comment">     *  使用Owner Thread作为同步状态，比使用一个简单的boolean flag可以携带更多信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;Thread&gt; owner = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * reentrant count of a thread, no need to be volatile</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        <span class="comment">// if re-enter, increment the count.</span></span><br><span class="line">        <span class="keyword">if</span> (t == owner.get()) &#123;</span><br><span class="line">            ++count;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//spin</span></span><br><span class="line">        <span class="keyword">while</span> (!owner.compareAndSet(<span class="keyword">null</span>, t)) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        <span class="comment">//only the owner could do unlock;</span></span><br><span class="line">        <span class="keyword">if</span> (t == owner.get()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// reentrant count not zero, just decrease the counter.</span></span><br><span class="line">                --count;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// compareAndSet is not need here, already checked</span></span><br><span class="line">                owner.set(<span class="keyword">null</span>);</span><br><span class="line">                <span class="comment">//owner.compareAndSet(t, null)</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Java/">Java</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/SpinLock/">SpinLock</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+  
+    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

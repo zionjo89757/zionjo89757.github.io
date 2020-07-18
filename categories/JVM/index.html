@@ -50,6 +50,256 @@
 
 
   
+    <article id="post-JVM内存溢出错误" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:37:00.000Z"><a href="/2020/07/18/JVM内存溢出错误/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/JVM内存溢出错误/">JVM内存溢出错误</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="堆溢出"><a href="#堆溢出" class="headerlink" title="堆溢出"></a>堆溢出</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: Java heap space</span><br></pre></td></tr></table></figure>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><ul>
+<li>代码中可能存在大对象分配</li>
+<li>可能存在内存泄露，导致在多次GC之后，还是无法找到一块足够大的内存容纳当前对象。<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4></li>
+</ul>
+<ol>
+<li>检查是否存在大对象的分配，最有可能的是大数组分配</li>
+<li>通过jmap命令，把堆内存dump下来，使用mat工具分析一下，检查是否存在内存泄露的问题</li>
+<li>如果没有找到明显的内存泄露，使用 -Xmx 加大堆内存</li>
+<li>还有一点容易被忽略，检查是否有大量的自定义的 Finalizable 对象，也有可能是框架内部提供的，考虑其存在的必要性
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/JVM内存溢出错误/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-4种引用" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:11:23.000Z"><a href="/2020/07/18/4种引用/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/4种引用/">4种引用</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="对象的生命周期"><a href="#对象的生命周期" class="headerlink" title="对象的生命周期"></a>对象的生命周期</h3><ol>
+<li>创建阶段(Created)<ol>
+<li>为对象分配存储空间</li>
+<li>开始构造对象</li>
+<li>从超类到子类对static成员进行初始化超类成员变量按顺序初始化，递归调用超类的构造方法</li>
+<li>子类成员变量按顺序初始化，子类构造方法调用</li>
+<li>一旦对象被创建，并被分派给某些变量赋值，这个对象的状态就切换到了应用阶段</li>
+</ol>
+</li>
+<li>应用阶段(In Use) 对象至少被一个强引用持有着</li>
+<li>不可见阶段(Invisible) 当一个对象处于不可见阶段时，说明程序本身不再持有该对象的任何强引用，虽然该这些引用仍然是存在着的。简单说就是程序的执行已经超出了该对象的作用域了。</li>
+<li>不可达阶段(Unreachable)对象处于不可达阶段是指该对象不再被任何GC-root所持有。</li>
+<li>收集阶段(Collected) 当垃圾回收器发现该对象已经处于“不可达阶段”并且垃圾回收器已经对该对象的内存空间重新分配做好准备时，则对象进入了“收集阶段”。如果该对象已经重写了finalize()方法，则会去执行该方法的终端操作。</li>
+<li>终结阶段(Finalized)当对象执行完finalize()方法后仍然处于不可达状态时，则该对象进入终结阶段。在该阶段是等待垃圾回收器对该对象空间进行回收。</li>
+<li>对象空间重分配阶段(De-allocated)垃圾回收器对该对象的所占用的内存空间进行回收或者再分配了，则该对象彻底消失了，称之为“对象空间重新分配阶段”。
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/4种引用/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-JVM参数调优" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:09:48.000Z"><a href="/2020/07/18/JVM参数调优/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/JVM参数调优/">JVM参数调优</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="JVM分析工具"><a href="#JVM分析工具" class="headerlink" title=" JVM分析工具"></a> JVM分析工具</h3><ol>
+<li>jps:查看运行的HotSpot VM进程</li>
+<li>jmap命令: 用来查看当前系统中jvm进程 heap dump的情况，包括对象的数量，对象所占内存的大小</li>
+<li>jmap -heap PID：查看jvm配置和使用情况； jmap -dump PID ：生成堆内存快照</li>
+<li>jstat命令：主要是用来监控 heap size 和 jvm垃圾回收情况，尤其是gc情况的监控，如果老年代多次发生full gc，那么很可能是内存泄漏导致。 推荐：jstat -gcutil PID 返回百分比的形式显示堆使用情况以及GC情况 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">S0&#x2F;S1：幸存者区</span><br><span class="line">E：伊甸园区，初生区</span><br><span class="line">0：老年代</span><br><span class="line">M：元空间</span><br><span class="line">YGC：年轻带回收次数</span><br><span class="line">YGCT：年轻带回收花费时间（秒）</span><br><span class="line">FGC：full GC</span><br><span class="line">FGC：full GC花费时间（秒）</span><br><span class="line">GCT：GC总时间（秒）</span><br></pre></td></tr></table></figure></li>
+<li>jstack PID ：打印所有线程的堆栈信息
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/JVM参数调优/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-垃圾回收机制" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T12:37:01.000Z"><a href="/2020/07/18/垃圾回收机制/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/垃圾回收机制/">垃圾回收机制</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h3><p>通过一系列的 ‘GC Roots’ 的对象作为起始点，从这些节点出发所走过的路径称为引用链。当一个对象到 GC Roots 没有任何引用链相连的时候说明对象不可用。</p>
+<ul>
+<li>虚拟机栈(栈帧中的本地变量表)中引用的对象</li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+<li>本地方法栈中 JNI(即一般说的 Native 方法) 引用的对象
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/垃圾回收机制/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-运行时数据区" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T12:02:52.000Z"><a href="/2020/07/18/运行时数据区/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/运行时数据区/">运行时数据区</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="框图"><a href="#框图" class="headerlink" title="框图"></a>框图</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA-2020-07-18-20-09-15.png" alt="运行时数据区-2020-07-18-20-09-15"></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/运行时数据区/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-类加载过程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T11:37:34.000Z"><a href="/2020/07/18/类加载过程/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/类加载过程/">类加载过程</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>类的加载就是将class文件中的二进制数据读取到内存中，然后将该字节流所代表的静态数据结构转化为方法区中运行的数据结构，并且在堆内存中生成一个java.lang.Class对象作为访问方法区数据结构的入口</p>
+<h3 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B-2020-07-18-19-40-57.png" alt="类加载过程-2020-07-18-19-40-57"></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/类加载过程/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-java字节码指令" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -1124,23 +1374,23 @@
   
     <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
   
-    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>1</small></li>
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
-    <li><a href="/categories/JVM/">JVM</a><small>1</small></li>
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
-    <li><a href="/categories/Java/">Java</a><small>3</small></li>
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>30</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
-  
-    <li><a href="/categories/java/">java</a><small>1</small></li>
   
   </ul>
 </div>
@@ -1151,13 +1401,15 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>11</small></li>
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
   
     <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
   
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>6</small></li>
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
   
-    <li><a href="/tags/Binary-Search/">Binary Search</a><small>4</small></li>
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
@@ -1165,7 +1417,11 @@
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
   
-    <li><a href="/tags/Hash-Table/">Hash Table</a><small>4</small></li>
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
@@ -1175,27 +1431,41 @@
   
     <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
   
-    <li><a href="/tags/Math/">Math</a><small>4</small></li>
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
   
-    <li><a href="/tags/String/">String</a><small>10</small></li>
+    <li><a href="/tags/String/">String</a><small>12</small></li>
   
     <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
-    <li><a href="/tags/command/">command</a><small>1</small></li>
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>2</small></li>
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
   
     <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   

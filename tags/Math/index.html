@@ -50,6 +50,83 @@
 
 
   
+    <article id="post-50-Pow-x-n" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T07:20:29.000Z"><a href="/2020/07/18/50-Pow-x-n/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/50-Pow-x-n/">50. Pow(x, n)</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Implement pow(x, n), which calculates x raised to the power n (x^n).</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>判断正负，负的只要结果取倒数</li>
+<li>每次乘自身，递归较快<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">myPow</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> n_temp = n;</span><br><span class="line">        <span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            flag = <span class="number">1</span>;</span><br><span class="line">            n_temp = - n_temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> n_p = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">double</span> res = x;</span><br><span class="line">        <span class="keyword">while</span>(n_temp &gt;= <span class="number">2</span>*n_p)&#123;</span><br><span class="line">            res = res*res;</span><br><span class="line">            n_p = n_p *<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(n_temp == n_p)&#123;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>/res;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>) <span class="keyword">return</span> res * myPow(x, (<span class="keyword">int</span>)( n_temp - n_p));</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>/(res * myPow(x, (<span class="keyword">int</span>)( n_temp - n_p)));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-43-Multiply-Strings" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T06:42:36.000Z"><a href="/2020/07/18/43-Multiply-Strings/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/43-Multiply-Strings/">43. Multiply Strings</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>按乘法笔算的思路做题<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">multiply</span><span class="params">(String num1, String num2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((num1.length() == <span class="number">1</span> &amp;&amp; num1.charAt(<span class="number">0</span>) == <span class="string">'0'</span>)</span><br><span class="line">            ||(num2.length() == <span class="number">1</span> &amp;&amp; num2.charAt(<span class="number">0</span>) == <span class="string">'0'</span>))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"0"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        String mul_up;</span><br><span class="line">        String mul_down;</span><br><span class="line">        <span class="keyword">int</span> mul1;</span><br><span class="line">        <span class="keyword">int</span> mul2;</span><br><span class="line">        <span class="keyword">int</span> co ;</span><br><span class="line">        String s = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">int</span> d;</span><br><span class="line">        <span class="keyword">if</span>(num1.length() &gt; num2.length())&#123;</span><br><span class="line">            mul_up = num1;</span><br><span class="line">            mul_down = num2;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            mul_up = num2;</span><br><span class="line">            mul_down = num1;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">char</span> [][] res = <span class="keyword">new</span> <span class="keyword">char</span>[mul_down.length()][mul_down.length()+mul_up.length()];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mul_down.length(); i++)&#123;</span><br><span class="line">            mul1 = mul_down.charAt(mul_down.length()-<span class="number">1</span>- i) - <span class="string">'0'</span>;</span><br><span class="line">            co = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span>(mul1 == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; mul_up.length();j++)&#123;</span><br><span class="line">                mul2 = mul_up.charAt(mul_up.length()-<span class="number">1</span>-j) - <span class="string">'0'</span>;</span><br><span class="line">                res[i][i+j] = (<span class="keyword">char</span>)((mul1*mul2+co)%<span class="number">10</span>);</span><br><span class="line">                co = (mul1*mul2+co)/<span class="number">10</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(co != <span class="number">0</span>) res[i][i+mul_up.length()] = (<span class="keyword">char</span>)co;</span><br><span class="line">        &#125;</span><br><span class="line">        co = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> sum;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; mul_down.length()+mul_up.length();i++)&#123;</span><br><span class="line">            sum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; mul_down.length();j++)&#123;</span><br><span class="line">                sum = sum + res[j][i];</span><br><span class="line">            &#125;</span><br><span class="line">            sum += co;</span><br><span class="line">            <span class="comment">//res[0][i] = (char)(sum%10 + '0');</span></span><br><span class="line">            s = (<span class="keyword">char</span>)(sum%<span class="number">10</span> + <span class="string">'0'</span>) + s;</span><br><span class="line">            co = sum/<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(d = <span class="number">0</span>; d &lt; s.length();d++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s.charAt(d) != <span class="string">'0'</span>) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s.substring(d);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-29-Divide-Two-Integers" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -258,23 +335,23 @@
   
     <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
   
-    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>1</small></li>
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
-    <li><a href="/categories/JVM/">JVM</a><small>1</small></li>
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
-    <li><a href="/categories/Java/">Java</a><small>3</small></li>
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>30</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
-  
-    <li><a href="/categories/java/">java</a><small>1</small></li>
   
   </ul>
 </div>
@@ -285,13 +362,15 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>11</small></li>
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
   
     <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
   
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>6</small></li>
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
   
-    <li><a href="/tags/Binary-Search/">Binary Search</a><small>4</small></li>
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
@@ -299,7 +378,11 @@
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
   
-    <li><a href="/tags/Hash-Table/">Hash Table</a><small>4</small></li>
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
@@ -309,27 +392,41 @@
   
     <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
   
-    <li><a href="/tags/Math/">Math</a><small>4</small></li>
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
   
-    <li><a href="/tags/String/">String</a><small>10</small></li>
+    <li><a href="/tags/String/">String</a><small>12</small></li>
   
     <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
-    <li><a href="/tags/command/">command</a><small>1</small></li>
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>2</small></li>
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
   
     <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   

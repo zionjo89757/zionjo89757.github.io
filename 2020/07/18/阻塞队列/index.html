@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>阻塞队列 | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  <meta name="description" content="BlockingQueue阻塞队列（BlockingQueue）是一个支持两个附加操作的队列。这两个附加的操作支持阻塞的插入和移除方法
+
+支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。
+支持阻塞的移除方法：意思是在队列为空时，获取元素的线程会等待队列变为非空Block">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="阻塞队列"/>
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-阻塞队列" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T01:59:53.000Z"><a href="/2020/07/18/阻塞队列/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">阻塞队列</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h3><p>阻塞队列（BlockingQueue）是一个支持两个附加操作的队列。这两个附加的操作支持阻塞的插入和移除方法</p>
+<ol>
+<li>支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
+<li>支持阻塞的移除方法：意思是在队列为空时，获取元素的线程会等待队列变为非空<h3 id="BlockingQueue实现"><a href="#BlockingQueue实现" class="headerlink" title="BlockingQueue实现"></a>BlockingQueue实现</h3></li>
+</ol>
+<ul>
+<li><p><strong>ArrayBlockingQueue</strong> ：一个由数组结构组成的有界阻塞队列。</p>
+</li>
+<li><p><strong>LinkedBlockingQueue</strong> ：一个由链表结构组成的有界阻塞队列。</p>
+</li>
+<li><p>PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列。</p>
+</li>
+<li><p>DelayQueue：一个使用优先级队列实现的无界阻塞队列。</p>
+</li>
+<li><p><strong>SynchronousQueue</strong>：一个不存储元素的阻塞队列。</p>
+</li>
+<li><p>LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。</p>
+</li>
+<li><p>LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列</p>
+<h3 id="阻塞的实现"><a href="#阻塞的实现" class="headerlink" title="阻塞的实现"></a>阻塞的实现</h3><p>ReentranLock + Condition 实现队列的阻塞，ReentranLock 是锁，Condition是条件状态，通过等待/通知机制，来实现线程之间的通信。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97-2020-07-18-10-12-20.png" alt="阻塞队列-2020-07-18-10-12-20"></p>
+</li>
+<li><p>抛出异常：是指当阻塞队列满时候，再往队列里插入元素，会抛出 IllegalStateException(“Queue full”) 异常。当队列为空时，从队列里获取元素时会抛出 NoSuchElementException 异常 。</p>
+</li>
+<li><p>返回特殊值：插入方法会返回是否成功，成功则返回 true，失败则返回false。移除方法，成功则是从队列里拿出一个元素，如果没有则返回 null</p>
+</li>
+<li><p>一直阻塞：当阻塞队列满时，如果生产者线程往队列里 put 元素，队列会一直阻塞生产者线程，直到拿到数据，或者响应中断退出。当队列空时，消费者线程试图从队列里 take 元素，队列也会阻塞消费者线程，直到队列可用。</p>
+</li>
+<li><p>超时退出：当阻塞队列满时，队列会阻塞生产者线程一段时间，如果超过一定的时间，生产者线程就会退出。。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Java/">Java</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/juc/">juc</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+  
+    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>运行时数据区 | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  <meta name="description" content="框图">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="运行时数据区"/>
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-运行时数据区" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T12:02:52.000Z"><a href="/2020/07/18/运行时数据区/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">运行时数据区</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="框图"><a href="#框图" class="headerlink" title="框图"></a>框图</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA-2020-07-18-20-09-15.png" alt="运行时数据区-2020-07-18-20-09-15"></p>
+<a id="more"></a>
+<h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><p><strong>内存空间小，线程私有</strong>。字节码解释器工作是就是通过改变这个计数器的值来选取<strong>下一条</strong>需要执行指令的字节码指令，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖计数器完成</p>
+<h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA-2020-07-18-20-14-07.png" alt="虚拟机栈-2020-07-18-20-14-07"></p>
+<p>线程私有，生命周期和线程一致。描述的是 Java 方法执行的内存模型：每个方法在执行时都会床创建一个栈帧(Stack Frame)用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每一个方法从调用直至执行结束，就对应着一个栈帧从虚拟机栈中入栈到出栈的过程。</p>
+<ul>
+<li>局部变量表: 存放方法参数和方法内的局部变量,局部变量表的存储单位是变量槽 Variable Slot，每个槽存放的容量是32字节,在方法的Code属性的max_locals数据项中确定了需要分配的局部变量表的最大容量</li>
+<li>操作数栈: 方法的执行操作在操作数栈中完成，每一个字节码指令往操作数栈进行写入和提取的过程，就是入栈和出栈的过程,同局部变量表一样，栈的最大深度(max_stacks)，在编译的时候就在方法的Code属性max_stacks中确定了要分配的最大深度。</li>
+<li>动态连接: 运行时常量池中该栈帧所属方法的引用</li>
+<li>方法返回地址: 正常完成出口和异常完成出口。执行引擎执行任意一个方法返回(如：return)的字节码指令，这时候会可能会有返回值返回值方法的调用者。</li>
+<li>附加信息：虚拟机实现的一些不在规范中的信息保存到栈帧中。</li>
+</ul>
+<p>溢出：StackOverflowError：线程请求的栈深度大于虚拟机所允许的深度。OutOfMemoryError：如果虚拟机栈可以动态扩展，而扩展时无法申请到足够的内存。</p>
+<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>本地方法栈的功能和特点类似于虚拟机栈，均具有线程隔离的特点以及都能抛出StackOverflowError和OutOfMemoryError异常。<br>　　不同的是，本地方法栈服务的对象是JVM执行的native方法，而虚拟机栈服务的是JVM执行的java方法。如何去服务native方法？native方法使用什么语言实现？怎么组织像栈帧这种为了服务方法的数据结构？虚拟机规范并未给出强制规定，因此不同的虚拟机实可以进行自由实现，我们常用的HotSpot虚拟机选择合并了虚拟机栈和本地方法栈。</p>
+<h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p>对于绝大多数应用来说，这块区域是 JVM 所管理的内存中最大的一块。线程共享，主要是存放对象实例和数组。内部会划分出多个线程私有的分配缓冲区(Thread Local Allocation Buffer, TLAB)。可以位于物理上不连续的空间，但是逻辑上要连续。使用直接指针访问。<br>OutOfMemoryError：如果堆中没有内存完成实例分配，并且堆也无法再扩展时，抛出该异常。</p>
+<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>属于共享内存区域，存储已被虚拟机加载的类信息、常量、即时编译器编译后的代码等数据。</p>
+<ul>
+<li>字符串常量池和静态变量在JDK1.7以后放在堆中</li>
+<li>方法区的实现：JDK1.8以后为元空间，放在堆外内存。</li>
+</ul>
+<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA-2020-07-18-20-36-00.png" alt="实例对象-2020-07-18-20-36-00"></p>
+<ul>
+<li>对象头(Header)：包含两部分，第一部分用于存储对象自身的运行时数据，如哈希码、GC 分代年龄、锁状态标志、线程持有的锁、偏向线程 ID、偏向时间戳等，32 位虚拟机占 32 bit，64 位虚拟机占 64 bit。官方称为 ‘Mark Word’。第二部分是类型指针，即对象指向它的类的元数据指针，虚拟机通过这个指针确定这个对象是哪个类的实例。另外，如果是 Java 数组，对象头中还必须有一块用于记录数组长度的数据，因为普通对象可以通过 Java 对象元数据确定大小，而数组对象不可以。</li>
+<li>实例数据(Instance Data)：程序代码中所定义的各种类型的字段内容(包含父类继承下来的和子类中定义的)。</li>
+<li>对齐填充(Padding)：不是必然需要，主要是占位，保证对象大小是某个字节的整数倍。</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/JVM/">JVM</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/memory/">memory</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+  
+    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>java | Zionjo Blogs</title>
+  <title>Java | Zionjo Blogs</title>
   <meta name="author" content="Zion Jo">
   
   
@@ -46,7 +46,344 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-<h2 class="archive-title category">java</h2>
+<h2 class="archive-title category">Java</h2>
+
+
+  
+    <article id="post-线程池" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T04:47:16.000Z"><a href="/2020/07/18/线程池/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/线程池/">线程池</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="线程池七大参数"><a href="#线程池七大参数" class="headerlink" title="线程池七大参数"></a>线程池七大参数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                              <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                              TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                              BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                              ThreadFactory threadFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">                              RejectedExecutionHandler handler)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (corePoolSize &lt; <span class="number">0</span> ||</span><br><span class="line">            maximumPoolSize &lt;= <span class="number">0</span> ||</span><br><span class="line">            maximumPoolSize &lt; corePoolSize ||</span><br><span class="line">            keepAliveTime &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">        <span class="keyword">if</span> (workQueue == <span class="keyword">null</span> || threadFactory == <span class="keyword">null</span> || handler == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">        <span class="keyword">this</span>.acc = System.getSecurityManager() == <span class="keyword">null</span> ?</span><br><span class="line">                <span class="keyword">null</span> :</span><br><span class="line">                AccessController.getContext();</span><br><span class="line">        <span class="keyword">this</span>.corePoolSize = corePoolSize;</span><br><span class="line">        <span class="keyword">this</span>.maximumPoolSize = maximumPoolSize;</span><br><span class="line">        <span class="keyword">this</span>.workQueue = workQueue;</span><br><span class="line">        <span class="keyword">this</span>.keepAliveTime = unit.toNanos(keepAliveTime);</span><br><span class="line">        <span class="keyword">this</span>.threadFactory = threadFactory;</span><br><span class="line">        <span class="keyword">this</span>.handler = handler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>corePoolSize：线程池的核心大小，也可以理解为最小的线程池大小。</p>
+</li>
+<li><p>maximumPoolSize：最大线程池大小。</p>
+</li>
+<li><p>keepAliveTime：空余线程存活时间，指的是超过corePoolSize的空余线程达到多长时间才进行销毁。</p>
+</li>
+<li><p>unit：销毁时间单位。</p>
+</li>
+<li><p>workQueue：存储等待执行线程的工作队列。</p>
+</li>
+<li><p>threadFactory：创建线程的工厂，一般用默认即可。</p>
+</li>
+<li><p>handler：拒绝策略，当工作队列、线程池全已满时如何拒绝新任务，默认抛出异常。<br>线程池中的corePoolSize就是线程池中的核心线程数量，这几个核心线程，只是在没有用的时候，也不会被回收，maximumPoolSize就是线程池中可以容纳的最大线程的数量，而keepAliveTime，就是线程池中除了核心线程之外的其他的最长可以保留的时间，因为在线程池中，除了核心线程即使在无任务的情况下也不能被清除，其余的都是有存活时间的，意思就是非核心线程可以保留的最长的空闲时间，而util，就是计算这个时间的一个单位，workQueue，就是等待队列，任务可以储存在任务队列中等待被执行，执行的是FIFIO原则（先进先出）。threadFactory，就是创建线程的线程工厂，最后一个handler,是一种拒绝策略，我们可以在任务满了，拒绝执行某些任务。<br><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E7%BA%BF%E7%A8%8B%E6%B1%A0-2020-07-18-13-39-23.png" alt="线程池-2020-07-18-13-39-23"></p>
+<h3 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h3><p>固定线程池，核心线程数和最大线程数固定相等，而空闲存活时间为0毫秒，说明此参数也无意义，工作队列为最大为Integer.MAX_VALUE大小的阻塞队列。当执行任务时，如果线程都很忙，就会丢到工作队列等有空闲线程时再执行，队列满就执行默认的拒绝策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newFixedThreadPool</span><span class="params">(<span class="keyword">int</span> nThreads, ThreadFactory threadFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                      <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;(),</span><br><span class="line">                                      threadFactory);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h3><p>带缓冲线程池，从构造看核心线程数为0，最大线程数为Integer最大值大小，超过0个的空闲线程在60秒后销毁，SynchronousQueue这是一个直接提交的队列，意味着每个新任务都会有线程来执行，如果线程池有可用线程则执行任务，没有的话就创建一个来执行，线程池中的线程数不确定，一般建议执行速度较快较小的线程，不然这个最大线程池边界过大容易造成内存溢出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newCachedThreadPool</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ThreadPoolExecutor(<span class="number">0</span>, Integer.MAX_VALUE,</span><br><span class="line">                                      <span class="number">60L</span>, TimeUnit.SECONDS,</span><br><span class="line">                                      <span class="keyword">new</span> SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h3><p>单线程线程池，核心线程数和最大线程数均为1，空闲线程存活0毫秒同样无意思，意味着每次只执行一个线程，多余的先存储到工作队列，一个一个执行，保证了线程的顺序执行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecutorService <span class="title">newSingleThreadExecutor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> FinalizableDelegatedExecutorService</span><br><span class="line">        (<span class="keyword">new</span> ThreadPoolExecutor(<span class="number">1</span>, <span class="number">1</span>,</span><br><span class="line">                                <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                                <span class="keyword">new</span> LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newScheduledThreadPool"><a href="#newScheduledThreadPool" class="headerlink" title="newScheduledThreadPool"></a>newScheduledThreadPool</h3><p>调度线程池，即按一定的周期执行任务，即定时任务，对ThreadPoolExecutor进行了包装而已。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ScheduledExecutorService <span class="title">newScheduledThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h3></li>
+<li><p>AbortPolicy简单粗暴，直接抛出拒绝异常，这也是默认的拒绝策略。</p>
+</li>
+<li><p>CallerRunsPolicy如果线程池未关闭，则会在调用者线程中直接执行新任务，这会导致主线程提交线程性能变慢。</p>
+</li>
+<li><p>DiscardPolicy 从方法看没做任务操作，即表示不处理新任务，即丢弃。</p>
+</li>
+<li><p>DiscardOldestPolicy抛弃最老的任务，就是从队列取出最老的任务然后放入新的任务进行执行。</p>
+<h3 id="submit和execute分别有什么区别呢？"><a href="#submit和execute分别有什么区别呢？" class="headerlink" title="submit和execute分别有什么区别呢？"></a>submit和execute分别有什么区别呢？</h3></li>
+<li><p>execute没有返回值，如果不需要知道线程的结果就使用execute方法，性能会好很多。</p>
+</li>
+<li><p>submit返回一个Future对象，如果想知道线程结果就使用submit提交，而且它能在主线程中通过Future的get方法捕获线程中的异常。</p>
+<h3 id="线程池的关闭"><a href="#线程池的关闭" class="headerlink" title="线程池的关闭"></a>线程池的关闭</h3><p>关闭线程池可以调用shutdownNow和shutdown两个方法来实现</p>
+</li>
+<li><p>shutdownNow：对正在执行的任务全部发出interrupt()，停止执行，对还未开始执行的任务全部取消，并且返回还没开始的任务列表。</p>
+</li>
+<li><p>shutdown：当我们调用shutdown后，线程池将不再接受新的任务，但也不会去强制终止已经提交或者正在执行中的任务。</p>
+<h3 id="初始化线程池时线程数的选择"><a href="#初始化线程池时线程数的选择" class="headerlink" title="初始化线程池时线程数的选择"></a>初始化线程池时线程数的选择</h3><p>如果任务是IO密集型，一般线程数需要设置2倍CPU数以上，以此来尽量利用CPU资源。</p>
+</li>
+</ul>
+<p>如果任务是CPU密集型，一般线程数量只需要设置CPU数加1即可，更多的线程数也只能增加上下文切换，不能增加CPU利用率。</p>
+<h3 id="线程池有什么作用？"><a href="#线程池有什么作用？" class="headerlink" title="线程池有什么作用？"></a>线程池有什么作用？</h3><p>1、提高效率 创建好一定数量的线程放在池中，等需要使用的时候就从池中拿一个，这要比需要的时候创建一个线程对象要快的多。</p>
+<p>2、方便管理 可以编写线程池管理代码对池中的线程同一进行管理，比如说启动时有该程序创建100个线程，每当有请求的时候，就分配一个线程去工作，如果刚好并发有101个请求，那多出的这一个请求可以排队等候，避免因无休止的创建线程导致系统崩溃。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-异步调用" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T04:22:45.000Z"><a href="/2020/07/18/异步调用/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/异步调用/">异步调用</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="CompletableFuture"><a href="#CompletableFuture" class="headerlink" title="CompletableFuture"></a>CompletableFuture</h3><ul>
+<li>改进 应对 Future 的完成事件（即当 Future 的完成事件发生时会收到通知，并能使用 Future 计算的结果进行下一步的操作，不只是简单地阻塞等待操作的结果）<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;U&gt; <span class="function">CompletableFuture&lt;U&gt; <span class="title">supplyAsync</span><span class="params">(Supplier&lt;U&gt; supplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> asyncSupplyStage(asyncPool, supplier);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;U&gt; <span class="function">CompletableFuture&lt;U&gt; <span class="title">supplyAsync</span><span class="params">(Supplier&lt;U&gt; supplier,Executor executor)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> asyncSupplyStage(screenExecutor(executor), supplier);</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CompletableFuture&lt;Void&gt; <span class="title">runAsync</span><span class="params">(Runnable runnable)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> asyncRunStage(asyncPool, runnable);</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CompletableFuture&lt;Void&gt; <span class="title">runAsync</span><span class="params">(Runnable runnable, Executor executor)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> asyncRunStage(screenExecutor(executor), runnable);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+其中<code>supplyAsync</code>用于有返回值的任务，<code>runAsync</code>则用于没有返回值的任务。<code>Executor</code>参数可以手动指定线程池，否则默认<code>ForkJoinPool.commonPool()</code>系统级公共线程池</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-创建线程的4种方式" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T04:07:41.000Z"><a href="/2020/07/18/创建线程的4种方式/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/创建线程的4种方式/">创建线程的4种方式</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="继承Thread类实现多线程"><a href="#继承Thread类实现多线程" class="headerlink" title="继承Thread类实现多线程"></a>继承Thread类实现多线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">MyThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++) &#123;</span><br><span class="line">			System.out.println(Thread.currentThread()+<span class="string">":"</span>+i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="覆写Runnable-接口实现多线程，而后同样覆写run-推荐此方式"><a href="#覆写Runnable-接口实现多线程，而后同样覆写run-推荐此方式" class="headerlink" title="覆写Runnable()接口实现多线程，而后同样覆写run().推荐此方式"></a>覆写Runnable()接口实现多线程，而后同样覆写run().推荐此方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> count=<span class="number">20</span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(count&gt;<span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				Thread.sleep(<span class="number">200</span>);</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">			System.out.println(Thread.currentThread().getName()+<span class="string">"-当前剩余票数:"</span>+count--);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		MyThread Thread1=<span class="keyword">new</span> MyThread();</span><br><span class="line">		Thread mThread1=<span class="keyword">new</span> Thread(Thread1,<span class="string">"线程1"</span>);</span><br><span class="line">		Thread mThread2=<span class="keyword">new</span> Thread(Thread1,<span class="string">"线程2"</span>);</span><br><span class="line">		Thread mThread3=<span class="keyword">new</span> Thread(Thread1,<span class="string">"线程3"</span>);</span><br><span class="line">		mThread1.start();</span><br><span class="line">		mThread2.start();</span><br><span class="line">		myThread3.start();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="覆写Callable接口实现多线程"><a href="#覆写Callable接口实现多线程" class="headerlink" title="覆写Callable接口实现多线程"></a>覆写Callable接口实现多线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Callable;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutionException;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.FutureTask;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">20</span>;</span><br><span class="line"> </span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = count; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line"><span class="comment">//			Thread.yield();</span></span><br><span class="line">			System.out.println(Thread.currentThread().getName()+<span class="string">"当前票数："</span> + i);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"sale out"</span>;</span><br><span class="line">	&#125; </span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException, ExecutionException </span>&#123;</span><br><span class="line">		Callable&lt;String&gt; callable  =<span class="keyword">new</span> MyThread();</span><br><span class="line">		FutureTask &lt;String&gt;futureTask=<span class="keyword">new</span> FutureTask&lt;&gt;(callable);</span><br><span class="line">		Thread mThread=<span class="keyword">new</span> Thread(futureTask);</span><br><span class="line">		Thread mThread2=<span class="keyword">new</span> Thread(futureTask);</span><br><span class="line">		Thread mThread3=<span class="keyword">new</span> Thread(futureTask);</span><br><span class="line"><span class="comment">//		mThread.setName("hhh");</span></span><br><span class="line">		mThread.start();</span><br><span class="line">		mThread2.start();</span><br><span class="line">		mThread3.start();</span><br><span class="line">		System.out.println(futureTask.get());</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="通过线程池启动多线程"><a href="#通过线程池启动多线程" class="headerlink" title="通过线程池启动多线程"></a>通过线程池启动多线程</h3><ul>
+<li><code>FixThreadPool(int n)</code>: 固定大小的线程池</li>
+<li><code>SingleThreadPoolExecutor</code>: 单线程池</li>
+<li><code>CashedThreadPool()</code>: 缓存线程池</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-阻塞队列" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T01:59:53.000Z"><a href="/2020/07/18/阻塞队列/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/阻塞队列/">阻塞队列</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h3><p>阻塞队列（BlockingQueue）是一个支持两个附加操作的队列。这两个附加的操作支持阻塞的插入和移除方法</p>
+<ol>
+<li>支持阻塞的插入方法：意思是当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
+<li>支持阻塞的移除方法：意思是在队列为空时，获取元素的线程会等待队列变为非空<h3 id="BlockingQueue实现"><a href="#BlockingQueue实现" class="headerlink" title="BlockingQueue实现"></a>BlockingQueue实现</h3></li>
+</ol>
+<ul>
+<li><p><strong>ArrayBlockingQueue</strong> ：一个由数组结构组成的有界阻塞队列。</p>
+</li>
+<li><p><strong>LinkedBlockingQueue</strong> ：一个由链表结构组成的有界阻塞队列。</p>
+</li>
+<li><p>PriorityBlockingQueue ：一个支持优先级排序的无界阻塞队列。</p>
+</li>
+<li><p>DelayQueue：一个使用优先级队列实现的无界阻塞队列。</p>
+</li>
+<li><p><strong>SynchronousQueue</strong>：一个不存储元素的阻塞队列。</p>
+</li>
+<li><p>LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。</p>
+</li>
+<li><p>LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列</p>
+<h3 id="阻塞的实现"><a href="#阻塞的实现" class="headerlink" title="阻塞的实现"></a>阻塞的实现</h3><p>ReentranLock + Condition 实现队列的阻塞，ReentranLock 是锁，Condition是条件状态，通过等待/通知机制，来实现线程之间的通信。</p>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97-2020-07-18-10-12-20.png" alt="阻塞队列-2020-07-18-10-12-20"></p>
+</li>
+<li><p>抛出异常：是指当阻塞队列满时候，再往队列里插入元素，会抛出 IllegalStateException(“Queue full”) 异常。当队列为空时，从队列里获取元素时会抛出 NoSuchElementException 异常 。</p>
+</li>
+<li><p>返回特殊值：插入方法会返回是否成功，成功则返回 true，失败则返回false。移除方法，成功则是从队列里拿出一个元素，如果没有则返回 null</p>
+</li>
+<li><p>一直阻塞：当阻塞队列满时，如果生产者线程往队列里 put 元素，队列会一直阻塞生产者线程，直到拿到数据，或者响应中断退出。当队列空时，消费者线程试图从队列里 take 元素，队列也会阻塞消费者线程，直到队列可用。</p>
+</li>
+<li><p>超时退出：当阻塞队列满时，队列会阻塞生产者线程一段时间，如果超过一定的时间，生产者线程就会退出。。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-自旋锁" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T15:42:06.000Z"><a href="/2020/07/17/自旋锁/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/自旋锁/">自旋锁</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h3><p>自旋锁是指当一个线程尝试获取某个锁时，如果该锁已被其他线程占用，就一直循环检测锁是否被释放，而不是进入线程挂起或睡眠状态。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpinLock</span> <span class="keyword">implements</span> <span class="title">Lock</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  use thread itself as  synchronization state</span></span><br><span class="line"><span class="comment">     *  使用Owner Thread作为同步状态，比使用一个简单的boolean flag可以携带更多信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;Thread&gt; owner = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * reentrant count of a thread, no need to be volatile</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        <span class="comment">// if re-enter, increment the count.</span></span><br><span class="line">        <span class="keyword">if</span> (t == owner.get()) &#123;</span><br><span class="line">            ++count;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//spin</span></span><br><span class="line">        <span class="keyword">while</span> (!owner.compareAndSet(<span class="keyword">null</span>, t)) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        <span class="comment">//only the owner could do unlock;</span></span><br><span class="line">        <span class="keyword">if</span> (t == owner.get()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// reentrant count not zero, just decrease the counter.</span></span><br><span class="line">                --count;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// compareAndSet is not need here, already checked</span></span><br><span class="line">                owner.set(<span class="keyword">null</span>);</span><br><span class="line">                <span class="comment">//owner.compareAndSet(t, null)</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-JUC-Lock" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T14:39:01.000Z"><a href="/2020/07/17/JUC-Lock/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/JUC-Lock/">JUC Lock</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h3><blockquote>
+<p>Lock实现提供了比使用synchronized方法和语句可获得的更广泛的锁定操作。</p>
+</blockquote>
+<p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/JUC-Lock-2020-07-17-23-01-57.png" alt="JUC-Lock-2020-07-17-23-01-57"></p>
+<ul>
+<li><code>void lock()</code>: 获取一个锁，如果锁当前被其他线程获得，当前的线程将被休眠。</li>
+<li><code>boolean tryLock()</code>: 尝试获取一个锁，如果当前锁被其他线程持有，则返回false，不会使当前线程休眠。</li>
+<li><code>boolean tryLock(long timeout,TimeUnit unit)</code>: 如果获取了锁定立即返回true，如果别的线程正持有锁，会等待参数给定的时间，在等待的过程中，如果获取了锁定，就返回true，如果等待超时，返回false。</li>
+<li><code>void lockInterruptibly()</code>: 如果获取了锁，立即返回；如果没有获取锁，当前线程处于休眠状态，直到获取锁，或者当前线程被别的线程中断。</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/17/JUC-Lock/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-HashMap底层实现" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T12:34:28.000Z"><a href="/2020/07/17/HashMap底层实现/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/HashMap底层实现/">HashMap底层实现</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="基本属性"><a href="#基本属性" class="headerlink" title="基本属性"></a>基本属性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">362498820763181265L</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">4</span>; <span class="comment">// aka 16</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;<span class="comment">//最大容量</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> DEFAULT_LOAD_FACTOR = <span class="number">0.75f</span>;<span class="comment">//默认填充比</span></span><br><span class="line">    <span class="comment">//当add一个元素到某个位桶，其链表长度达到8时将链表转换为红黑树</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TREEIFY_THRESHOLD = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNTREEIFY_THRESHOLD = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_TREEIFY_CAPACITY = <span class="number">64</span>;</span><br><span class="line">    <span class="keyword">transient</span> Node&lt;k,v&gt;[] table;<span class="comment">//存储元素的数组</span></span><br><span class="line">    <span class="keyword">transient</span> Set&lt;map.entry&lt;k,v&gt;&gt; entrySet;</span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">int</span> size;<span class="comment">//存放元素的个数</span></span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">int</span> modCount;<span class="comment">//被修改的次数fast-fail机制</span></span><br><span class="line">    <span class="keyword">int</span> threshold;<span class="comment">//临界值 当实际大小(容量*填充比)超过临界值时，会进行扩容 </span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">float</span> loadFactor;<span class="comment">//填充比</span></span><br></pre></td></tr></table></figure>
+<h3 id="取hash值"><a href="#取hash值" class="headerlink" title="取hash值"></a>取hash值</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JDK1.8</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h;</span><br><span class="line">        <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="储存方式"><a href="#储存方式" class="headerlink" title="储存方式"></a>储存方式</h3><ul>
+<li>JDK1.8之前，由数组+链表组成，插入单链表表头的方式</li>
+<li>JDK1.8之后，变化为数组+链表+红黑树的存储方式，当链表长度超过阈值（8）时，将链表转换为红黑树。在性能上进一步得到提升。
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/17/HashMap底层实现/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
 
 
   
@@ -120,146 +457,46 @@
 
 
   
+    <article id="post-CAS" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T08:05:38.000Z"><a href="/2020/07/17/CAS/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/CAS/">CAS</a></h1>
+  
 
-  <nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav>
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Search">
-    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
-  </form>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">Categories</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
-  
-    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>1</small></li>
-  
-    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
-  
-    <li><a href="/categories/JVM/">JVM</a><small>1</small></li>
-  
-    <li><a href="/categories/Java/">Java</a><small>3</small></li>
-  
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>30</small></li>
-  
-    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
-  
-    <li><a href="/categories/code/">code</a><small>1</small></li>
-  
-    <li><a href="/categories/command/">command</a><small>2</small></li>
-  
-    <li><a href="/categories/java/">java</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">Tags</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Array/">Array</a><small>11</small></li>
-  
-    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
-  
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>6</small></li>
-  
-    <li><a href="/tags/Binary-Search/">Binary Search</a><small>4</small></li>
-  
-    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
-  
-    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
-  
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
-  
-    <li><a href="/tags/Hash-Table/">Hash Table</a><small>4</small></li>
-  
-    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
-  
-    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
-  
-    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
-  
-    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
-  
-    <li><a href="/tags/Math/">Math</a><small>4</small></li>
-  
-    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
-  
-    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
-  
-    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
-  
-    <li><a href="/tags/String/">String</a><small>10</small></li>
-  
-    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
-  
-    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
-  
-    <li><a href="/tags/command/">command</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>2</small></li>
-  
-    <li><a href="/tags/juc/">juc</a><small>2</small></li>
-  
-    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
-  
-    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
-  
-    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-</aside>
-    <div class="clearfix"></div>
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="CAS-乐观锁"><a href="#CAS-乐观锁" class="headerlink" title="CAS-乐观锁"></a>CAS-乐观锁</h3><ul>
+<li>CAS：Compare and Swap，即比较再交换。</li>
+<li>CAS是一种无锁算法，CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。</li>
+<li>原理：用CPU指令来实现无锁自增，依赖于Unsafe类<h3 id="getAndIncrement-拟源码"><a href="#getAndIncrement-拟源码" class="headerlink" title="getAndIncrement()拟源码"></a>getAndIncrement()拟源码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">getAndAddIncrement()</span><br><span class="line">    unsafe.getAndAddInt(<span class="keyword">this</span>,valueOffset,<span class="number">1</span>)</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1 , <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">int</span> var5</span>;</span><br><span class="line">            <span class="keyword">do</span>&#123;</span><br><span class="line">                var5 = <span class="keyword">this</span>.getIntVolatile(var1,var2);</span><br><span class="line">            &#125;<span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5+var4));</span><br><span class="line">            <span class="keyword">return</span> var5;</span><br><span class="line">            compareAndSwapInt()底层汇编实现是原子的</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/17/CAS/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
   </div>
-  <footer id="footer" class="inner"><div class="alignleft">
+</article>
+
+
+
   
-  &copy; 2020 Zion Jo
-  
-</div>
-<div class="clearfix"></div></footer>
-  
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-<script src="/js/jquery.imagesloaded.min.js"></script>
-
-
-<script src="/js/gallery.js"></script>
-
-
-
-
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
-
-</body>
-</html>
-icle id="post-java内存模型" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-java内存模型" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
@@ -321,23 +558,23 @@ icle id="post-java内存模型" class="h-entry post" itemprop="blogPost" itemsco
   
     <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
   
-    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>1</small></li>
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
-    <li><a href="/categories/JVM/">JVM</a><small>1</small></li>
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
-    <li><a href="/categories/Java/">Java</a><small>3</small></li>
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>30</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
-  
-    <li><a href="/categories/java/">java</a><small>1</small></li>
   
   </ul>
 </div>
@@ -348,13 +585,15 @@ icle id="post-java内存模型" class="h-entry post" itemprop="blogPost" itemsco
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>11</small></li>
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
   
     <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
   
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>6</small></li>
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
   
-    <li><a href="/tags/Binary-Search/">Binary Search</a><small>4</small></li>
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
@@ -362,7 +601,11 @@ icle id="post-java内存模型" class="h-entry post" itemprop="blogPost" itemsco
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
   
-    <li><a href="/tags/Hash-Table/">Hash Table</a><small>4</small></li>
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
@@ -372,27 +615,41 @@ icle id="post-java内存模型" class="h-entry post" itemprop="blogPost" itemsco
   
     <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
   
-    <li><a href="/tags/Math/">Math</a><small>4</small></li>
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
   
-    <li><a href="/tags/String/">String</a><small>10</small></li>
+    <li><a href="/tags/String/">String</a><small>12</small></li>
   
     <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
-    <li><a href="/tags/command/">command</a><small>1</small></li>
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>2</small></li>
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
   
     <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   

@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>JVM参数调优 | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  <meta name="description" content="JVM分析工具
+jps:查看运行的HotSpot VM进程
+jmap命令: 用来查看当前系统中jvm进程 heap dump的情况，包括对象的数量，对象所占内存的大小
+jmap -heap PID：查看jvm配置和使用情况； jmap -dump PID ：生成堆内存快照
+jstat命令：主要是用来监控 heap size 和 jvm垃圾回收情况，尤其是gc情况的监控，如果老年代多次发生full gc，那么很可能是内存泄漏导致。 推荐：jstat -gcutil PID 返回百分比的形式显示堆使用情况以及GC情况 123456789S0&amp;#x2F;S1：幸存者区E：伊甸园区，初生区0：老年代M：元空间YGC：年轻带回收次数YGCT：年轻带回收花费时间（秒）FGC：full GCFGC：full GC花费时间（秒）GCT：GC总时间（秒）
+jstack PID ：打印所有线程的堆栈信息">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="JVM参数调优"/>
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-JVM参数调优" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:09:48.000Z"><a href="/2020/07/18/JVM参数调优/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">JVM参数调优</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="JVM分析工具"><a href="#JVM分析工具" class="headerlink" title=" JVM分析工具"></a> JVM分析工具</h3><ol>
+<li>jps:查看运行的HotSpot VM进程</li>
+<li>jmap命令: 用来查看当前系统中jvm进程 heap dump的情况，包括对象的数量，对象所占内存的大小</li>
+<li>jmap -heap PID：查看jvm配置和使用情况； jmap -dump PID ：生成堆内存快照</li>
+<li>jstat命令：主要是用来监控 heap size 和 jvm垃圾回收情况，尤其是gc情况的监控，如果老年代多次发生full gc，那么很可能是内存泄漏导致。 推荐：jstat -gcutil PID 返回百分比的形式显示堆使用情况以及GC情况 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">S0&#x2F;S1：幸存者区</span><br><span class="line">E：伊甸园区，初生区</span><br><span class="line">0：老年代</span><br><span class="line">M：元空间</span><br><span class="line">YGC：年轻带回收次数</span><br><span class="line">YGCT：年轻带回收花费时间（秒）</span><br><span class="line">FGC：full GC</span><br><span class="line">FGC：full GC花费时间（秒）</span><br><span class="line">GCT：GC总时间（秒）</span><br></pre></td></tr></table></figure></li>
+<li>jstack PID ：打印所有线程的堆栈信息<a id="more"></a>
+<h3 id="优化方向"><a href="#优化方向" class="headerlink" title="优化方向"></a>优化方向</h3></li>
+<li>将进入老年代的对象数量降到最低（减少Full GC的频率）</li>
+<li>减少 Full GC 的执行时间</li>
+</ol>
+<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><ol>
+<li>一般来说堆越大越好，能够降低GC的频率，但增加堆内存，会造成单次GC需要遍历处理的对象更多，耗时增加；也会受服务器硬件的限制无法无限大，所以需要根据实际找到平衡值。</li>
+<li>通常堆参数-Xms和-Xmx可以设置相等，防止垃圾收集器在最小、最大之间收缩堆而产生额外的消耗，耗费性能。</li>
+<li>新生代/老年代大小比例设置合适：新生代过小，发生Minor GC频繁，且大对象容易直接进入老年代；新生代过大，老年代变小，容易Full GC频繁，Minor GC耗时大幅度增加。</li>
+</ol>
+<h3 id="优化参数"><a href="#优化参数" class="headerlink" title="优化参数"></a>优化参数</h3><p>堆配置：<br><strong>-Xms:初始堆大小</strong><br><strong>-Xmx：最大堆大小</strong><br><strong>-Xss: 每个线程的堆栈大小</strong><br>-XX:NewSize=n:设置年轻代大小<br>-XX:NewRatio=n:设置年轻代和年老代的比值。<br>-XX:SurvivorRatio=n:年轻代中Eden区与两个Survivor区的比值。<br>-XX:MaxMetaSpaceSize=n:最大元空间大小<br>-XX:+CollectGen0First : FullGC时是否先YGC<br>收集器设置:<br>-XX:+UseSerialGC:设置串行收集器<br>-XX:+UseParallelGC:设置并行收集器<br>-XX:+UseParalledlOldGC:设置并行年老代收集器<br>-XX:+UseConcMarkSweepGC:设置并发收集器<br><strong>-XX:ParallelGCThreads 并行收集器的线程数</strong><br>打印GC：<br>-XX:+PrintGC<br><strong>-XX:+PrintGCDetails</strong><br>-XX:+PrintGCTimeStamps<br>-Xloggc:filename</p>
+<h3 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h3><p>jps<br>jinfo  -flag  具体参数  java进程编号<br>jinfo  -flags  java进程编号<br>java -XX:+PrintFlagsInitial   这个是初始的<br>java -XX:+PrintFlagsFinal  这个是修改以后的      =表示没有改过    :=表示人为修改或者jvm修改过的   公式：java -XX:+PrintFlagsFinal  -version<br>java -XX:+PrintCommandLineFlags  也是可以查看初始参数</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/JVM/">JVM</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/command/">command</a>, <a href="/tags/optimize/">optimize</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+  
+    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -50,6 +50,45 @@
 
 
   
+    <article id="post-49-Group-Anagrams" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T07:16:37.000Z"><a href="/2020/07/18/49-Group-Anagrams/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/49-Group-Anagrams/">49. Group Anagrams</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given an array of strings, group anagrams together.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>编码</li>
+<li>HashMap过滤<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; groupAnagrams(String[] strs) &#123;</span><br><span class="line">        List&lt;String&gt; ls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        List&lt;List&lt;String&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(strs.length == <span class="number">0</span> ) <span class="keyword">return</span> res;</span><br><span class="line">        ls.add(strs[<span class="number">0</span>]);</span><br><span class="line">        res.add(ls);</span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i&lt;strs.length;i++)&#123;</span><br><span class="line">            flag = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; res.size(); j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(isAnagrams(strs[i], res.get(j).get(<span class="number">0</span>)))&#123;</span><br><span class="line">                    res.get(j).add(strs[i]);</span><br><span class="line">                    flag = <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!flag)&#123;</span><br><span class="line">                ls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                ls.add(strs[i]);</span><br><span class="line">                res.add(ls);</span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAnagrams</span><span class="params">(String str1, String str2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(str1.length() != str2.length()) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">int</span>[] ls = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">26</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; str1.length(); i++)&#123;</span><br><span class="line">            ls[str1.charAt(i) - <span class="string">'a'</span>]++;</span><br><span class="line">            ls[str2.charAt(i) - <span class="string">'a'</span>]--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(ls[i] != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-37-Sudoku-Solver" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -243,23 +282,23 @@
   
     <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
   
-    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>1</small></li>
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
-    <li><a href="/categories/JVM/">JVM</a><small>1</small></li>
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
-    <li><a href="/categories/Java/">Java</a><small>3</small></li>
+    <li><a href="/categories/Java/">Java</a><small>10</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>30</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
-  
-    <li><a href="/categories/java/">java</a><small>1</small></li>
   
   </ul>
 </div>
@@ -270,13 +309,15 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>11</small></li>
+    <li><a href="/tags/Array/">Array</a><small>13</small></li>
   
     <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
   
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>6</small></li>
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
   
-    <li><a href="/tags/Binary-Search/">Binary Search</a><small>4</small></li>
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
@@ -284,7 +325,11 @@
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
   
-    <li><a href="/tags/Hash-Table/">Hash Table</a><small>4</small></li>
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
@@ -294,27 +339,41 @@
   
     <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
   
-    <li><a href="/tags/Math/">Math</a><small>4</small></li>
+    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
     <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
   
-    <li><a href="/tags/String/">String</a><small>10</small></li>
+    <li><a href="/tags/String/">String</a><small>12</small></li>
   
     <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
-    <li><a href="/tags/command/">command</a><small>1</small></li>
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>2</small></li>
   
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>2</small></li>
+    <li><a href="/tags/juc/">juc</a><small>8</small></li>
   
     <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   
