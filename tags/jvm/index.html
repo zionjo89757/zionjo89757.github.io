@@ -50,6 +50,57 @@
 
 
   
+    <article id="post-JVM" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T05:44:54.000Z"><a href="/2020/07/19/JVM/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/JVM/">JVM</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><h4 id="创建对象的过程是什么？"><a href="#创建对象的过程是什么？" class="headerlink" title="创建对象的过程是什么？"></a>创建对象的过程是什么？</h4><ul>
+<li>字节码角度<ul>
+<li>NEW： 如果找不到 Class 对象则进行类加载。加载成功后在堆中分配内存，从 Object 到本类路径上的所有属性都要分配。分配完毕后进行零值设置。最后将指向实例对象的引用变量压入虚拟机栈顶。</li>
+<li>*DUP： * 在栈顶复制引用变量，这时栈顶有两个指向堆内实例的引用变量。两个引用变量的目的不同，栈底的引用用于赋值或保存局部变量表，栈顶的引用作为句柄调用相关方法。</li>
+<li>INVOKESPECIAL： 通过栈顶的引用变量调用 init 方法。</li>
+</ul>
+</li>
+<li>执行角度<ul>
+<li>当 JVM 遇到字节码 new 指令时，首先将检查该指令的参数能否在常量池中定位到一个类的符号引用，并检查引用代表的类是否已被加载、解析和初始化，如果没有就先执行类加载。</li>
+<li>在类加载检查通过后虚拟机将为新生对象分配内存。</li>
+<li>内存分配完成后虚拟机将成员变量设为零值，保证对象的实例字段可以不赋初值就使用。</li>
+<li>设置对象头，包括哈希码、GC 信息、锁信息、对象所属类的类元信息等。</li>
+<li>执行 init 方法，初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量。</li>
+</ul>
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/JVM/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-java字节码指令" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -1128,6 +1179,8 @@
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
+    <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
     <li><a href="/categories/Java/">Java</a><small>10</small></li>
@@ -1163,6 +1216,8 @@
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
+    <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
+  
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
@@ -1183,6 +1238,8 @@
   
     <li><a href="/tags/Math/">Math</a><small>6</small></li>
   
+    <li><a href="/tags/MySQL/">MySQL</a><small>1</small></li>
+  
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
@@ -1199,15 +1256,21 @@
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
+    <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
     <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
   
     <li><a href="/tags/command/">command</a><small>2</small></li>
   
+    <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
+  
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+    <li><a href="/tags/java/">java</a><small>2</small></li>
   
-    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+    <li><a href="/tags/juc/">juc</a><small>9</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>2</small></li>
   
     <li><a href="/tags/lock/">lock</a><small>1</small></li>
   
@@ -1215,9 +1278,13 @@
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   
+    <li><a href="/tags/redis/">redis</a><small>1</small></li>
+  
     <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/thread/">thread</a><small>1</small></li>
   
     <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
   

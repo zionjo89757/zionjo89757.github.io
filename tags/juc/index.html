@@ -50,6 +50,48 @@
 
 
   
+    <article id="post-并发" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T05:55:43.000Z"><a href="/2020/07/19/并发/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/并发/">并发</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="final-可以保证可见性吗？"><a href="#final-可以保证可见性吗？" class="headerlink" title="final 可以保证可见性吗？"></a>final 可以保证可见性吗？</h3><p>final 可以保证可见性，被 final 修饰的字段在构造方法中一旦被初始化完成，并且构造方法没有把 this 引用传递出去，在其他线程中就能看见 final 字段值。</p>
+<p>在旧的 JMM 中，一个严重缺陷是线程可能看到 final 值改变。比如一个线程看到一个 int 类型 final 值为 0，此时该值是未初始化前的零值，一段时间后该值被某线程初始化，再去读这个 final 值会发现值变为 1。</p>
+<p>为修复该漏洞，JSR-133 为 final 域增加重排序规则：只要对象是正确构造的（被构造对象的引用在构造方法中没有逸出），那么不需要使用同步就可以保证任意线程都能看到这个 final 域初始化后的值。</p>
+<p>写 final 域重排序规则</p>
+<p>禁止把 final 域的写重排序到构造方法之外，编译器会在 final 域的写后，构造方法的 return 前，插入一个 Store Store 屏障。确保在对象引用为任意线程可见之前，对象的 final 域已经初始化过。</p>
+<p>读 final 域重排序规则</p>
+<p>在一个线程中，初次读对象引用和初次读该对象包含的 final 域，JMM 禁止处理器重排序这两个操作。编译器在读 final 域操作的前面插入一个 Load Load 屏障，确保在读一个对象的 final 域前一定会先读包含这个 final 域的对象引用。</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/并发/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-线程池" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -454,6 +496,8 @@
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
+    <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
     <li><a href="/categories/Java/">Java</a><small>10</small></li>
@@ -489,6 +533,8 @@
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
+    <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
+  
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
@@ -509,6 +555,8 @@
   
     <li><a href="/tags/Math/">Math</a><small>6</small></li>
   
+    <li><a href="/tags/MySQL/">MySQL</a><small>1</small></li>
+  
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
@@ -525,15 +573,21 @@
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
+    <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
     <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
   
     <li><a href="/tags/command/">command</a><small>2</small></li>
   
+    <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
+  
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+    <li><a href="/tags/java/">java</a><small>2</small></li>
   
-    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+    <li><a href="/tags/juc/">juc</a><small>9</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>2</small></li>
   
     <li><a href="/tags/lock/">lock</a><small>1</small></li>
   
@@ -541,9 +595,13 @@
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   
+    <li><a href="/tags/redis/">redis</a><small>1</small></li>
+  
     <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/thread/">thread</a><small>1</small></li>
   
     <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
   

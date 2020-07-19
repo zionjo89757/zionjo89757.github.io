@@ -46,457 +46,499 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-  <article id="post-linux命令性能排查" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-Redis" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T14:17:40.000Z"><a href="/2020/07/18/linux命令性能排查/">2020-07-18</a></time>
+        <time class="dt-published" datetime="2020-07-19T13:39:04.000Z"><a href="/2020/07/19/Redis/">2020-07-19</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/18/linux命令性能排查/">linux命令性能排查</a></h1>
+    <h1 class="title"><a href="/2020/07/19/Redis/">Redis</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <ol>
-<li><p>整机：top 系统性能</p>
-<p>uptime 精简版</p>
-<p>load average：系统负载均衡 1min 5min 15min 系统的平均负载值 相加/3&gt;60%压力够</p>
+        <h3 id="Q1：Redis-有什么特点？"><a href="#Q1：Redis-有什么特点？" class="headerlink" title="Q1：Redis 有什么特点？"></a>Q1：Redis 有什么特点？</h3><h4 id="基于键值对的数据结构服务器"><a href="#基于键值对的数据结构服务器" class="headerlink" title="基于键值对的数据结构服务器"></a>基于键值对的数据结构服务器</h4><p>Redis 中的值不仅可以是字符串，还可以是具体的数据结构，这样不仅能应用于多种场景开发，也可以提高开发效率。它主要提供五种数据结构：字符串、哈希、列表、集合、有序集合，同时在字符串的基础上演变出了 Bitmaps 和 HyperLogLog 两种数据结构，Redis 3.2 还加入了有关 GEO 地理信息定位的功能。</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/Redis/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-MySQL" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T10:48:36.000Z"><a href="/2020/07/19/MySQL/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/MySQL/">MySQL</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="MySQL-的逻辑架构"><a href="#MySQL-的逻辑架构" class="headerlink" title="MySQL 的逻辑架构"></a>MySQL 的逻辑架构</h3><p>第一层是服务器层，主要提供连接处理、授权认证、安全等功能。</p>
+<p>第二层实现了 MySQL 核心服务功能，包括查询解析、分析、优化、缓存以及日期和时间等所有内置函数，所有跨存储引擎的功能都在这一层实现，例如存储过程、触发器、视图等。</p>
+<p>第三层是存储引擎层，存储引擎负责 MySQL 中数据的存储和提取。服务器通过 API 与存储引擎通信，这些接口屏蔽了不同存储引擎的差异，使得差异对上层查询过程透明。除了会解析外键定义的 InnoDB 外，存储引擎不会解析 SQL，不同存储引擎之间也不会相互通信，只是简单响应上层服务器请求。</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/MySQL/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-设计模式" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T10:08:10.000Z"><a href="/2020/07/19/设计模式/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/设计模式/">设计模式</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="设计模式的分类，你知道哪些设计模式"><a href="#设计模式的分类，你知道哪些设计模式" class="headerlink" title="设计模式的分类，你知道哪些设计模式"></a>设计模式的分类，你知道哪些设计模式</h3><ul>
+<li><p>创建型： 在创建对象的同时隐藏创建逻辑，不使用 new 直接实例化对象，程序在判断需要创建哪些对象时更灵活。包括工厂/抽象工厂/单例/建造者/原型模式。</p>
 </li>
-<li><p>CPU：vmstat</p>
-<ul>
-<li><p>查看CPU</p>
-<p>vmstat -n 2 3 第一个参数是采样的时间间隔数单位s，第二个参数是采样的次数</p>
-<ul>
-<li><p>procs</p>
-<p><strong>r</strong>：运行和等待CPU时间片的进程数，原则上1核CPu的运行队列不要超过2，真个系统的运行队列不能超过总核数的2倍，否则表示系统压力过大</p>
-<p><strong>b</strong>：等待资源的进程数，比如正在等待磁盘I/O，网络I/O等</p>
+<li><p>结构型： 通过类和接口间的继承和引用实现创建复杂结构的对象。包括适配器/桥接模式/过滤器/组合/装饰器/外观/享元/代理模式。</p>
 </li>
-<li><p>cpu</p>
-<p><strong>us</strong>：用户进程消耗cpu时间百分比，us高，用户进程消耗cpu时间多，如果长期大于50%，优化程序</p>
-<p><strong>sy</strong>：内核进程消耗的cpu时间百分比</p>
-<p><strong>us+sy</strong>：参考值为80%，如果大于80，说明可能存在cpu不足</p>
-<p><strong>id</strong>：处于空闲的cpu百分比</p>
-<p><strong>wa</strong>：系统等待IO的cpu时间百分比</p>
-<p><strong>st</strong>：来自于一个虚拟机偷取的cpu时间的百分比</p>
+<li><p>行为型： 通过类之间不同通信方式实现不同行为。包括责任链/命名/解释器/迭代器/中介者/备忘录/观察者/状态/策略/模板/访问者模式。</p>
 </li>
 </ul>
+<h3 id="设计模式有哪些原则？"><a href="#设计模式有哪些原则？" class="headerlink" title="设计模式有哪些原则？"></a>设计模式有哪些原则？</h3><ul>
+<li><p>开闭原则：OOP 中最基础的原则，指一个软件实体（类、模块、方法等）应该对扩展开放，对修改关闭。强调用抽象构建框架，用实现扩展细节，提高代码的可复用性和可维护性。</p>
 </li>
-<li><p>查看额外</p>
+<li><p>单一职责原则：一个类、接口或方法只负责一个职责，降低代码复杂度以及变更引起的风险。</p>
+</li>
+<li><p>依赖倒置原则：程序应该依赖于抽象类或接口，而不是具体的实现类。</p>
+</li>
+<li><p>接口隔离原则：将不同功能定义在不同接口中实现接口隔离，避免了类依赖它不需要的接口，减少了接口之间依赖的冗余性和复杂性。</p>
+</li>
+<li><p>里氏替换原则：开闭原则的补充，规定了任何父类可以出现的地方子类都一定可以出现，可以约束继承泛滥，加强程序健壮性。</p>
+</li>
+<li><p>迪米特原则：也叫最少知道原则，每个模块对其他模块都要尽可能少地了解和依赖，降低代码耦合度。</p>
+</li>
+<li><p>合成/聚合原则：尽量使用组合(has-a)/聚合(contains-a)而不是继承(is-a)达到软件复用的目的，避免滥用继承带来的方法污染和方法爆炸，方法污染指父类的行为通过继承传递给子类，但子类并不具备执行此行为的能力；方法爆炸指继承树不断扩大，底层类拥有的方法过于繁杂，导致很容易选择错误。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-数据结构" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T09:31:47.000Z"><a href="/2020/07/19/数据结构/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/数据结构/">数据结构</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="B树和B-树的区别？"><a href="#B树和B-树的区别？" class="headerlink" title="B树和B+树的区别？"></a>B树和B+树的区别？</h3><p>B 树中每个节点同时存储 key 和 data，而 B+ 树中只有叶子节点才存储 data，非叶子节点只存储 key。InnoDB 对 B+ 树进行了优化，在每个叶子节点上增加了一个指向相邻叶子节点的链表指针，形成了带有顺序指针的 B+ 树，提高区间访问的性能。</p>
+<p>B+ 树的优点在于：① 由于 B+ 树在非叶子节点上不含数据信息，因此在内存页中能够存放更多的 key，数据存放得更加紧密，具有更好的空间利用率，访问叶子节点上关联的数据也具有更好的缓存命中率。② B+树的叶子结点都是相连的，因此对整棵树的遍历只需要一次线性遍历叶子节点即可。而 B 树则需要进行每一层的递归遍历，相邻的元素可能在内存中不相邻，所以缓存命中性没有 B+树好。但是 B 树也有优点，由于每个节点都包含 key 和 value，因此经常访问的元素可能离根节点更近，访问也更迅速。</p>
+<h3 id="希尔排序的原理"><a href="#希尔排序的原理" class="headerlink" title="希尔排序的原理"></a>希尔排序的原理</h3><p>把记录按下标的一定增量分组，对每组进行直接插入排序，每次排序后减小增量，当增量减至 1 时排序完毕。</p>
+<h3 id="堆排序的原理"><a href="#堆排序的原理" class="headerlink" title="堆排序的原理"></a>堆排序的原理</h3><p>将待排序记录看作完全二叉树，可以建立大根堆或小根堆，大根堆中每个节点的值都不小于它的子节点值，小根堆中每个节点的值都不大于它的子节点值。</p>
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<h3 id="归并排序的原理"><a href="#归并排序的原理" class="headerlink" title="归并排序的原理"></a>归并排序的原理</h3>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-线程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T06:19:10.000Z"><a href="/2020/07/19/线程/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/线程/">线程</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="线程通信的方式有哪些？"><a href="#线程通信的方式有哪些？" class="headerlink" title="线程通信的方式有哪些？"></a>线程通信的方式有哪些？</h3><p>命令式编程中线程的通信机制有两种，共享内存和消息传递。在共享内存的并发模型里线程间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。在消息传递的并发模型里线程间没有公共状态，必须通过发送消息来显式通信。Java 并发采用共享内存模型，线程之间的通信总是隐式进行，整个通信过程对程序员完全透明。</p>
 <ul>
-<li>查看所有cpu核信息   mpstat -P ALL 2</li>
-<li>每个进程使用cpu的用量分解信息   pidstat -u 1 -p 进程编号</li>
+<li><p>volatile 告知程序任何对变量的读需要从主内存中获取，写必须同步刷新回主内存，保证所有线程对变量访问的可见性。</p>
+</li>
+<li><p>synchronized 确保多个线程在同一时刻只能有一个处于方法或同步块中，保证线程对变量访问的原子性、可见性和有序性。</p>
+</li>
+<li><p>等待通知机制指一个线程 A 调用了对象的 wait 方法进入等待状态，另一线程 B 调用了对象的 notify/notifyAll 方法，线程 A 收到通知后结束阻塞并执行后序操作。对象上的 wait 和 notify/notifyAll 如同开关信号，完成等待方和通知方的交互。如果一个线程执行了某个线程的 join 方法，这个线程就会阻塞等待执行了 join 方法的线程终止，这里-涉及等待/通知机制。join 底层通过 wait 实现，线程终止时会调用自身的 notifyAll 方法，通知所有等待在该线程对象上的线程。</p>
+</li>
+<li><p>管道 IO 流用于线程间数据传输，媒介为内存。PipedOutputStream 和 PipedWriter 是输出流，相当于生产者，PipedInputStream 和 PipedReader 是输入流，相当于消费者。管道流使用一个默认大小为 1KB 的循环缓冲数组。输入流从缓冲数组读数据，输出流往缓冲数组中写数据。当数组已满时，输出流所在线程阻塞；当数组首次为空时，输入流所在线程阻塞。</p>
+</li>
+<li><p>ThreadLocal 是线程共享变量，但它可以为每个线程创建单独的副本，副本值是线程私有的，互相之间不影响。</p>
+</li>
+</ul>
+<h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><p>ThreadLoacl 是线程共享变量，主要用于一个线程内跨类、方法传递数据。ThreadLoacl 有一个静态内部类 ThreadLocalMap，其 Key 是 ThreadLocal 对象，值是 Entry 对象，Entry 中只有一个 Object 类的 vaule 值。ThreadLocal 是线程共享的，但 ThreadLocalMap 是每个线程私有的。ThreadLocal 主要有 set、get 和 remove 三个方法。</p>
+<p>set 方法</p>
+<p>首先获取当前线程，然后再获取当前线程对应的 ThreadLocalMap 类型的对象 map。如果 map 存在就直接设置值，key 是当前的 ThreadLocal 对象，value 是传入的参数。</p>
+<p>如果 map 不存在就通过 createMap 方法为当前线程创建一个 ThreadLocalMap 对象再设置值。</p>
+<p>get 方法</p>
+<p>首先获取当前线程，然后再获取当前线程对应的 ThreadLocalMap 类型的对象 map。如果 map 存在就以当前 ThreadLocal 对象作为 key 获取 Entry 类型的对象 e，如果 e 存在就返回它的 value 属性。</p>
+<p>如果 e 不存在或者 map 不存在，就调用 setInitialValue 方法先为当前线程创建一个 ThreadLocalMap 对象然后返回默认的初始值 null。</p>
+<p>remove 方法</p>
+<p>首先通过当前线程获取其对应的 ThreadLocalMap 类型的对象 m，如果 m 不为空，就解除 ThreadLocal 这个 key 及其对应的 value 值的联系。</p>
+<p>存在的问题</p>
+<p>线程复用会产生脏数据，由于线程池会重用 Thread 对象，因此与 Thread 绑定的 ThreadLocal 也会被重用。如果没有调用 remove 清理与线程相关的 ThreadLocal 信息，那么假如下一个线程没有调用 set 设置初始值就可能 get 到重用的线程信息。</p>
+<p>ThreadLocal 还存在内存泄漏的问题，由于 ThreadLocal 是弱引用，但 Entry 的 value 是强引用，因此当 ThreadLocal 被垃圾回收后，value 依旧不会被释放。因此需要及时调用 remove 方法进行清理操作。</p>
+<h3 id="JDK7-的-ConcurrentHashMap-原理？"><a href="#JDK7-的-ConcurrentHashMap-原理？" class="headerlink" title="JDK7 的 ConcurrentHashMap 原理？"></a>JDK7 的 ConcurrentHashMap 原理？</h3><p>ConcurrentHashMap 用于解决 HashMap 的线程不安全和 HashTable 的并发效率低，HashTable 之所以效率低是因为所有线程都必须竞争同一把锁，假如容器里有多把锁，每一把锁用于锁容器的部分数据，那么多线程访问容器不同数据段的数据时，线程间就不会存在锁竞争，从而有效提高并发效率，这就是 ConcurrentHashMap 的锁分段技术。首先将数据分成 Segment 数据段，然后给每一个数据段配一把锁，当一个线程占用锁访问其中一个段的数据时，其他段的数据也能被其他线程访问。</p>
+<h3 id="JDK8-的-ConcurrentHashMap-原理？"><a href="#JDK8-的-ConcurrentHashMap-原理？" class="headerlink" title="JDK8 的 ConcurrentHashMap 原理？"></a>JDK8 的 ConcurrentHashMap 原理？</h3><p>主要对 JDK7 做了三点改造：① 取消分段锁机制，进一步降低冲突概率。② 引入红黑树结构，同一个哈希槽上的元素个数超过一定阈值后，单向链表改为红黑树结构。③ 使用了更加优化的方式统计集合内的元素数量。具体优化表现在：在 put、resize 和 size 方法中设计元素总数的更新和计算都避免了锁，使用 CAS 代替。</p>
+<p>get 同样不需要同步，put 操作时如果没有出现哈希冲突，就使用 CAS 添加元素，否则使用 synchronized 加锁添加元素。</p>
+<p>当某个槽内的元素个数达到 7 且 table 容量不小于 64 时，链表转为红黑树。当某个槽内的元素减少到 6 时，由红黑树重新转为链表。在转化过程中，使用同步块锁住当前槽的首元素，防止其他线程对当前槽进行增删改操作，转化完成后利用 CAS 替换原有链表。由于 TreeNode 节点也存储了 next 引用，因此红黑树转为链表很简单，只需从 first 元素开始遍历所有节点，并把节点从 TreeNode 转为 Node 类型即可，当构造好新链表后同样用 CAS 替换红黑树。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-AQS" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T06:04:55.000Z"><a href="/2020/07/19/AQS/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/AQS/">AQS</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="AQS-了解吗？"><a href="#AQS-了解吗？" class="headerlink" title="AQS 了解吗？"></a>AQS 了解吗？</h3><p>AQS 队列同步器是用来构建锁或其他同步组件的基础框架，它使用一个 volatile int state 变量作为共享资源，如果线程获取资源失败，则进入同步队列等待；如果获取成功就执行临界区代码，释放资源时会通知同步队列中的等待线程。</p>
+<p>同步器的主要使用方式是继承，子类通过继承同步器并实现它的抽象方法来管理同步状态，对同步状态进行更改需要使用同步器提供的 3个方法 getState、setState 和 compareAndSetState ，它们保证状态改变是安全的。子类推荐被定义为自定义同步组件的静态内部类，同步器自身没有实现任何同步接口，它仅仅定义若干同步状态获取和释放的方法，同步器既支持独占式也支持共享式。</p>
+<p>同步器是实现锁的关键，在锁的实现中聚合同步器，利用同步器实现锁的语义。锁面向使用者，定义了使用者与锁交互的接口，隐藏实现细节；同步器面向锁的实现者，简化了锁的实现方式，屏蔽了同步状态管理、线程排队、等待与唤醒等底层操作。</p>
+<p>每当有新线程请求资源时都会进入一个等待队列，只有当持有锁的线程释放锁资源后该线程才能持有资源。等待队列通过双向链表实现，线程被封装在链表的 Node 节点中，Node 的等待状态包括：CANCELLED（线程已取消）、SIGNAL（线程需要唤醒）、CONDITION （线程正在等待）、PROPAGATE（后继节点会传播唤醒操作，只在共享模式下起作用）。</p>
+<h3 id="AQS-有哪两种模式？"><a href="#AQS-有哪两种模式？" class="headerlink" title="AQS 有哪两种模式？"></a>AQS 有哪两种模式？</h3><ul>
+<li><p>独占模式表示锁只会被一个线程占用，其他线程必须等到持有锁的线程释放锁后才能获取锁，同一时间只能有一个线程获取到锁。</p>
+</li>
+<li><p>共享模式表示多个线程获取同一个锁有可能成功，ReadLock 就采用共享模式。</p>
+</li>
+<li><p>独占模式通过 acquire 和 release 方法获取和释放锁，共享模式通过 acquireShared 和 releaseShared 方法获取和释放锁。</p>
+</li>
+</ul>
+<h3 id="AQS-独占式获取-释放锁的原理"><a href="#AQS-独占式获取-释放锁的原理" class="headerlink" title="AQS 独占式获取/释放锁的原理"></a>AQS 独占式获取/释放锁的原理</h3><p>获取同步状态时，调用 acquire 方法，维护一个同步队列，使用 tryAcquire 方法安全地获取线程同步状态，获取失败的线程会被构造同步节点并通过 addWaiter 方法加入到同步队列的尾部，在队列中自旋。之后调用 acquireQueued 方法使得该节点以死循环的方式获取同步状态，如果获取不到则阻塞，被阻塞线程的唤醒主要依靠前驱节点的出队或被中断实现，移出队列或停止自旋的条件是前驱节点是头结点且成功获取了同步状态。</p>
+<p>释放同步状态时，同步器调用 tryRelease 方法释放同步状态，然后调用 unparkSuccessor 方法唤醒头节点的后继节点，使后继节点重新尝试获取同步状态。</p>
+<h3 id="为什么只有前驱节点是头节点时才能尝试获取同步状态？"><a href="#为什么只有前驱节点是头节点时才能尝试获取同步状态？" class="headerlink" title="为什么只有前驱节点是头节点时才能尝试获取同步状态？"></a>为什么只有前驱节点是头节点时才能尝试获取同步状态？</h3><ul>
+<li><p>头节点是成功获取到同步状态的节点，后继节点的线程被唤醒后需要检查自己的前驱节点是否是头节点。</p>
+</li>
+<li><p>目的是维护同步队列的 FIFO 原则，节点和节点在循环检查的过程中基本不通信，而是简单判断自己的前驱是否为头节点，这样就使节点的释放规则符合 FIFO，并且也便于对过早通知的处理，过早通知指前驱节点不是头节点的线程由于中断被唤醒。</p>
+</li>
+</ul>
+<h3 id="AQS-共享式式获取-释放锁的原理？"><a href="#AQS-共享式式获取-释放锁的原理？" class="headerlink" title="AQS 共享式式获取/释放锁的原理？"></a>AQS 共享式式获取/释放锁的原理？</h3><ul>
+<li><p>获取同步状态时，调用 acquireShared 方法，该方法调用 tryAcquireShared 方法尝试获取同步状态，返回值为 int 类型，返回值不小于于 0 表示能获取同步状态。因此在共享式获取锁的自旋过程中，成功获取同步状态并退出自旋的条件就是该方法的返回值不小于0。</p>
+</li>
+<li><p>释放同步状态时，调用 releaseShared 方法，释放后会唤醒后续处于等待状态的节点。它和独占式的区别在于 tryReleaseShared 方法必须确保同步状态安全释放，通过循环 CAS 保证，因为释放同步状态的操作会同时来自多个线程。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-并发" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T05:55:43.000Z"><a href="/2020/07/19/并发/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/并发/">并发</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="final-可以保证可见性吗？"><a href="#final-可以保证可见性吗？" class="headerlink" title="final 可以保证可见性吗？"></a>final 可以保证可见性吗？</h3><p>final 可以保证可见性，被 final 修饰的字段在构造方法中一旦被初始化完成，并且构造方法没有把 this 引用传递出去，在其他线程中就能看见 final 字段值。</p>
+<p>在旧的 JMM 中，一个严重缺陷是线程可能看到 final 值改变。比如一个线程看到一个 int 类型 final 值为 0，此时该值是未初始化前的零值，一段时间后该值被某线程初始化，再去读这个 final 值会发现值变为 1。</p>
+<p>为修复该漏洞，JSR-133 为 final 域增加重排序规则：只要对象是正确构造的（被构造对象的引用在构造方法中没有逸出），那么不需要使用同步就可以保证任意线程都能看到这个 final 域初始化后的值。</p>
+<p>写 final 域重排序规则</p>
+<p>禁止把 final 域的写重排序到构造方法之外，编译器会在 final 域的写后，构造方法的 return 前，插入一个 Store Store 屏障。确保在对象引用为任意线程可见之前，对象的 final 域已经初始化过。</p>
+<p>读 final 域重排序规则</p>
+<p>在一个线程中，初次读对象引用和初次读该对象包含的 final 域，JMM 禁止处理器重排序这两个操作。编译器在读 final 域操作的前面插入一个 Load Load 屏障，确保在读一个对象的 final 域前一定会先读包含这个 final 域的对象引用。</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/并发/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-JVM" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T05:44:54.000Z"><a href="/2020/07/19/JVM/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/JVM/">JVM</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><h4 id="创建对象的过程是什么？"><a href="#创建对象的过程是什么？" class="headerlink" title="创建对象的过程是什么？"></a>创建对象的过程是什么？</h4><ul>
+<li>字节码角度<ul>
+<li>NEW： 如果找不到 Class 对象则进行类加载。加载成功后在堆中分配内存，从 Object 到本类路径上的所有属性都要分配。分配完毕后进行零值设置。最后将指向实例对象的引用变量压入虚拟机栈顶。</li>
+<li>*DUP： * 在栈顶复制引用变量，这时栈顶有两个指向堆内实例的引用变量。两个引用变量的目的不同，栈底的引用用于赋值或保存局部变量表，栈顶的引用作为句柄调用相关方法。</li>
+<li>INVOKESPECIAL： 通过栈顶的引用变量调用 init 方法。</li>
+</ul>
+</li>
+<li>执行角度<ul>
+<li>当 JVM 遇到字节码 new 指令时，首先将检查该指令的参数能否在常量池中定位到一个类的符号引用，并检查引用代表的类是否已被加载、解析和初始化，如果没有就先执行类加载。</li>
+<li>在类加载检查通过后虚拟机将为新生对象分配内存。</li>
+<li>内存分配完成后虚拟机将成员变量设为零值，保证对象的实例字段可以不赋初值就使用。</li>
+<li>设置对象头，包括哈希码、GC 信息、锁信息、对象所属类的类元信息等。</li>
+<li>执行 init 方法，初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量。</li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>内存：free</p>
-<p>查看内存   free -m   free -g</p>
-<p>pidstat -p 进程编号 -r 采样间隔秒数</p>
-</li>
-<li><p>硬盘：df</p>
-<p>查看磁盘剩余空间  df -h</p>
-</li>
-<li><p>磁盘IO：iostat</p>
-<ul>
-<li><p>磁盘I/O性能评估</p>
-<p>iostat -hdk 2 3</p>
-<ul>
-<li>rkB/s每秒读取数据kb；</li>
-<li>wkB/s每秒读写数据量kb</li>
-<li>svctm I/O请求的平均服务时间，单位毫秒；</li>
-<li>await I/O请求的平均等待时间，单位毫秒；值越小，性能越好；</li>
-<li>==util== 一秒中又百分几的时间用于I/O操作，接近100%时，表示磁盘带宽跑满，需要优化程序或加磁盘</li>
-<li>rkB/s，wkB/s根据系统该应用不同回有不同的值，担忧规律遵循：长期、超大数据读写，肯定不正常，需要优化程序读取。</li>
-<li>svctm的值与await的值很接近，表示几乎没有I/O等待，磁盘性能好，如果await的值远高于svctm的值，则表示I/O队列等待太长，需要优化程序或更换更快磁盘</li>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/JVM/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-BIO-NIO-AIO" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T03:24:58.000Z"><a href="/2020/07/19/BIO-NIO-AIO/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/BIO-NIO-AIO/">BIO NIO AIO Netty</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="同步调用和异步调用"><a href="#同步调用和异步调用" class="headerlink" title="同步调用和异步调用"></a>同步调用和异步调用</h3><ul>
+<li>强调结果通知的方式<h3 id="阻塞与非阻塞"><a href="#阻塞与非阻塞" class="headerlink" title="阻塞与非阻塞"></a>阻塞与非阻塞</h3></li>
+<li>强调请求是否需要等待</li>
 </ul>
+<h3 id="阻塞IO"><a href="#阻塞IO" class="headerlink" title="阻塞IO"></a>阻塞IO</h3>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Java基础" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T02:15:45.000Z"><a href="/2020/07/19/Java基础/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/Java基础/">Java基础</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><a href="https://www.nowcoder.com/discuss/447742?type=5&channel=-2&source_id=discuss_terminal_discuss_jinghua" target="_blank" rel="noopener">Java 面试知识点</a></p>
+</blockquote>
+<h3 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h3><p>在运行状态中，对于任意一个类都能知道它的所有属性和方法，对于任意一个对象都能调用它的任意方法和属性，这种动态获取信息及调用对象方法的功能称为反射。缺点是破坏了封装性以及泛型约束。反射是框架的核心，Spring 大量使用反射。</p>
+<h3 id="String-a-quot-a-quot-new-String-quot-b-quot"><a href="#String-a-quot-a-quot-new-String-quot-b-quot" class="headerlink" title="String a = &quot;a&quot; + new String(&quot;b&quot;)"></a><code>String a = &quot;a&quot; + new String(&quot;b&quot;)</code></h3><ul>
+<li><p>常量和常量拼接仍是常量，结果在常量池，只要有变量参与拼接结果就是变量，存在堆。</p>
 </li>
-<li><p>pidstat -d 采样间隔秒数 -p 进程号</p>
+<li><p>使用字面量时只创建一个常量池中的常量，使用 new 时如果常量池中没有该值就会在常量池中新创建，再在堆中创建一个对象引用常量池中常量。因此 String a = “a” + new String(“b”) 会创建四个对象，常量池中的 a 和 b，堆中的 b 和堆中的 ab。</p>
 </li>
 </ul>
+<h3 id="Object-类有哪些方法？"><a href="#Object-类有哪些方法？" class="headerlink" title="Object 类有哪些方法？"></a>Object 类有哪些方法？</h3><ul>
+<li><p>equals：检测对象是否相等，默认使用 == 比较对象引用，可以重写 equals 方法自定义比较规则。equals 方法规范：自反性、对称性、传递性、一致性、对于任何非空引用 x，x.equals(null) 返回 false。</p>
 </li>
-<li><p>网络IO：ifstat</p>
-<p>ifstat l</p>
+<li><p>hashCode：散列码是由对象导出的一个整型值，没有规律，每个对象都有默认散列码，值由对象存储地址得出。字符串散列码由内容导出，值可能相同。为了在集合中正确使用，一般需要同时重写 equals 和 hashCode，要求 equals 相同 hashCode 必须相同，hashCode 相同 equals 未必相同，因此 hashCode 是对象相等的必要不充分条件。</p>
 </li>
+<li><p>toString：打印对象时默认的方法，如果没有重写打印的是表示对象值的一个字符串。</p>
+</li>
+<li><p>clone：clone 方法声明为 protected，类只能通过该方法克隆它自己的对象，如果希望其他类也能调用该方法必须定义该方法为 public。如果一个对象的类没有实现 Cloneable 接口，该对象调用 clone 方抛出一个 CloneNotSupport 异常。默认的 clone 方法是浅拷贝，一般重写 clone 方法需要实现 Cloneable 接口并指定访问修饰符为 public。</p>
+</li>
+<li><p>finalize：确定一个对象死亡至少要经过两次标记，如果对象在可达性分析后发现没有与 GC Roots 连接的引用链会被第一次标记，随后进行一次筛选，条件是对象是否有必要执行 finalize 方法。假如对象没有重写该方法或方法已被虚拟机调用，都视为没有必要执行。如果有必要执行，对象会被放置在 F-Queue 队列，由一条低调度优先级的 Finalizer 线程去执行。虚拟机会触发该方法但不保证会结束，这是为了防止某个对象的 finalize 方法执行缓慢或发生死循环。只要对象在 finalize 方法中重新与引用链上的对象建立关联就会在第二次标记时被移出回收集合。由于运行代价高昂且无法保证调用顺序，在 JDK 9 被标记为过时方法，并不适合释放资源。</p>
+</li>
+<li><p>getClass：返回包含对象信息的类对象。</p>
+</li>
+<li><p>wait / notify / notifyAll：阻塞或唤醒持有该对象锁的线程。</p>
+</li>
+</ul>
+<h3 id="子类初始化的顺序"><a href="#子类初始化的顺序" class="headerlink" title="子类初始化的顺序"></a>子类初始化的顺序</h3><ol>
+<li>父类静态代码块和静态变量。</li>
+<li>子类静态代码块和静态变量。</li>
+<li>父类普通代码块和普通变量。</li>
+<li>父类构造方法。</li>
+<li>子类普通代码块和普通变量。</li>
+<li>子类构造方法。</li>
 </ol>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-JVM内存溢出错误" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T13:37:00.000Z"><a href="/2020/07/18/JVM内存溢出错误/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/JVM内存溢出错误/">JVM内存溢出错误</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="堆溢出"><a href="#堆溢出" class="headerlink" title="堆溢出"></a>堆溢出</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.OutOfMemoryError: Java heap space</span><br></pre></td></tr></table></figure>
-<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><ul>
-<li>代码中可能存在大对象分配</li>
-<li>可能存在内存泄露，导致在多次GC之后，还是无法找到一块足够大的内存容纳当前对象。<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4></li>
-</ul>
-<ol>
-<li>检查是否存在大对象的分配，最有可能的是大数组分配</li>
-<li>通过jmap命令，把堆内存dump下来，使用mat工具分析一下，检查是否存在内存泄露的问题</li>
-<li>如果没有找到明显的内存泄露，使用 -Xmx 加大堆内存</li>
-<li>还有一点容易被忽略，检查是否有大量的自定义的 Finalizable 对象，也有可能是框架内部提供的，考虑其存在的必要性
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/JVM内存溢出错误/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-4种引用" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T13:11:23.000Z"><a href="/2020/07/18/4种引用/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/4种引用/">4种引用</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="对象的生命周期"><a href="#对象的生命周期" class="headerlink" title="对象的生命周期"></a>对象的生命周期</h3><ol>
-<li>创建阶段(Created)<ol>
-<li>为对象分配存储空间</li>
-<li>开始构造对象</li>
-<li>从超类到子类对static成员进行初始化超类成员变量按顺序初始化，递归调用超类的构造方法</li>
-<li>子类成员变量按顺序初始化，子类构造方法调用</li>
-<li>一旦对象被创建，并被分派给某些变量赋值，这个对象的状态就切换到了应用阶段</li>
+<h3 id="集合类线程不安全"><a href="#集合类线程不安全" class="headerlink" title="集合类线程不安全"></a>集合类线程不安全</h3><p>*modCount *记录了 集合类 结构性变化的次数。所有涉及结构变化的方法都会增加该值。expectedModCount 是迭代器初始化时记录的 modCount 值，每次访问新元素时都会检查 modCount 和 expectedModCount 是否相等，不相等就会抛出异常。这种机制叫做 fail-fast，所有集合类都有这种机制。</p>
+<h3 id="TreeMap-有什么特点？"><a href="#TreeMap-有什么特点？" class="headerlink" title="TreeMap 有什么特点？"></a>TreeMap 有什么特点？</h3><ul>
+<li>TreeMap 基于红黑树实现，增删改查的平均和最差时间复杂度均为 O(logn) ，最大特点是 Key 有序。Key 必须实现 Comparable 接口或提供的 Comparator 比较器，所以 Key 不允许为 null。</li>
+<li>TreeMap 通过 put 和 deleteEntry 实现增加和删除树节点。</li>
+<li>插入新节点的规则有三个：<ol>
+<li>需要调整的新节点总是红色的。</li>
+<li>如果插入新节点的父节点是黑色的，不需要调整。</li>
+<li>如果插入新节点的父节点是红色的，由于红黑树不能出现相邻红色，进入循环判断，通过重新着色或左右旋转来调整。</li>
+<li>TreeMap 的插入操作就是按照 Key 的对比往下遍历，大于节点值向右查找，小于向左查找，先按照二叉查找树的特性操作，后续会重新着色和旋转，保持红黑树的特性。</li>
 </ol>
 </li>
-<li>应用阶段(In Use) 对象至少被一个强引用持有着</li>
-<li>不可见阶段(Invisible) 当一个对象处于不可见阶段时，说明程序本身不再持有该对象的任何强引用，虽然该这些引用仍然是存在着的。简单说就是程序的执行已经超出了该对象的作用域了。</li>
-<li>不可达阶段(Unreachable)对象处于不可达阶段是指该对象不再被任何GC-root所持有。</li>
-<li>收集阶段(Collected) 当垃圾回收器发现该对象已经处于“不可达阶段”并且垃圾回收器已经对该对象的内存空间重新分配做好准备时，则对象进入了“收集阶段”。如果该对象已经重写了finalize()方法，则会去执行该方法的终端操作。</li>
-<li>终结阶段(Finalized)当对象执行完finalize()方法后仍然处于不可达状态时，则该对象进入终结阶段。在该阶段是等待垃圾回收器对该对象空间进行回收。</li>
-<li>对象空间重分配阶段(De-allocated)垃圾回收器对该对象的所占用的内存空间进行回收或者再分配了，则该对象彻底消失了，称之为“对象空间重新分配阶段”。
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/4种引用/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-JVM参数调优" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T13:09:48.000Z"><a href="/2020/07/18/JVM参数调优/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/JVM参数调优/">JVM参数调优</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="JVM分析工具"><a href="#JVM分析工具" class="headerlink" title=" JVM分析工具"></a> JVM分析工具</h3><ol>
-<li>jps:查看运行的HotSpot VM进程</li>
-<li>jmap命令: 用来查看当前系统中jvm进程 heap dump的情况，包括对象的数量，对象所占内存的大小</li>
-<li>jmap -heap PID：查看jvm配置和使用情况； jmap -dump PID ：生成堆内存快照</li>
-<li>jstat命令：主要是用来监控 heap size 和 jvm垃圾回收情况，尤其是gc情况的监控，如果老年代多次发生full gc，那么很可能是内存泄漏导致。 推荐：jstat -gcutil PID 返回百分比的形式显示堆使用情况以及GC情况 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">S0&#x2F;S1：幸存者区</span><br><span class="line">E：伊甸园区，初生区</span><br><span class="line">0：老年代</span><br><span class="line">M：元空间</span><br><span class="line">YGC：年轻带回收次数</span><br><span class="line">YGCT：年轻带回收花费时间（秒）</span><br><span class="line">FGC：full GC</span><br><span class="line">FGC：full GC花费时间（秒）</span><br><span class="line">GCT：GC总时间（秒）</span><br></pre></td></tr></table></figure></li>
-<li>jstack PID ：打印所有线程的堆栈信息
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/JVM参数调优/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-垃圾回收机制" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T12:37:01.000Z"><a href="/2020/07/18/垃圾回收机制/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/垃圾回收机制/">垃圾回收机制</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="可达性分析"><a href="#可达性分析" class="headerlink" title="可达性分析"></a>可达性分析</h3><p>通过一系列的 ‘GC Roots’ 的对象作为起始点，从这些节点出发所走过的路径称为引用链。当一个对象到 GC Roots 没有任何引用链相连的时候说明对象不可用。</p>
-<ul>
-<li>虚拟机栈(栈帧中的本地变量表)中引用的对象</li>
-<li>方法区中类静态属性引用的对象</li>
-<li>方法区中常量引用的对象</li>
-<li>本地方法栈中 JNI(即一般说的 Native 方法) 引用的对象
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/垃圾回收机制/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-运行时数据区" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T12:02:52.000Z"><a href="/2020/07/18/运行时数据区/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/运行时数据区/">运行时数据区</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="框图"><a href="#框图" class="headerlink" title="框图"></a>框图</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA-2020-07-18-20-09-15.png" alt="运行时数据区-2020-07-18-20-09-15"></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/运行时数据区/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-类加载过程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T11:37:34.000Z"><a href="/2020/07/18/类加载过程/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/类加载过程/">类加载过程</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>类的加载就是将class文件中的二进制数据读取到内存中，然后将该字节流所代表的静态数据结构转化为方法区中运行的数据结构，并且在堆内存中生成一个java.lang.Class对象作为访问方法区数据结构的入口</p>
-<h3 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B-2020-07-18-19-40-57.png" alt="类加载过程-2020-07-18-19-40-57"></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/类加载过程/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-52-N-Queens-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T07:31:51.000Z"><a href="/2020/07/18/52-N-Queens-II/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/52-N-Queens-II/">52. N-Queens II</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>与51类似<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">totalNQueens</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] rule = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        Arrays.fill(rule,-<span class="number">1</span>);</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">        NextQ(rule,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">NextQ</span><span class="params">(<span class="keyword">int</span>[] rule, <span class="keyword">int</span> row)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = rule.length;</span><br><span class="line">        <span class="keyword">if</span>(row &gt;= n)&#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> flag;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">            flag = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; row; j++ )&#123;</span><br><span class="line">                <span class="keyword">if</span>(rule[j] == i  || j - rule[j] ==  row - i || j + rule[j] ==  row + i) &#123;</span><br><span class="line">                    flag  = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>)&#123;</span><br><span class="line">                rule[row] = i;</span><br><span class="line">                NextQ(rule, row+<span class="number">1</span>);</span><br><span class="line">                rule[row] = -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-51-N-Queens" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T07:26:02.000Z"><a href="/2020/07/18/51-N-Queens/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/51-N-Queens/">51. N-Queens</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.<br>Given an integer n, return all distinct solutions to the n-queens puzzle.<br>Each solution contains a distinct board configuration of the n-queens’ placement, where ‘Q’ and ‘.’ both indicate a queen and an empty space respectively.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>递归逻辑<ul>
-<li>满足：记录</li>
-<li>如果能放入<ul>
-<li>放入</li>
-<li>下一行</li>
-<li>取出<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; solveNQueens(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        <span class="keyword">int</span>[] rule = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        Arrays.fill(rule,-<span class="number">1</span>);</span><br><span class="line">        List&lt;List&lt;String&gt;&gt; res  = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        NextQ(res,rule,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">NextQ</span><span class="params">(List&lt;List&lt;String&gt;&gt; res,<span class="keyword">int</span>[] rule, <span class="keyword">int</span> row)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = rule.length;</span><br><span class="line">        <span class="keyword">if</span>(row &gt;= n)&#123;</span><br><span class="line">            List&lt;String&gt; ls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            <span class="keyword">char</span> [] str = <span class="keyword">new</span> <span class="keyword">char</span>[n];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i: rule)&#123;</span><br><span class="line">                Arrays.fill(str, <span class="string">'.'</span>);</span><br><span class="line">                str[i] = <span class="string">'Q'</span>;</span><br><span class="line">                ls.add(String.valueOf(str));</span><br><span class="line">            &#125;</span><br><span class="line">            res.add(ls);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> flag;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">            flag = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; row; j++ )&#123;</span><br><span class="line">                <span class="keyword">if</span>(rule[j] == i  || j - rule[j] ==  row - i || j + rule[j] ==  row + i) &#123;</span><br><span class="line">                    flag  = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>)&#123;</span><br><span class="line">                rule[row] = i;</span><br><span class="line">                NextQ(res, rule, row+<span class="number">1</span>);</span><br><span class="line">                rule[row] = -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<h3 id="同步-异步-阻塞-非阻塞-IO-的区别？"><a href="#同步-异步-阻塞-非阻塞-IO-的区别？" class="headerlink" title="同步/异步/阻塞/非阻塞 IO 的区别？"></a>同步/异步/阻塞/非阻塞 IO 的区别？</h3><ul>
+<li>同步和异步是通信机制<ul>
+<li>同步 IO 是用户线程发起 IO 请求后需要等待或轮询内核 IO 操作完成后才能继续执行。</li>
+<li>异步 IO 是用户线程发起 IO 请求后可以继续执行，当内核 IO 操作完成后会通知用户线程，或调用用户线程注册的回调函数。</li>
+</ul>
+</li>
+<li>阻塞和非阻塞是调用状态<ul>
+<li>阻塞 IO 是 IO 操作需要彻底完成后才能返回用户空间 。</li>
+<li>非阻塞 IO 是 IO 操作调用后立即返回一个状态值，无需等 IO 操作彻底完成。</li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-50-Pow-x-n" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T07:20:29.000Z"><a href="/2020/07/18/50-Pow-x-n/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/50-Pow-x-n/">50. Pow(x, n)</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Implement pow(x, n), which calculates x raised to the power n (x^n).</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>判断正负，负的只要结果取倒数</li>
-<li>每次乘自身，递归较快<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">myPow</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> n_temp = n;</span><br><span class="line">        <span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(n &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            flag = <span class="number">1</span>;</span><br><span class="line">            n_temp = - n_temp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">long</span> n_p = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">double</span> res = x;</span><br><span class="line">        <span class="keyword">while</span>(n_temp &gt;= <span class="number">2</span>*n_p)&#123;</span><br><span class="line">            res = res*res;</span><br><span class="line">            n_p = n_p *<span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(n_temp == n_p)&#123;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>) <span class="keyword">return</span> res;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>/res;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>) <span class="keyword">return</span> res * myPow(x, (<span class="keyword">int</span>)( n_temp - n_p));</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">1</span>/(res * myPow(x, (<span class="keyword">int</span>)( n_temp - n_p)));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
+<h3 id="什么是-BIO？"><a href="#什么是-BIO？" class="headerlink" title="什么是 BIO？"></a>什么是 BIO？</h3><p>BIO 是同步阻塞式 IO，JDK1.4 之前的 IO 模型。服务器实现模式为一个连接请求对应一个线程，服务器需要为每一个客户端请求创建一个线程，如果这个连接不做任何事会造成不必要的线程开销。可以通过线程池改善，这种 IO 称为伪异步 IO。适用连接数目少且服务器资源多的场景。</p>
+<h3 id="什么是-NIO？"><a href="#什么是-NIO？" class="headerlink" title="什么是 NIO？"></a>什么是 NIO？</h3><p>NIO 是 JDK1.4 引入的同步非阻塞 IO。服务器实现模式为多个连接请求对应一个线程，客户端连接请求会注册到一个多路复用器 Selector ，Selector 轮询到连接有 IO 请求时才启动一个线程处理。适用连接数目多且连接时间短的场景。<br>同步是指线程还是要不断接收客户端连接并处理数据，非阻塞是指如果一个管道没有数据，不需要等待，可以轮询下一个管道。</p>
+<h3 id="什么是-AIO？"><a href="#什么是-AIO？" class="headerlink" title="什么是 AIO？"></a>什么是 AIO？</h3><p>AIO 是 JDK7 引入的异步非阻塞 IO。服务器实现模式为一个有效请求对应一个线程，客户端的 IO 请求都是由操作系统先完成 IO 操作后再通知服务器应用来直接使用准备好的数据。适用连接数目多且连接时间长的场景。</p>
+<p>异步是指服务端线程接收到客户端管道后就交给底层处理IO通信，自己可以做其他事情，非阻塞是指客户端有数据才会处理，处理好再通知服务器。</p>
 
       
     </div>
@@ -541,6 +583,8 @@
   
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
+    <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
     <li><a href="/categories/Java/">Java</a><small>10</small></li>
@@ -576,6 +620,8 @@
   
     <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
   
+    <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
+  
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
@@ -596,6 +642,8 @@
   
     <li><a href="/tags/Math/">Math</a><small>6</small></li>
   
+    <li><a href="/tags/MySQL/">MySQL</a><small>1</small></li>
+  
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
@@ -612,15 +660,21 @@
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
   
+    <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
     <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
   
     <li><a href="/tags/command/">command</a><small>2</small></li>
   
+    <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
+  
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>8</small></li>
+    <li><a href="/tags/java/">java</a><small>2</small></li>
   
-    <li><a href="/tags/jvm/">jvm</a><small>1</small></li>
+    <li><a href="/tags/juc/">juc</a><small>9</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>2</small></li>
   
     <li><a href="/tags/lock/">lock</a><small>1</small></li>
   
@@ -628,9 +682,13 @@
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   
+    <li><a href="/tags/redis/">redis</a><small>1</small></li>
+  
     <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/thread/">thread</a><small>1</small></li>
   
     <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
   
