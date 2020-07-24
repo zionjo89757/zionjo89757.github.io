@@ -50,6 +50,133 @@
 
 
   
+    <article id="post-64-Minimum-Path-Sum" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T01:49:07.000Z"><a href="/2020/07/24/64-Minimum-Path-Sum/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/64-Minimum-Path-Sum/">64. Minimum Path Sum</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>动态规划</li>
+<li><code>dp[i][j]</code>: 从（0,0）到（i,j）的最小和<ul>
+<li><code>dp[i][j] = grid[i][j] + min(dp[i-1][j],dp[i][j-1])</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minPathSum</span><span class="params">(<span class="keyword">int</span>[][] grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> n = grid[<span class="number">0</span>].length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m-<span class="number">1</span>; i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            grid[i][n] += grid[i+<span class="number">1</span>][n];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n-<span class="number">1</span>; i &gt;=<span class="number">0</span> ; i--)&#123;</span><br><span class="line">            grid[m][i] += grid[m][i+<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                grid[i][j] += grid[i+<span class="number">1</span>][j]&lt; grid[i][j+<span class="number">1</span>]?grid[i+<span class="number">1</span>][j]:grid[i][j+<span class="number">1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> grid[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-63-Unique-Paths-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T01:43:59.000Z"><a href="/2020/07/24/63-Unique-Paths-II/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/63-Unique-Paths-II/">63. Unique Paths II</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).<br>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).<br>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>动态规划</li>
+<li>动态规划</li>
+<li><code>dp[i][j]</code>: 从（0,0）到（i,j）的不同路径总数<ul>
+<li><code>dp[i][j] = obstacles ? 0 : dp[i-1][j] + dp[i][j-1]</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(<span class="keyword">int</span>[][] obstacleGrid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; obstacleGrid.length;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; obstacleGrid[<span class="number">0</span>].length;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(obstacleGrid[i][j] == <span class="number">1</span> ) obstacleGrid[i][j] = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">0</span> &amp;&amp; j == <span class="number">0</span>)&#123;</span><br><span class="line">                    obstacleGrid[i][j] = <span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    obstacleGrid[i][j] = (j== <span class="number">0</span>? <span class="number">0</span>:obstacleGrid[i][j-<span class="number">1</span>])+(i == <span class="number">0</span>? <span class="number">0</span>:obstacleGrid[i-<span class="number">1</span>][j]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> obstacleGrid[obstacleGrid.length-<span class="number">1</span>][obstacleGrid[<span class="number">0</span>].length-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-62-Unique-Paths" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T01:35:24.000Z"><a href="/2020/07/24/62-Unique-Paths/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/62-Unique-Paths/">62. Unique Paths</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).<br>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).<br>How many possible unique paths are there?</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>动态规划</li>
+<li><code>dp[i][j]</code>: 从（0,0）到（i,j）的不同路径总数<ul>
+<li><code>dp[i][j] = dp[i-1][j] + dp[i][j-1]</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(m == <span class="number">1</span> || n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> [][] res = <span class="keyword">new</span> <span class="keyword">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m;i++)&#123;</span><br><span class="line">            res[i][n-<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">            res[m-<span class="number">1</span>][i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m-<span class="number">2</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n-<span class="number">2</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                res[i][j] = res[i+<span class="number">1</span>][j] + res[i][j+<span class="number">1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-32-Longest-Valid-Parentheses" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -216,11 +343,13 @@
   
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
-    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+    <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>50</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
@@ -237,11 +366,11 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+    <li><a href="/tags/Array/">Array</a><small>21</small></li>
   
     <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
   
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
     <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
   
@@ -253,11 +382,11 @@
   
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
   
     <li><a href="/tags/GC/">GC</a><small>1</small></li>
   
-    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+    <li><a href="/tags/Greedy/">Greedy</a><small>2</small></li>
   
     <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
   
@@ -265,17 +394,19 @@
   
     <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
   
-    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+    <li><a href="/tags/Linked-List/">Linked List</a><small>5</small></li>
   
     <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
   
-    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+    <li><a href="/tags/Math/">Math</a><small>7</small></li>
   
     <li><a href="/tags/MySQL/">MySQL</a><small>1</small></li>
   
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/Sort/">Sort</a><small>2</small></li>
   
     <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
   
@@ -287,7 +418,7 @@
   
     <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
   
-    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>9</small></li>
   
     <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
   
@@ -295,13 +426,15 @@
   
     <li><a href="/tags/command/">command</a><small>2</small></li>
   
+    <li><a href="/tags/datastruction/">datastruction</a><small>1</small></li>
+  
     <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
   
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
     <li><a href="/tags/java/">java</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>9</small></li>
+    <li><a href="/tags/juc/">juc</a><small>10</small></li>
   
     <li><a href="/tags/jvm/">jvm</a><small>2</small></li>
   

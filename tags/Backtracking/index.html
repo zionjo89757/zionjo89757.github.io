@@ -50,6 +50,44 @@
 
 
   
+    <article id="post-60-Permutation-Sequence" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T01:27:19.000Z"><a href="/2020/07/24/60-Permutation-Sequence/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/60-Permutation-Sequence/">60. Permutation Sequence</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p> The set <code>[1,2,3,...,n]</code> contains a total of n! unique permutations.<br>By listing and labeling all of the permutations in order, we get the following sequence for n = 3:<br>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>Given n and k, return the kth permutation sequence.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>深度搜索，回溯都可以<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPermutation</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> [] rest = <span class="keyword">new</span> <span class="keyword">boolean</span>[n];</span><br><span class="line">        String res = <span class="string">""</span>;</span><br><span class="line">        k = k-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> f = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;n;i++ )&#123;</span><br><span class="line">            f = f*i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n-<span class="number">1</span>;i&gt;<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">int</span> j = k/f;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">0</span>,count=<span class="number">0</span>;t&lt;n;t++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(rest[t] == <span class="keyword">false</span>)&#123;</span><br><span class="line">                   count++;</span><br><span class="line">                   <span class="keyword">if</span>(count == j+<span class="number">1</span>)&#123;</span><br><span class="line">                        rest[t] = <span class="keyword">true</span>;</span><br><span class="line">                        res = res + (t+<span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125; </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            k = k%f;</span><br><span class="line">            f = f/i;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">0</span>;t&lt;n;t++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(rest[t] == <span class="keyword">false</span>)&#123;</span><br><span class="line">                res = res + (t+<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-52-N-Queens-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -456,52 +494,11 @@
 
 
   
-    <article id="post-10-Regular-Expression-Matching" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-15T08:37:48.000Z"><a href="/2020/07/15/10-Regular-Expression-Matching/">2020-07-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/15/10-Regular-Expression-Matching/">10. Regular Expression Matching</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given an input string (s) and a pattern (p), implement regular expression matching with support for ‘.’ and ‘*’.</p>
-</blockquote>
-<blockquote>
-<p>‘.’ Matches any single character.<br>‘*’ Matches zero or more of the preceding element.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>动态规划</li>
-<li>dp(i,j)表示s中后i到len个字符与q中后j到len个字符是否匹配</li>
-<li><code>*</code>需要特殊判断一下<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMatch</span><span class="params">(String s, String p)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">                <span class="keyword">boolean</span>[][] dp = <span class="keyword">new</span> <span class="keyword">boolean</span>[s.length() + <span class="number">1</span>][p.length() + <span class="number">1</span>];</span><br><span class="line">                dp[s.length()][p.length()] = <span class="keyword">true</span>;</span><br><span class="line">        </span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = s.length(); i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> j = p.length() - <span class="number">1</span>; j &gt;= <span class="number">0</span>; j--)&#123;</span><br><span class="line">                        <span class="keyword">boolean</span> first_match = (i &lt; s.length() &amp;&amp;</span><br><span class="line">                                               (p.charAt(j) == s.charAt(i) ||</span><br><span class="line">                                                p.charAt(j) == <span class="string">'.'</span>));</span><br><span class="line">                        <span class="keyword">if</span> (j + <span class="number">1</span> &lt; p.length() &amp;&amp; p.charAt(j+<span class="number">1</span>) == <span class="string">'*'</span>)&#123;</span><br><span class="line">                            dp[i][j] = dp[i][j+<span class="number">2</span>] || first_match &amp;&amp; dp[i+<span class="number">1</span>][j];</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            dp[i][j] = first_match &amp;&amp; dp[i+<span class="number">1</span>][j+<span class="number">1</span>];</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
+  
+    <a href="/tags/Backtracking/page/2/" class="alignright next">Next</a>
   
   <div class="clearfix"></div>
 </nav>
@@ -530,11 +527,13 @@
   
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
-    <li><a href="/categories/Java/">Java</a><small>10</small></li>
+    <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>40</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>50</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
@@ -551,11 +550,11 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>13</small></li>
+    <li><a href="/tags/Array/">Array</a><small>21</small></li>
   
     <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
   
-    <li><a href="/tags/Backtracking/">Backtracking</a><small>10</small></li>
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
     <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
   
@@ -567,11 +566,11 @@
   
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>3</small></li>
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
   
     <li><a href="/tags/GC/">GC</a><small>1</small></li>
   
-    <li><a href="/tags/Greedy/">Greedy</a><small>1</small></li>
+    <li><a href="/tags/Greedy/">Greedy</a><small>2</small></li>
   
     <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
   
@@ -579,17 +578,19 @@
   
     <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
   
-    <li><a href="/tags/Linked-List/">Linked List</a><small>4</small></li>
+    <li><a href="/tags/Linked-List/">Linked List</a><small>5</small></li>
   
     <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
   
-    <li><a href="/tags/Math/">Math</a><small>6</small></li>
+    <li><a href="/tags/Math/">Math</a><small>7</small></li>
   
     <li><a href="/tags/MySQL/">MySQL</a><small>1</small></li>
   
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/Sort/">Sort</a><small>2</small></li>
   
     <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
   
@@ -601,7 +602,7 @@
   
     <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
   
-    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>8</small></li>
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>9</small></li>
   
     <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
   
@@ -609,13 +610,15 @@
   
     <li><a href="/tags/command/">command</a><small>2</small></li>
   
+    <li><a href="/tags/datastruction/">datastruction</a><small>1</small></li>
+  
     <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
   
     <li><a href="/tags/git/">git</a><small>2</small></li>
   
     <li><a href="/tags/java/">java</a><small>2</small></li>
   
-    <li><a href="/tags/juc/">juc</a><small>9</small></li>
+    <li><a href="/tags/juc/">juc</a><small>10</small></li>
   
     <li><a href="/tags/jvm/">jvm</a><small>2</small></li>
   
