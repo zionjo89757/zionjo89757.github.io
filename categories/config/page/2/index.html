@@ -1,0 +1,678 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | config | Zionjo Blogs</title>
+  <meta name="author" content="Zion Jo">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="Zionjo Blogs"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Zionjo Blogs" type="application/atom+xml">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">Zionjo Blogs</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">config</h2>
+
+
+  
+    <article id="post-ElasticSearch" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-25T08:57:12.000Z"><a href="/2020/07/25/ElasticSearch/">2020-07-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/25/ElasticSearch/">ElasticSearch</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h3><ul>
+<li>Elasticsearch，基于<strong>lucene</strong>，隐藏复杂性，提供简单易用的restful api接口、各种语言的 api接口。</li>
+</ul>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><table>
+<thead>
+<tr>
+<th align="center">关系型数据库（比如Mysql）</th>
+<th align="center">非关系型数据库（Elasticsearch）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">数据库Database</td>
+<td align="center">索引Index</td>
+</tr>
+<tr>
+<td align="center">表Table</td>
+<td align="center">类型Type</td>
+</tr>
+<tr>
+<td align="center">数据行Row</td>
+<td align="center">文档Document</td>
+</tr>
+<tr>
+<td align="center">数据列Column</td>
+<td align="center">字段Field</td>
+</tr>
+<tr>
+<td align="center">约束 Schema</td>
+<td align="center">映射Mapping</td>
+</tr>
+</tbody></table>
+<h3 id="Query-DSL"><a href="#Query-DSL" class="headerlink" title="Query DSL"></a>Query DSL</h3>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-JSR303" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-25T03:25:27.000Z"><a href="/2020/07/25/JSR303/">2020-07-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/25/JSR303/">JSR303</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>在Controller的入参处加上<code>@Valid</code>关键字</li>
+<li>给参数对象添加需要的注解(也可自定义注解),定义Message提示</li>
+<li>可以用BindingResult捕捉异常，处理异常</li>
+<li>全局异常管理(ControllerAdvice)</li>
+<li>可用分组校验</li>
+</ol>
+<h4 id="实现自定义注解"><a href="#实现自定义注解" class="headerlink" title="实现自定义注解"></a>实现自定义注解</h4><ol>
+<li>仿造NotNull注解写</li>
+<li>实现校验类</li>
+</ol>
+<h4 id="全局异常管理"><a href="#全局异常管理" class="headerlink" title="全局异常管理"></a>全局异常管理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobleExceptionHandler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(value = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">Result</span>&lt;<span class="title">String</span>&gt; <span class="title">exceptionHandler</span>(<span class="title">HttpServletRequest</span> <span class="title">request</span>,<span class="title">Exception</span> <span class="title">e</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> MethodArgumentNotValidException)&#123;</span><br><span class="line">            MethodArgumentNotValidException ex = (MethodArgumentNotValidException) e;</span><br><span class="line">            List&lt;FieldError&gt; fieldErrors = ex.getBindingResult().getFieldErrors();</span><br><span class="line">            <span class="comment">//多个错误，取第一个</span></span><br><span class="line">            FieldError error = fieldErrors.get(<span class="number">0</span>);</span><br><span class="line">            String msg = error.getDefaultMessage();</span><br><span class="line">            <span class="keyword">return</span> Result.error(CodeMsg.BIND_ERROR.fillArgs(msg));</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> Result.error(CodeMsg.SERVER_ERROR);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-OSS对象存储" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-25T02:22:23.000Z"><a href="/2020/07/25/OSS对象存储/">2020-07-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/25/OSS对象存储/">OSS对象存储</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="服务端签名后直传"><a href="#服务端签名后直传" class="headerlink" title="服务端签名后直传"></a>服务端签名后直传</h3><ol>
+<li>用户向应用服务器请求上传Policy</li>
+<li>应用服务器返回上传Policy</li>
+<li>用户直接上传数据到OSS</li>
+</ol>
+<h3 id="引入-Spring-Cloud-AliCloud-OSS"><a href="#引入-Spring-Cloud-AliCloud-OSS" class="headerlink" title="引入 Spring Cloud AliCloud OSS"></a>引入 Spring Cloud AliCloud OSS</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alicloud-oss<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="如何使用-OSS-API"><a href="#如何使用-OSS-API" class="headerlink" title="如何使用 OSS API"></a>如何使用 OSS API</h3><h4 id="配置-OSS"><a href="#配置-OSS" class="headerlink" title="配置 OSS"></a>配置 OSS</h4><p>使用 Spring Cloud AliCloud OSS 之前，需要在 application.properties 中加入以下配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.cloud.alicloud.access-key:</span> <span class="string">你的阿里云AK</span></span><br><span class="line"><span class="attr">spring.cloud.alicloud.secret-key:</span> <span class="string">你的阿里云SK</span></span><br><span class="line"><span class="attr">spring.cloud.alicloud.oss.endpoint:</span> <span class="string">***.aliyuncs.com</span></span><br></pre></td></tr></table></figure>
+<h4 id="签名直传服务响应客户端发送给应用服务器的GET消息"><a href="#签名直传服务响应客户端发送给应用服务器的GET消息" class="headerlink" title="签名直传服务响应客户端发送给应用服务器的GET消息"></a>签名直传服务响应客户端发送给应用服务器的GET消息</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        String accessId = <span class="string">"&lt;yourAccessKeyId&gt;"</span>; <span class="comment">// 请填写您的AccessKeyId。</span></span><br><span class="line">        String accessKey = <span class="string">"&lt;yourAccessKeySecret&gt;"</span>; <span class="comment">// 请填写您的AccessKeySecret。</span></span><br><span class="line">        String endpoint = <span class="string">"oss-cn-hangzhou.aliyuncs.com"</span>; <span class="comment">// 请填写您的 endpoint。</span></span><br><span class="line">        String bucket = <span class="string">"bucket-name"</span>; <span class="comment">// 请填写您的 bucketname 。</span></span><br><span class="line">        String host = <span class="string">"https://"</span> + bucket + <span class="string">"."</span> + endpoint; <span class="comment">// host的格式为 bucketname.endpoint</span></span><br><span class="line">        <span class="comment">// callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。</span></span><br><span class="line">        String callbackUrl = <span class="string">"http://88.88.88.88:8888"</span>;</span><br><span class="line">        String dir = <span class="string">"user-dir-prefix/"</span>; <span class="comment">// 用户上传文件时指定的前缀。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建OSSClient实例。</span></span><br><span class="line">        OSS ossClient = <span class="keyword">new</span> OSSClientBuilder().build(endpoint, accessId, accessKey);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">long</span> expireTime = <span class="number">30</span>;</span><br><span class="line">            <span class="keyword">long</span> expireEndTime = System.currentTimeMillis() + expireTime * <span class="number">1000</span>;</span><br><span class="line">            Date expiration = <span class="keyword">new</span> Date(expireEndTime);</span><br><span class="line">            <span class="comment">// PostObject请求最大可支持的文件大小为5 GB，即CONTENT_LENGTH_RANGE为5*1024*1024*1024。</span></span><br><span class="line">            PolicyConditions policyConds = <span class="keyword">new</span> PolicyConditions();</span><br><span class="line">            policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, <span class="number">0</span>, <span class="number">1048576000</span>);</span><br><span class="line">            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);</span><br><span class="line"></span><br><span class="line">            String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);</span><br><span class="line">            <span class="keyword">byte</span>[] binaryData = postPolicy.getBytes(<span class="string">"utf-8"</span>);</span><br><span class="line">            String encodedPolicy = BinaryUtil.toBase64String(binaryData);</span><br><span class="line">            String postSignature = ossClient.calculatePostSignature(postPolicy);</span><br><span class="line"></span><br><span class="line">            Map&lt;String, String&gt; respMap = <span class="keyword">new</span> LinkedHashMap&lt;String, String&gt;();</span><br><span class="line">            respMap.put(<span class="string">"accessid"</span>, accessId);</span><br><span class="line">            respMap.put(<span class="string">"policy"</span>, encodedPolicy);</span><br><span class="line">            respMap.put(<span class="string">"signature"</span>, postSignature);</span><br><span class="line">            respMap.put(<span class="string">"dir"</span>, dir);</span><br><span class="line">            respMap.put(<span class="string">"host"</span>, host);</span><br><span class="line">            respMap.put(<span class="string">"expire"</span>, String.valueOf(expireEndTime / <span class="number">1000</span>));</span><br><span class="line">            <span class="comment">// respMap.put("expire", formatISO8601Date(expiration));</span></span><br><span class="line"></span><br><span class="line">            JSONObject jasonCallback = <span class="keyword">new</span> JSONObject();</span><br><span class="line">            jasonCallback.put(<span class="string">"callbackUrl"</span>, callbackUrl);</span><br><span class="line">            jasonCallback.put(<span class="string">"callbackBody"</span>,</span><br><span class="line">                    <span class="string">"filename=$&#123;object&#125;&amp;size=$&#123;size&#125;&amp;mimeType=$&#123;mimeType&#125;&amp;height=$&#123;imageInfo.height&#125;&amp;width=$&#123;imageInfo.width&#125;"</span>);</span><br><span class="line">            jasonCallback.put(<span class="string">"callbackBodyType"</span>, <span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">            String base64CallbackBody = BinaryUtil.toBase64String(jasonCallback.toString().getBytes());</span><br><span class="line">            respMap.put(<span class="string">"callback"</span>, base64CallbackBody);</span><br><span class="line"></span><br><span class="line">            JSONObject ja1 = JSONObject.fromObject(respMap);</span><br><span class="line">            <span class="comment">// System.out.println(ja1.toString());</span></span><br><span class="line">            response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">            response.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"GET, POST"</span>);</span><br><span class="line">            response(request, response, ja1.toString());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// Assert.fail(e.getMessage());</span></span><br><span class="line">            System.out.println(e.getMessage());</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123; </span><br><span class="line">            ossClient.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-Gateway" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:51:07.000Z"><a href="/2020/07/24/Gateway/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Gateway/">Gateway</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="接入"><a href="#接入" class="headerlink" title="接入"></a>接入</h3><p>To include Spring Cloud Gateway in your project, use the starter with a group ID of org.springframework.cloud and an artifact ID of spring-cloud-starter-gateway.</p>
+<h3 id="怎么工作"><a href="#怎么工作" class="headerlink" title="怎么工作"></a>怎么工作</h3><ul>
+<li><p>Route: The basic building block of the gateway. It is defined by an ID, a destination URI, a collection of predicates, and a collection of filters. A route is matched if the aggregate predicate is true.</p>
+</li>
+<li><p>Predicate: This is a Java 8 Function Predicate. The input type is a Spring Framework ServerWebExchange. This lets you match on anything from the HTTP request, such as headers or parameters.</p>
+</li>
+<li><p>Filter: These are instances of Spring Framework GatewayFilter that have been constructed with a specific factory. Here, you can modify requests and responses before or after sending the downstream request.</p>
+</li>
+</ul>
+<p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/Gateway-2020-07-24-17-02-17.png" alt="Gateway-2020-07-24-17-02-17"></p>
+<p>Clients make requests to Spring Cloud Gateway. If the Gateway Handler Mapping determines that a request matches a route, it is sent to the Gateway Web Handler. This handler runs the request through a filter chain that is specific to the request. The reason the filters are divided by the dotted line is that filters can run logic both before and after the proxy request is sent. All “pre” filter logic is executed. Then the proxy request is made. After the proxy request is made, the “post” filter logic is run.</p>
+<h3 id="配置案例"><a href="#配置案例" class="headerlink" title="配置案例"></a>配置案例</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">after_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">https://example.org</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cookie</span></span><br><span class="line">          <span class="attr">args:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">mycookie</span></span><br><span class="line">            <span class="attr">regexp:</span> <span class="string">mycookievalue</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-OpenFeign" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:22:32.000Z"><a href="/2020/07/24/OpenFeign/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/OpenFeign/">OpenFeign</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>To include Feign in your project use the starter with group org.springframework.cloud and artifact id spring-cloud-starter-openfeign。</p>
+<h3 id="spring-boot-app"><a href="#spring-boot-app" class="headerlink" title="spring boot app"></a>spring boot app</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Client-java"><a href="#Client-java" class="headerlink" title="Client.java"></a>Client.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(<span class="string">"stores"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StoreClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET, value = <span class="string">"/stores"</span>)</span><br><span class="line">    <span class="function">List&lt;Store&gt; <span class="title">getStores</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET, value = <span class="string">"/stores"</span>)</span><br><span class="line">    <span class="function">Page&lt;Store&gt; <span class="title">getStores</span><span class="params">(Pageable pageable)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.POST, value = <span class="string">"/stores/&#123;storeId&#125;"</span>, consumes = <span class="string">"application/json"</span>)</span><br><span class="line">    <span class="function">Store <span class="title">update</span><span class="params">(@PathVariable(<span class="string">"storeId"</span>)</span> Long storeId, Store store)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="请求拦截器RequestInterceptor"><a href="#请求拦截器RequestInterceptor" class="headerlink" title="请求拦截器RequestInterceptor"></a>请求拦截器RequestInterceptor</h3><p>可以重新设置请求头</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LittleFeignConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"requestInterceptor"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> RequestInterceptor <span class="title">requestInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RequestInterceptor()&#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate requestTemplate)</span> </span>&#123;</span><br><span class="line">                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">                <span class="keyword">if</span>(requestAttributes != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    HttpServletRequest request = requestAttributes.getRequest();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 同步请求头数据</span></span><br><span class="line">                    <span class="keyword">if</span>(request !=<span class="keyword">null</span>)&#123;</span><br><span class="line">                        String cookie = request.getHeader(<span class="string">"Cookie"</span>);</span><br><span class="line">                        requestTemplate.header(<span class="string">"Cookie"</span>,cookie);</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-Nacos" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:10:39.000Z"><a href="/2020/07/24/Nacos/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Nacos/">Nacos</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h3><p>Nacos 是阿里巴巴开源的一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p><a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases</a></p>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>进入解压后文件夹或编译打包好的文件夹，找到如下相对文件夹 nacos/bin，并对照操作系统实际情况之下如下命令。</p>
+<h3 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h3><h4 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h4><p>Spring Cloud Nacos Discovery 遵循了 spring cloud common 标准，实现了 AutoServiceRegistration、ServiceRegistry、Registration 这三个接口。</p>
+<p>在 spring cloud 应用的启动阶段，监听了 WebServerInitializedEvent 事件，当Web容器初始化完成后，即收到 WebServerInitializedEvent 事件后，会触发注册的动作，调用 ServiceRegistry 的 register 方法，将服务注册到 Nacos Server。</p>
+<h4 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h4><p>NacosServerList 实现了 com.netflix.loadbalancer.ServerList 接口，并在 @ConditionOnMissingBean 的条件下进行自动注入，默认集成了Ribbon。</p>
+<p>如果需要有更加自定义的可以使用 @Autowired 注入一个 NacosRegistration 实例，通过其持有的 NamingService 字段内容直接调用 Nacos API。</p>
+<h4 id="接入"><a href="#接入" class="headerlink" title="接入"></a>接入</h4><ol>
+<li>首先，修改 pom.xml 文件，引入 Nacos Discovery Starter。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>在应用的 /src/main/resources/application.yaml 配置文件中配置 Nacos Server 地址<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  <span class="attr">spring.cloud.nacos.discovery.server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line"><span class="string">```</span> </span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">使用</span> <span class="string">@EnableDiscoveryClient</span> <span class="string">注解开启服务注册与发现功能</span></span><br><span class="line"><span class="string">```java</span></span><br><span class="line"><span class="string">@SpringBootApplication</span></span><br><span class="line"> <span class="string">@EnableDiscoveryClient</span></span><br><span class="line"> <span class="string">public</span> <span class="string">class</span> <span class="string">ProviderApplication</span> <span class="string">&#123;</span></span><br><span class="line"></span><br><span class="line"> 	<span class="string">public</span> <span class="string">static</span> <span class="string">void</span> <span class="string">main(String[]</span> <span class="string">args)</span> <span class="string">&#123;</span></span><br><span class="line"> 		<span class="string">SpringApplication.run(ProviderApplication.class,</span> <span class="string">args);</span></span><br><span class="line"> 	<span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"> 	<span class="string">@RestController</span></span><br><span class="line"> 	<span class="string">class</span> <span class="string">EchoController</span> <span class="string">&#123;</span></span><br><span class="line"> 		<span class="string">@GetMapping(value</span> <span class="string">=</span> <span class="string">"/echo/&#123;string&#125;"</span><span class="string">)</span></span><br><span class="line"> 		<span class="string">public</span> <span class="string">String</span> <span class="string">echo(@PathVariable</span> <span class="string">String</span> <span class="string">string)</span> <span class="string">&#123;</span></span><br><span class="line"> 				<span class="string">return</span> <span class="string">string;</span></span><br><span class="line"> 		<span class="string">&#125;</span></span><br><span class="line"> 	<span class="string">&#125;</span></span><br><span class="line"> <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="服务配置"><a href="#服务配置" class="headerlink" title="服务配置"></a>服务配置</h3><h4 id="Nacos-Config-数据结构"><a href="#Nacos-Config-数据结构" class="headerlink" title="Nacos Config 数据结构"></a>Nacos Config 数据结构</h4><p>Nacos Client 从 Nacos Server 端获取数据时，调用的是此接口 ConfigService.getConfig(String dataId, String group, long timeoutMs)。</p>
+<h4 id="自动注入"><a href="#自动注入" class="headerlink" title="自动注入"></a>自动注入</h4><p>Nacos Config Starter 实现了 org.springframework.cloud.bootstrap.config.PropertySourceLocator接口，并将优先级设置成了最高。</p>
+<p>在 Spring Cloud 应用启动阶段，会主动从 Nacos Server 端获取对应的数据，并将获取到的数据转换成 PropertySource 且注入到 Environment 的 PropertySources 属性中，所以使用 @Value 注解也能直接获取 Nacos Server 端配置的内容。</p>
+<h4 id="动态刷新"><a href="#动态刷新" class="headerlink" title="动态刷新"></a>动态刷新</h4><p>Nacos Config Starter 默认为所有获取数据成功的 Nacos 的配置项添加了监听功能，在监听到服务端配置发生变化时会实时触发 org.springframework.cloud.context.refresh.ContextRefresher 的 refresh 方法 。</p>
+<h4 id="接入-1"><a href="#接入-1" class="headerlink" title="接入"></a>接入</h4><ol>
+<li>首先，修改 pom.xml 文件，引入 Nacos Config Starter。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>在应用的 /src/main/resources/bootstrap.properties 配置文件中配置 Nacos Config 元数据<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name:</span> <span class="string">nacos-config-example</span></span><br><span class="line"> <span class="attr">spring.cloud.nacos.config.server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br></pre></td></tr></table></figure></li>
+<li>完成上述两步后，应用会从 Nacos Config 中获取相应的配置，并添加在 Spring Environment 的 PropertySources 中。这里我们使用 @Value 注解来将对应的配置注入到 SampleController 的 userName 和 age 字段，并添加 @RefreshScope 打开动态刷新功能<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Value</span>(<span class="string">"$&#123;user.name&#125;"</span>)</span><br><span class="line">	String userName;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Value</span>(<span class="string">"$&#123;user.age&#125;"</span>)</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-配置git-ssh" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T07:48:13.000Z"><a href="/2020/07/24/配置git-ssh/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/配置git-ssh/">配置git-ssh</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "&#123;email address&#125;"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 测试</span></span><br><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-Vagrant" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T06:58:09.000Z"><a href="/2020/07/24/Vagrant/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Vagrant/">Vagrant</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>安装地址: <a href="https://www.vagrantup.com/downloads" target="_blank" rel="noopener">https://www.vagrantup.com/downloads</a></li>
+<li>仓库地址: <a href="https://app.vagrantup.com/boxes/search/" target="_blank" rel="noopener">https://app.vagrantup.com/boxes/search/</a></li>
+<li>相关命令行: <a href="https://www.vagrantup.com/docs/cli" target="_blank" rel="noopener">https://www.vagrantup.com/docs/cli</a><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3></li>
+</ul>
+<h4 id="初始化CentOS7"><a href="#初始化CentOS7" class="headerlink" title="初始化CentOS7"></a>初始化CentOS7</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init contos/7</span><br></pre></td></tr></table></figure>
+<h4 id="运行虚拟机"><a href="#运行虚拟机" class="headerlink" title="运行虚拟机"></a>运行虚拟机</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用户: root</li>
+<li>密码: vagrant</li>
+</ul>
+<h4 id="ssh链接"><a href="#ssh链接" class="headerlink" title="ssh链接"></a>ssh链接</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改虚拟机默认地址"><a href="#修改虚拟机默认地址" class="headerlink" title="修改虚拟机默认地址"></a>修改虚拟机默认地址</h4><p>修改配置文件Vagrantfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;private_network&quot;, ip:&quot;192.168.56.10&quot;</span><br></pre></td></tr></table></figure>
+<p>ip地址要VirtualBox虚拟网卡的ip地址相匹配</p>
+<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-Docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T06:56:08.000Z"><a href="/2020/07/24/Docker/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Docker/">Docker</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>虚拟化容器</li>
+<li>安装: <a href="https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community" target="_blank" rel="noopener">https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community</a></li>
+<li>安装文档: <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="noopener">https://docs.docker.com/engine/install/centos/</a>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/24/Docker/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/categories/config/" class="alignleft prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="zionjo89757.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/DataStructure/">DataStructure</a><small>1</small></li>
+  
+    <li><a href="/categories/DesignPattern/">DesignPattern</a><small>2</small></li>
+  
+    <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
+  
+    <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
+    <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
+  
+    <li><a href="/categories/Java/">Java</a><small>11</small></li>
+  
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>50</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/categories/Term/">Term</a><small>1</small></li>
+  
+    <li><a href="/categories/code/">code</a><small>1</small></li>
+  
+    <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+    <li><a href="/categories/config/">config</a><small>19</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Array/">Array</a><small>22</small></li>
+  
+    <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
+  
+    <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
+  
+    <li><a href="/tags/Collection/">Collection</a><small>1</small></li>
+  
+    <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
+  
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+  
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+  
+    <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
+  
+    <li><a href="/tags/GC/">GC</a><small>1</small></li>
+  
+    <li><a href="/tags/Greedy/">Greedy</a><small>2</small></li>
+  
+    <li><a href="/tags/Hash-Table/">Hash Table</a><small>5</small></li>
+  
+    <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
+  
+    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+  
+    <li><a href="/tags/Linked-List/">Linked List</a><small>5</small></li>
+  
+    <li><a href="/tags/LinkedList/">LinkedList</a><small>1</small></li>
+  
+    <li><a href="/tags/Math/">Math</a><small>7</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>1</small></li>
+  
+    <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
+  
+    <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
+    <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
+  
+    <li><a href="/tags/Sort/">Sort</a><small>2</small></li>
+  
+    <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloud/">SpringCloud</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloudAlibaba/">SpringCloudAlibaba</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
+  
+    <li><a href="/tags/Stack/">Stack</a><small>1</small></li>
+  
+    <li><a href="/tags/String/">String</a><small>12</small></li>
+  
+    <li><a href="/tags/Tree/">Tree</a><small>1</small></li>
+  
+    <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>9</small></li>
+  
+    <li><a href="/tags/VM/">VM</a><small>1</small></li>
+  
+    <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
+    <li><a href="/tags/cache/">cache</a><small>1</small></li>
+  
+    <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
+  
+    <li><a href="/tags/check/">check</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>4</small></li>
+  
+    <li><a href="/tags/datastruction/">datastruction</a><small>1</small></li>
+  
+    <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
+  
+    <li><a href="/tags/docker/">docker</a><small>1</small></li>
+  
+    <li><a href="/tags/feign/">feign</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>3</small></li>
+  
+    <li><a href="/tags/java/">java</a><small>2</small></li>
+  
+    <li><a href="/tags/juc/">juc</a><small>10</small></li>
+  
+    <li><a href="/tags/jvm/">jvm</a><small>2</small></li>
+  
+    <li><a href="/tags/lock/">lock</a><small>1</small></li>
+  
+    <li><a href="/tags/memory/">memory</a><small>1</small></li>
+  
+    <li><a href="/tags/mq/">mq</a><small>1</small></li>
+  
+    <li><a href="/tags/network/">network</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/oss/">oss</a><small>1</small></li>
+  
+    <li><a href="/tags/password/">password</a><small>1</small></li>
+  
+    <li><a href="/tags/redis/">redis</a><small>1</small></li>
+  
+    <li><a href="/tags/reference/">reference</a><small>1</small></li>
+  
+    <li><a href="/tags/session/">session</a><small>1</small></li>
+  
+    <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
+  
+    <li><a href="/tags/springcloudalibaba/">springcloudalibaba</a><small>1</small></li>
+  
+    <li><a href="/tags/term/">term</a><small>1</small></li>
+  
+    <li><a href="/tags/thread/">thread</a><small>1</small></li>
+  
+    <li><a href="/tags/transaction/">transaction</a><small>1</small></li>
+  
+    <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Zion Jo
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

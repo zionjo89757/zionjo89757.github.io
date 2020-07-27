@@ -50,6 +50,93 @@
 
 
   
+    <article id="post-Vagrant" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T06:58:09.000Z"><a href="/2020/07/24/Vagrant/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Vagrant/">Vagrant</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>安装地址: <a href="https://www.vagrantup.com/downloads" target="_blank" rel="noopener">https://www.vagrantup.com/downloads</a></li>
+<li>仓库地址: <a href="https://app.vagrantup.com/boxes/search/" target="_blank" rel="noopener">https://app.vagrantup.com/boxes/search/</a></li>
+<li>相关命令行: <a href="https://www.vagrantup.com/docs/cli" target="_blank" rel="noopener">https://www.vagrantup.com/docs/cli</a><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3></li>
+</ul>
+<h4 id="初始化CentOS7"><a href="#初始化CentOS7" class="headerlink" title="初始化CentOS7"></a>初始化CentOS7</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init contos/7</span><br></pre></td></tr></table></figure>
+<h4 id="运行虚拟机"><a href="#运行虚拟机" class="headerlink" title="运行虚拟机"></a>运行虚拟机</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用户: root</li>
+<li>密码: vagrant</li>
+</ul>
+<h4 id="ssh链接"><a href="#ssh链接" class="headerlink" title="ssh链接"></a>ssh链接</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改虚拟机默认地址"><a href="#修改虚拟机默认地址" class="headerlink" title="修改虚拟机默认地址"></a>修改虚拟机默认地址</h4><p>修改配置文件Vagrantfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;private_network&quot;, ip:&quot;192.168.56.10&quot;</span><br></pre></td></tr></table></figure>
+<p>ip地址要VirtualBox虚拟网卡的ip地址相匹配</p>
+<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-Docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T06:56:08.000Z"><a href="/2020/07/24/Docker/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Docker/">Docker</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>虚拟化容器</li>
+<li>安装: <a href="https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community" target="_blank" rel="noopener">https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community</a></li>
+<li>安装文档: <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="noopener">https://docs.docker.com/engine/install/centos/</a>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/24/Docker/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-JVM参数调优" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -1183,9 +1270,13 @@
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
+    <li><a href="/categories/Term/">Term</a><small>1</small></li>
+  
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+    <li><a href="/categories/config/">config</a><small>19</small></li>
   
   </ul>
 </div>
@@ -1196,9 +1287,7 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>21</small></li>
-  
-    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+    <li><a href="/tags/Array/">Array</a><small>22</small></li>
   
     <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
@@ -1213,6 +1302,8 @@
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+  
+    <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
     <li><a href="/tags/GC/">GC</a><small>1</small></li>
   
@@ -1234,11 +1325,17 @@
   
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
+    <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
   
     <li><a href="/tags/Sort/">Sort</a><small>2</small></li>
   
     <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloud/">SpringCloud</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloudAlibaba/">SpringCloudAlibaba</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
@@ -1250,17 +1347,27 @@
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>9</small></li>
   
+    <li><a href="/tags/VM/">VM</a><small>1</small></li>
+  
     <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
+    <li><a href="/tags/cache/">cache</a><small>1</small></li>
   
     <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
   
-    <li><a href="/tags/command/">command</a><small>2</small></li>
+    <li><a href="/tags/check/">check</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>4</small></li>
   
     <li><a href="/tags/datastruction/">datastruction</a><small>1</small></li>
   
     <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
   
-    <li><a href="/tags/git/">git</a><small>2</small></li>
+    <li><a href="/tags/docker/">docker</a><small>1</small></li>
+  
+    <li><a href="/tags/feign/">feign</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>3</small></li>
   
     <li><a href="/tags/java/">java</a><small>2</small></li>
   
@@ -1272,15 +1379,33 @@
   
     <li><a href="/tags/memory/">memory</a><small>1</small></li>
   
+    <li><a href="/tags/mq/">mq</a><small>1</small></li>
+  
+    <li><a href="/tags/network/">network</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/oss/">oss</a><small>1</small></li>
+  
+    <li><a href="/tags/password/">password</a><small>1</small></li>
   
     <li><a href="/tags/redis/">redis</a><small>1</small></li>
   
     <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
+    <li><a href="/tags/session/">session</a><small>1</small></li>
+  
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   
+    <li><a href="/tags/springcloudalibaba/">springcloudalibaba</a><small>1</small></li>
+  
+    <li><a href="/tags/term/">term</a><small>1</small></li>
+  
     <li><a href="/tags/thread/">thread</a><small>1</small></li>
+  
+    <li><a href="/tags/transaction/">transaction</a><small>1</small></li>
   
     <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
   

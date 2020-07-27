@@ -50,33 +50,285 @@
 
 
   
-    <article id="post-64-Minimum-Path-Sum" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Sentinel" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:49:07.000Z"><a href="/2020/07/24/64-Minimum-Path-Sum/">2020-07-24</a></time>
+        <time class="dt-published" datetime="2020-07-26T13:27:09.000Z"><a href="/2020/07/26/Sentinel/">2020-07-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/24/64-Minimum-Path-Sum/">64. Minimum Path Sum</a></h1>
+    <h1 class="title"><a href="/2020/07/26/Sentinel/">Sentinel</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.</p>
+        <blockquote>
+<p><a href="https://github.com/alibaba/Sentinel/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">https://github.com/alibaba/Sentinel/wiki/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8</a></p>
 </blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>动态规划</li>
-<li><code>dp[i][j]</code>: 从（0,0）到（i,j）的最小和<ul>
-<li><code>dp[i][j] = grid[i][j] + min(dp[i-1][j],dp[i][j-1])</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minPathSum</span><span class="params">(<span class="keyword">int</span>[][] grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = grid.length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> n = grid[<span class="number">0</span>].length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m-<span class="number">1</span>; i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            grid[i][n] += grid[i+<span class="number">1</span>][n];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n-<span class="number">1</span>; i &gt;=<span class="number">0</span> ; i--)&#123;</span><br><span class="line">            grid[m][i] += grid[m][i+<span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m-<span class="number">1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n-<span class="number">1</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                grid[i][j] += grid[i+<span class="number">1</span>][j]&lt; grid[i][j+<span class="number">1</span>]?grid[i+<span class="number">1</span>][j]:grid[i][j+<span class="number">1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> grid[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>流量控制(Flow Control)，原理是监控应用流量的QPS或并发线程数等指标，当达到指定阈值时对流量进行控制，避免系统被瞬时的流量高峰冲垮，保障应用高可用性。</p>
+<h3 id="熔断、降级"><a href="#熔断、降级" class="headerlink" title="熔断、降级"></a>熔断、降级</h3><p>由于调用关系的复杂性，如果调用链路中的某个资源不稳定，最终会导致请求发生堆积。Sentinel 熔断降级会在调用链路中某个资源出现不稳定状态时（例如调用超时或异常比例升高），对这个资源的调用进行限制，让请求快速失败，避免影响到其它的资源而导致级联错误。当资源被降级后，在接下来的降级时间窗口之内，对该资源的调用都自动熔断（默认行为是抛出 DegradeException）。</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/26/Sentinel/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-seata" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T12:47:27.000Z"><a href="/2020/07/26/seata/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/seata/">seata</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Seata简介"><a href="#Seata简介" class="headerlink" title="Seata简介"></a>Seata简介</h3><p>Seata(Simple Extensible Autonomous Transaction Architecture) 是 阿里巴巴开源的分布式事务中间件，以高效并且对业务 0 侵入的方式，解决微服务场景下面临的分布式事务问题。</p>
+<h3 id="AT-TCC"><a href="#AT-TCC" class="headerlink" title="AT/TCC"></a>AT/TCC</h3><p>AT模式主要关注多 DB 访问的数据一致性，当然也包括多服务下的多 DB 数据访问一致性问题<br>TCC 模式主要关注业务拆分，在按照业务横向扩展资源时，解决微服务间调用的一致性问题</p>
+<ul>
+<li>Transaction Coordinator (TC)： 事务协调器，维护全局事务的运行状态，负责协调并驱动全局事务的提交或回滚</li>
+<li>Transaction Manager ： 控制全局事务的边界，负责开启一个全局事务，并最终发起全局提交或全局回滚的决议</li>
+<li>Resource Manager (RM)： 控制分支事务，负责分支注册、状态汇报，并接收事务协调器的指令，驱动分支（本地）事务的提交和回滚</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-接口幂等性" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T12:24:01.000Z"><a href="/2020/07/26/接口幂等性/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/接口幂等性/">接口幂等性</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>用户对于同一操作发起的一次请求或者多次请求的结果一致</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
+<li>token机制: （获取令牌、对比令牌、删令牌）原子操作</li>
+<li>锁</li>
+<li>唯一约束</li>
+<li>防重表</li>
+<li>全局请求唯一id</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-RabbitMQ" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T11:43:01.000Z"><a href="/2020/07/26/RabbitMQ/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/RabbitMQ/">RabbitMQ</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="AMQP高级消息队列协议"><a href="#AMQP高级消息队列协议" class="headerlink" title="AMQP高级消息队列协议"></a>AMQP高级消息队列协议</h3><p>AMQP中消息的路由过程和JMS存在一些差别。AMQP中增加了Exchange和Binding的角色。生产者把消息发布到Exchange上，消息最终到达队列并被消费者接收，而Binding决定交换器的消息应该发送到哪个队列。<br><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/RabbitMQ-2020-07-26-19-45-00.png" alt="RabbitMQ-2020-07-26-19-45-00"></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/26/RabbitMQ/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-分布式Session" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T09:47:54.000Z"><a href="/2020/07/26/分布式Session/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/分布式Session/">分布式Session</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="session存在的问题"><a href="#session存在的问题" class="headerlink" title="session存在的问题"></a>session存在的问题</h3><ul>
+<li>同一个服务，复制对方，session不同步问题</li>
+<li>不同服务，session不能共享问题</li>
+</ul>
+<h3 id="解决思路SpringSession"><a href="#解决思路SpringSession" class="headerlink" title="解决思路SpringSession"></a>解决思路SpringSession</h3><ul>
+<li>后端一致存储session</li>
+<li>发卡的时候指定父域名</li>
+</ul>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CookieSerializer <span class="title">cookieSerializer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        DefaultCookieSerializer cookieSerializer = <span class="keyword">new</span> DefaultCookieSerializer();</span><br><span class="line">        cookieSerializer.setDomainName(<span class="string">"littlemall.com"</span>);</span><br><span class="line">        cookieSerializer.setCookieName(<span class="string">"LITTLESESSION"</span>);</span><br><span class="line">        <span class="keyword">return</span> cookieSerializer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedisSerializer&lt;Object&gt; <span class="title">springSessionDefaultRedisSerializer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> GenericJackson2JsonRedisSerializer();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>装饰者模式</p>
+<ol>
+<li>@EnableRedisHttpSession 导入 RedisHttpSessionConfiguration<ol>
+<li>导入RedisOperationsSessionRepository: redis操作Session。session的增删改查封装类</li>
+<li>SessionRepositoryFilter: session存储过滤器，每个请求过来都必须经过filter<ol>
+<li>注入RedisOperationsSessionRepository</li>
+<li>过滤器包装了原始的request、response<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">    request.setAttribute(SESSION_REPOSITORY_ATTR, <span class="keyword">this</span>.sessionRepository);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 包装原始请求对象</span></span><br><span class="line">    SessionRepositoryFilter&lt;S&gt;.SessionRepositoryRequestWrapper wrappedRequest = <span class="keyword">new</span>  SessionRepositoryFilter.SessionRepositoryRequestWrapper(request, response, <span class="keyword">this</span>.servletContext);</span><br><span class="line">    <span class="comment">// 包装原始响应对象</span></span><br><span class="line">    SessionRepositoryFilter.SessionRepositoryResponseWrapper wrappedResponse = <span class="keyword">new</span> SessionRepositoryFilter.SessionRepositoryResponseWrapper(wrappedRequest, response);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 包装后的对象应用到后面的整个执行链</span></span><br><span class="line">        filterChain.doFilter(wrappedRequest, wrappedResponse);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        wrappedRequest.commitSession();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>request.getSession()转化为wrappedRequest.getSession()从RedisOperationsSessionRepository获取Session</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-社交登录" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T09:22:24.000Z"><a href="/2020/07/26/社交登录/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/社交登录/">社交登录</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>客户端向用户申请请求认证</li>
+<li>用户授权</li>
+<li>认证服务器确认认证通过，给客户端返回访问令牌</li>
+<li>客户端使用访问令牌，向资源服务器获取开放保护信息</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-密码的加密存储" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T09:09:20.000Z"><a href="/2020/07/26/密码的加密存储/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/密码的加密存储/">密码的加密存储</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><ul>
+<li>信息摘要算法<ul>
+<li>压缩性</li>
+<li>容易计算</li>
+<li>抗修改性</li>
+<li>强抗碰撞</li>
+<li>不可逆</li>
 </ul>
 </li>
 </ul>
-
+<h3 id="盐值加密"><a href="#盐值加密" class="headerlink" title="盐值加密"></a>盐值加密</h3><ul>
+<li>给密码加随机值</li>
+<li>储存方式：<code>$1$sale_value$MD5_value</code></li>
+</ul>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BCryptPasswordEncoder passwordEncoder = <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">String encode = passwordEncode.encode(<span class="string">"123456"</span>);</span><br><span class="line"><span class="keyword">boolean</span> matches = passwordEncoder.matches(<span class="string">"123456"</span>,encode);</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
@@ -92,34 +344,38 @@
 
 
   
-    <article id="post-63-Unique-Paths-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-SpringCache" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:43:59.000Z"><a href="/2020/07/24/63-Unique-Paths-II/">2020-07-24</a></time>
+        <time class="dt-published" datetime="2020-07-26T05:37:00.000Z"><a href="/2020/07/26/SpringCache/">2020-07-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/24/63-Unique-Paths-II/">63. Unique Paths II</a></h1>
+    <h1 class="title"><a href="/2020/07/26/SpringCache/">SpringCache</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).<br>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).<br>Now consider if some obstacles are added to the grids. How many unique paths would there be?</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>动态规划</li>
-<li>动态规划</li>
-<li><code>dp[i][j]</code>: 从（0,0）到（i,j）的不同路径总数<ul>
-<li><code>dp[i][j] = obstacles ? 0 : dp[i-1][j] + dp[i][j-1]</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(<span class="keyword">int</span>[][] obstacleGrid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; obstacleGrid.length;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; obstacleGrid[<span class="number">0</span>].length;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(obstacleGrid[i][j] == <span class="number">1</span> ) obstacleGrid[i][j] = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(i == <span class="number">0</span> &amp;&amp; j == <span class="number">0</span>)&#123;</span><br><span class="line">                    obstacleGrid[i][j] = <span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    obstacleGrid[i][j] = (j== <span class="number">0</span>? <span class="number">0</span>:obstacleGrid[i][j-<span class="number">1</span>])+(i == <span class="number">0</span>? <span class="number">0</span>:obstacleGrid[i-<span class="number">1</span>][j]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> obstacleGrid[obstacleGrid.length-<span class="number">1</span>][obstacleGrid[<span class="number">0</span>].length-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+        <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>自定义配置类RedisCacheConfiguration</p>
+<h3 id="缓存注解"><a href="#缓存注解" class="headerlink" title="缓存注解"></a>缓存注解</h3><p>@EnableCaching：开启缓存功能<br>@Cacheable：定义缓存，用于触发缓存<br>@CachePut：定义更新缓存，触发缓存更新<br>@CacheEvict：定义清除缓存，触发缓存清除<br>@Caching：组合定义多种缓存功能<br>@CacheConfig：定义公共设置，位于class之上</p>
+<h3 id="Cacheable-CachePut"><a href="#Cacheable-CachePut" class="headerlink" title="@Cacheable/@CachePut"></a>@Cacheable/@CachePut</h3><ul>
+<li>cacheNames 缓存名称,默认为空串</li>
+<li>cacheManager 指定cacheManager若不指定则使用默认的cacheManager,这里使用了上面定义的 permission</li>
+<li>key 缓存的键,可使用字符串,入参,以及 #root root里有caches,method,args,target,targetClass可供使用</li>
+<li>condition 条件,只用满足条件注解才生效,如下只有参数menuId==2时才生效</li>
+<li>unless 与condition 类似,不过它可以处理返回值,如下只有返回的对象(#result)中的enable属性为1才生效,但是需要注意如果使用返回值中的某一个属性进行比较,但返回值是一个null,就会报错,unless是除非的意思,也就是说当unless中的条件满足时注解不生效</li>
 </ul>
-</li>
+<h3 id="CacheEvict"><a href="#CacheEvict" class="headerlink" title="@CacheEvict"></a>@CacheEvict</h3><ul>
+<li>同上</li>
+<li>allEntries=true 删除同一个cache(cacheName相同)下的所有键</li>
+<li>beforeInvocation=true 无论方法有没有执行成功都删除缓存</li>
 </ul>
-
+<h3 id="KeyGenerator"><a href="#KeyGenerator" class="headerlink" title="KeyGenerator"></a>KeyGenerator</h3><p>某些业务不必每个cache都手动指定key,我们可以定义一定的策略自动生成key, 首先定义一个KeyGenerator放到spring容器中, KeyGenerator接口的generate方法有三个参数,当前对象,注解所在方法,方法的入参,如下定义一个简单的由类名+方法名+入参生成的key</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(<span class="string">"myKeyGenerator"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> KeyGenerator <span class="title">menuKeyGenerator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> (target, method, params) -&gt; &#123;</span><br><span class="line">           String baseName = target.getClass().getSimpleName() + <span class="string">":"</span> + method.getName();</span><br><span class="line">           <span class="keyword">if</span> (params.length == <span class="number">0</span>) &#123;</span><br><span class="line">               <span class="keyword">return</span> baseName;</span><br><span class="line">           &#125;</span><br><span class="line">           baseName = baseName + <span class="string">":"</span>;</span><br><span class="line">           <span class="keyword">for</span> (Object param : params) &#123;</span><br><span class="line">               baseName = baseName + param.toString() + <span class="string">","</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> baseName;</span><br><span class="line">       &#125;;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
@@ -135,37 +391,40 @@
 
 
   
-    <article id="post-62-Unique-Paths" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-redis-缓存和分布式锁" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:35:24.000Z"><a href="/2020/07/24/62-Unique-Paths/">2020-07-24</a></time>
+        <time class="dt-published" datetime="2020-07-26T03:38:20.000Z"><a href="/2020/07/26/redis-缓存和分布式锁/">2020-07-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/24/62-Unique-Paths/">62. Unique Paths</a></h1>
+    <h1 class="title"><a href="/2020/07/26/redis-缓存和分布式锁/">redis-缓存和分布式锁</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>A robot is located at the top-left corner of a m x n grid (marked ‘Start’ in the diagram below).<br>The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked ‘Finish’ in the diagram below).<br>How many possible unique paths are there?</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>动态规划</li>
-<li><code>dp[i][j]</code>: 从（0,0）到（i,j）的不同路径总数<ul>
-<li><code>dp[i][j] = dp[i-1][j] + dp[i][j-1]</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(m == <span class="number">1</span> || n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> [][] res = <span class="keyword">new</span> <span class="keyword">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m;i++)&#123;</span><br><span class="line">            res[i][n-<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">            res[m-<span class="number">1</span>][i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = m-<span class="number">2</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = n-<span class="number">2</span>;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                res[i][j] = res[i+<span class="number">1</span>][j] + res[i][j+<span class="number">1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+        <h3 id="整合redis"><a href="#整合redis" class="headerlink" title="整合redis"></a>整合redis</h3><ol>
+<li>引入data-redis-starter</li>
+<li>简单配置redis的host等信息</li>
+<li>使用SpringBoot自动配置好的StringRedisTemplate来操作redis</li>
+</ol>
+<h3 id="读模式缓存"><a href="#读模式缓存" class="headerlink" title="读模式缓存"></a>读模式缓存</h3><ul>
+<li>即时性、数据一致性要求不高的</li>
+<li>访问量大且更新频率不高的数据</li>
 </ul>
-</li>
-</ul>
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data= cache.load(id);</span><br><span class="line"><span class="keyword">if</span>(data == <span class="keyword">null</span>)&#123;</span><br><span class="line">    data = db.load(id);</span><br><span class="line">    cache.put(id,data);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
+        
+          <div class="alignleft">
+            <a href="/2020/07/26/redis-缓存和分布式锁/#more" class="more-link">Read More</a>
+          </div>
         
         
       
@@ -177,265 +436,31 @@
 
 
   
-    <article id="post-61-Rotate-List" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-nginx" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:31:22.000Z"><a href="/2020/07/24/61-Rotate-List/">2020-07-24</a></time>
+        <time class="dt-published" datetime="2020-07-26T02:57:54.000Z"><a href="/2020/07/26/nginx/">2020-07-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/24/61-Rotate-List/">61. Rotate List</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a linked list, rotate the list to the right by k places, where k is non-negative.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>用延后k的双指针<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">rotateRight</span><span class="params">(ListNode head, <span class="keyword">int</span> k)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">if</span>(head ==<span class="keyword">null</span> || head.next == <span class="keyword">null</span> || k == <span class="number">0</span>) <span class="keyword">return</span> head;</span><br><span class="line">        ListNode pre = head;</span><br><span class="line">        ListNode rear = head;</span><br><span class="line">        <span class="keyword">int</span> length = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(rear.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">            length++;</span><br><span class="line">            rear = rear.next;</span><br><span class="line">        &#125;        </span><br><span class="line">        k = k%length;</span><br><span class="line">        k = length - k - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(k != <span class="number">0</span>)&#123;</span><br><span class="line">            pre = pre.next;</span><br><span class="line">            k--;</span><br><span class="line">        &#125;</span><br><span class="line">        rear.next = head;</span><br><span class="line">        head = pre.next;</span><br><span class="line">        pre.next = <span class="keyword">null</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-60-Permutation-Sequence" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:27:19.000Z"><a href="/2020/07/24/60-Permutation-Sequence/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/60-Permutation-Sequence/">60. Permutation Sequence</a></h1>
+    <h1 class="title"><a href="/2020/07/26/nginx/">nginx</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p> The set <code>[1,2,3,...,n]</code> contains a total of n! unique permutations.<br>By listing and labeling all of the permutations in order, we get the following sequence for n = 3:<br>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>Given n and k, return the kth permutation sequence.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>深度搜索，回溯都可以<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPermutation</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> [] rest = <span class="keyword">new</span> <span class="keyword">boolean</span>[n];</span><br><span class="line">        String res = <span class="string">""</span>;</span><br><span class="line">        k = k-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> f = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;n;i++ )&#123;</span><br><span class="line">            f = f*i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n-<span class="number">1</span>;i&gt;<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">int</span> j = k/f;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">0</span>,count=<span class="number">0</span>;t&lt;n;t++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(rest[t] == <span class="keyword">false</span>)&#123;</span><br><span class="line">                   count++;</span><br><span class="line">                   <span class="keyword">if</span>(count == j+<span class="number">1</span>)&#123;</span><br><span class="line">                        rest[t] = <span class="keyword">true</span>;</span><br><span class="line">                        res = res + (t+<span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125; </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            k = k%f;</span><br><span class="line">            f = f/i;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">0</span>;t&lt;n;t++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(rest[t] == <span class="keyword">false</span>)&#123;</span><br><span class="line">                res = res + (t+<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
+        <h3 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/nginx-2020-07-26-11-04-25.png" alt="nginx-2020-07-26-11-04-25"></p>
       
     </div>
     <footer>
       
         
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-59-Spiral-Matrix-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:23:19.000Z"><a href="/2020/07/24/59-Spiral-Matrix-II/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/59-Spiral-Matrix-II/">59. Spiral Matrix II</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a positive integer n, generate a square matrix filled with elements from 1 to n^2 in spiral order.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>找规律，没营养<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] generateMatrix(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        <span class="keyword">int</span>[][] res = <span class="keyword">new</span> <span class="keyword">int</span>[n][n];</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = n-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;right;i++) res[left][i] = count++;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;right;i++) res[i][right] = count++;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=right;i&gt;left;i--) res[right][i] = count++;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=right;i&gt;left;i--) res[i][left] = count++;</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(left == right)&#123;</span><br><span class="line">            res[left][left] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-57-Insert-Interval" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:17:47.000Z"><a href="/2020/07/24/57-Insert-Interval/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/57-Insert-Interval/">57. Insert Interval</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).<br>You may assume that the intervals were initially sorted according to their start times.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>找到插入点<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] insert(<span class="keyword">int</span>[][] intervals, <span class="keyword">int</span>[] newInterval) &#123;</span><br><span class="line">        <span class="keyword">int</span>[][] res;</span><br><span class="line">        <span class="keyword">if</span>(intervals.length == <span class="number">0</span>)&#123;</span><br><span class="line">            res = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1</span>][];</span><br><span class="line">            res[<span class="number">0</span>] = newInterval;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(newInterval[<span class="number">1</span>] &lt; intervals[<span class="number">0</span>][<span class="number">0</span>])&#123;</span><br><span class="line">            res = <span class="keyword">new</span> <span class="keyword">int</span>[intervals.length+<span class="number">1</span>][];</span><br><span class="line">            res[<span class="number">0</span>] = newInterval;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; res.length; i++) &#123;</span><br><span class="line">                res[i] = intervals[i-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(newInterval[<span class="number">0</span>]&gt; intervals[intervals.length-<span class="number">1</span>][<span class="number">1</span>])&#123;</span><br><span class="line">            res = <span class="keyword">new</span> <span class="keyword">int</span>[intervals.length+<span class="number">1</span>][];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; res.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">                res[i] = intervals[i];</span><br><span class="line">            &#125;</span><br><span class="line">            res[res.length - <span class="number">1</span>] = newInterval;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; intervals.length; i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(intervals[i][<span class="number">1</span>]&gt;=newInterval[<span class="number">0</span>]) &#123;</span><br><span class="line">                <span class="keyword">if</span>(intervals[i][<span class="number">0</span>] &lt; newInterval[<span class="number">0</span>]) newInterval[<span class="number">0</span>] = intervals[i][<span class="number">0</span>];</span><br><span class="line">                left = i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = intervals.length-<span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(intervals[i][<span class="number">0</span>]&lt;=newInterval[<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">if</span>(intervals[i][<span class="number">1</span>] &gt; newInterval[<span class="number">1</span>]) newInterval[<span class="number">1</span>] = intervals[i][<span class="number">1</span>];</span><br><span class="line">                right = i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        res = <span class="keyword">new</span> <span class="keyword">int</span>[left + intervals.length -right][];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; left; i++) &#123;</span><br><span class="line">            res[i] = intervals[i];</span><br><span class="line">        &#125;</span><br><span class="line">        res[left] = newInterval;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; intervals.length - right; i++) &#123;</span><br><span class="line">            res[left+i] = intervals[right+i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-56-Merge-Intervals" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:06:54.000Z"><a href="/2020/07/24/56-Merge-Intervals/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/56-Merge-Intervals/">56. Merge Intervals</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a collection of intervals, merge all overlapping intervals.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>排序</li>
-<li>窗口合并：<code>if intervals[i][1] &lt;= intervals[i+1][0]</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] merge(<span class="keyword">int</span>[][] intervals) &#123;</span><br><span class="line">        <span class="keyword">if</span>(intervals.length &lt; <span class="number">2</span>) <span class="keyword">return</span> intervals;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span>;i&lt;intervals.length;i++) &#123; </span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;intervals.length-i;j++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(intervals[j][<span class="number">0</span>]&gt;intervals[j+<span class="number">1</span>][<span class="number">0</span>]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> []temp = intervals[j];</span><br><span class="line">                     </span><br><span class="line">                    intervals[j]=intervals[j+<span class="number">1</span>];</span><br><span class="line">                     </span><br><span class="line">                    intervals[j+<span class="number">1</span>]=temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; intervals.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(intervals[i][<span class="number">0</span>] &gt; intervals[count][<span class="number">1</span>])&#123;</span><br><span class="line">                intervals[++count] = intervals[i];</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(intervals[count][<span class="number">1</span>] &gt;= intervals[i][<span class="number">1</span>] ) <span class="keyword">continue</span>;</span><br><span class="line">                intervals[count][<span class="number">1</span>] = intervals[i][<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> Arrays.copyOfRange(intervals, <span class="number">0</span>, count+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-55-Jump-Game" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:00:55.000Z"><a href="/2020/07/24/55-Jump-Game/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/55-Jump-Game/">55. Jump Game</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.<br>Each element in the array represents your maximum jump length at that position.<br>Determine if you are able to reach the last index.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>贪婪</li>
-<li>跳的下一步应该选择下一步最远能够到达的地方<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canJump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">int</span> pos_now = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> pos_dest = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(pos_now + nums[pos_now] &lt; pos_dest)&#123;</span><br><span class="line">                <span class="keyword">int</span> max_next = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">int</span> max_step = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">int</span> next_step = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= nums[pos_now];i++)&#123;</span><br><span class="line">                    next_step = pos_now + i + nums[pos_now + i];</span><br><span class="line">                    <span class="keyword">if</span>(next_step&gt;=pos_dest) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                    <span class="keyword">else</span>&#123;</span><br><span class="line">                        <span class="keyword">if</span>(next_step &gt; max_step)&#123;</span><br><span class="line">                            max_step = next_step;</span><br><span class="line">                            max_next = i;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(max_step == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                <span class="keyword">else</span>&#123;</span><br><span class="line">                    pos_now = pos_now + max_next;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-54-Spiral-Matrix" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T00:57:29.000Z"><a href="/2020/07/24/54-Spiral-Matrix/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/54-Spiral-Matrix/">54. Spiral Matrix</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>每四条作为一个循环</li>
-<li>配合四个角</li>
-<li>边界条件<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">```java</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Integer&gt; <span class="title">spiralOrder</span><span class="params">(<span class="keyword">int</span>[][] matrix)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        List&lt;Integer&gt; ls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(matrix.length == <span class="number">0</span> || (matrix[<span class="number">0</span>]).length == <span class="number">0</span>) <span class="keyword">return</span> ls;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = (matrix[<span class="number">0</span>]).length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> up = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> down = matrix.length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left &lt; right &amp;&amp; up &lt; down)&#123;</span><br><span class="line">            <span class="comment">//-&gt;</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = left; i &lt;= right; i++) ls.add(matrix[up][i]);</span><br><span class="line">            <span class="comment">//V</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = up+<span class="number">1</span>; i &lt;= down; i++) ls.add(matrix[i][right]);</span><br><span class="line">            <span class="comment">//&lt;-</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = right-<span class="number">1</span>; i &gt;= left; i--) ls.add(matrix[down][i]);</span><br><span class="line">            <span class="comment">//A</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = down-<span class="number">1</span>; i &gt;= up+<span class="number">1</span>; i--) ls.add(matrix[i][left]);</span><br><span class="line"></span><br><span class="line">            left++;</span><br><span class="line">            up++;</span><br><span class="line">            down--;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(up == down)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = left; i &lt;= right; i++) ls.add(matrix[up][i]);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(left == right)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = up; i &lt;= down; i++) ls.add(matrix[i][right]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ls;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
+          <div class="alignleft">
+            <a href="/2020/07/26/nginx/#more" class="more-link">Read More</a>
+          </div>
         
         
       
@@ -490,9 +515,13 @@
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
+    <li><a href="/categories/Term/">Term</a><small>1</small></li>
+  
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+    <li><a href="/categories/config/">config</a><small>19</small></li>
   
   </ul>
 </div>
@@ -503,9 +532,7 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>21</small></li>
-  
-    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+    <li><a href="/tags/Array/">Array</a><small>22</small></li>
   
     <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
@@ -520,6 +547,8 @@
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+  
+    <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
     <li><a href="/tags/GC/">GC</a><small>1</small></li>
   
@@ -541,11 +570,17 @@
   
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
+    <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
   
     <li><a href="/tags/Sort/">Sort</a><small>2</small></li>
   
     <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloud/">SpringCloud</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloudAlibaba/">SpringCloudAlibaba</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
@@ -557,17 +592,27 @@
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>9</small></li>
   
+    <li><a href="/tags/VM/">VM</a><small>1</small></li>
+  
     <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
+    <li><a href="/tags/cache/">cache</a><small>1</small></li>
   
     <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
   
-    <li><a href="/tags/command/">command</a><small>2</small></li>
+    <li><a href="/tags/check/">check</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>4</small></li>
   
     <li><a href="/tags/datastruction/">datastruction</a><small>1</small></li>
   
     <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
   
-    <li><a href="/tags/git/">git</a><small>2</small></li>
+    <li><a href="/tags/docker/">docker</a><small>1</small></li>
+  
+    <li><a href="/tags/feign/">feign</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>3</small></li>
   
     <li><a href="/tags/java/">java</a><small>2</small></li>
   
@@ -579,15 +624,33 @@
   
     <li><a href="/tags/memory/">memory</a><small>1</small></li>
   
+    <li><a href="/tags/mq/">mq</a><small>1</small></li>
+  
+    <li><a href="/tags/network/">network</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/oss/">oss</a><small>1</small></li>
+  
+    <li><a href="/tags/password/">password</a><small>1</small></li>
   
     <li><a href="/tags/redis/">redis</a><small>1</small></li>
   
     <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
+    <li><a href="/tags/session/">session</a><small>1</small></li>
+  
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   
+    <li><a href="/tags/springcloudalibaba/">springcloudalibaba</a><small>1</small></li>
+  
+    <li><a href="/tags/term/">term</a><small>1</small></li>
+  
     <li><a href="/tags/thread/">thread</a><small>1</small></li>
+  
+    <li><a href="/tags/transaction/">transaction</a><small>1</small></li>
   
     <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
   

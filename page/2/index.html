@@ -46,38 +46,31 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-  <article id="post-锁粗化和锁消除" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-配置网络" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-20T08:39:25.000Z"><a href="/2020/07/20/锁粗化和锁消除/">2020-07-20</a></time>
+        <time class="dt-published" datetime="2020-07-26T02:40:40.000Z"><a href="/2020/07/26/配置网络/">2020-07-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/20/锁粗化和锁消除/">锁粗化和锁消除</a></h1>
+    <h1 class="title"><a href="/2020/07/26/配置网络/">配置网络</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="Java锁粗化"><a href="#Java锁粗化" class="headerlink" title="Java锁粗化"></a>Java锁粗化</h3><ul>
-<li>锁粗化<br>通常情况下，为了保证多线程间的有效并发，会要求每个线程持有锁的时间尽可能短，但是大某些情况下，一个程序对同一个锁不间断、高频地请求、同步与释放，会消耗掉一定的系统资源，因为锁的讲求、同步与释放本身会带来性能损耗，这样高频的锁请求就反而不利于系统性能的优化了，虽然单次同步操作的时间可能很短。锁粗化就是告诉我们任何事情都有个度，有些情况下我们反而希望把很多次锁的请求合并成一个请求，以降低短时间内大量锁请求、同步、释放带来的性能损耗。</li>
-<li>一种极端的情况如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomethingMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(lock)&#123;</span><br><span class="line">        <span class="comment">//do some thing</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//这是还有一些代码，做其它不需要同步的工作，但能很快执行完毕</span></span><br><span class="line">    <span class="keyword">synchronized</span>(lock)&#123;</span><br><span class="line">        <span class="comment">//do other thing</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//上面的代码是有两块需要同步操作的，但在这两块需要同步操作的代码之间，需要做一些其它的工作，而这些工作只会花费很少的时间，那么我们就可以把这些工作代码放入锁内，将两个同步代码块合并成一个，以降低多次锁请求、同步、释放带来的系统性能消耗，合并后的代码如下:</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomethingMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//进行锁粗化：整合成一次锁请求、同步、释放</span></span><br><span class="line">    <span class="keyword">synchronized</span>(lock)&#123;</span><br><span class="line">        <span class="comment">//do some thing</span></span><br><span class="line">        <span class="comment">//做其它不需要同步但能很快执行完的工作</span></span><br><span class="line">        <span class="comment">//do other thing</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>另一种需要锁粗化的极端的情况是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;size;i++)&#123;</span><br><span class="line">    <span class="keyword">synchronized</span>(lock)&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 上面代码每次循环都会进行锁的请求、同步与释放，看起来貌似没什么问题，且在jdk内部会对这类代码锁的请求做一些优化，但是还不如把加锁代码写在循环体的外面，这样一次锁的请求就可以达到我们的要求，除非有特殊的需要：循环需要花很长时间，但其它线程等不起，要给它们执行的机会。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 锁粗化后的代码如下：</span></span><br><span class="line"><span class="keyword">synchronized</span>(lock)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;size;i++)&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="锁消除是发生在编译器级别的一种锁优化方式。"><a href="#锁消除是发生在编译器级别的一种锁优化方式。" class="headerlink" title="锁消除是发生在编译器级别的一种锁优化方式。"></a>锁消除是发生在编译器级别的一种锁优化方式。</h3><p>比如，StringBuffer类的append操作：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> StringBuffer <span class="title">append</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">    toStringCache = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">super</span>.append(str);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br></pre></td></tr></table></figure>
-
+        <h3 id="CentOS7配置网络"><a href="#CentOS7配置网络" class="headerlink" title="CentOS7配置网络"></a>CentOS7配置网络</h3><h4 id="查看网卡情况"><a href="#查看网卡情况" class="headerlink" title="查看网卡情况"></a>查看网卡情况</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/sysconfig/network-scripts/</span><br><span class="line">vi ifcfg-eth1</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
+        
+          <div class="alignleft">
+            <a href="/2020/07/26/配置网络/#more" class="more-link">Read More</a>
+          </div>
         
         
       
@@ -89,82 +82,58 @@
 
 
 
-  <article id="post-Redis底层数据结构" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-ElasticSearch" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-20T02:59:07.000Z"><a href="/2020/07/20/Redis底层数据结构/">2020-07-20</a></time>
+        <time class="dt-published" datetime="2020-07-25T08:57:12.000Z"><a href="/2020/07/25/ElasticSearch/">2020-07-25</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/20/Redis底层数据结构/">Redis底层数据结构</a></h1>
+    <h1 class="title"><a href="/2020/07/25/ElasticSearch/">ElasticSearch</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="不同类型的不同实现"><a href="#不同类型的不同实现" class="headerlink" title="不同类型的不同实现"></a>不同类型的不同实现</h3><table>
+        <h3 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h3><ul>
+<li>Elasticsearch，基于<strong>lucene</strong>，隐藏复杂性，提供简单易用的restful api接口、各种语言的 api接口。</li>
+</ul>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><table>
 <thead>
 <tr>
-<th align="center">类型</th>
-<th align="center">编码</th>
+<th align="center">关系型数据库（比如Mysql）</th>
+<th align="center">非关系型数据库（Elasticsearch）</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="center">STRING（字符串）</td>
-<td align="center">INT（整型）</td>
+<td align="center">数据库Database</td>
+<td align="center">索引Index</td>
 </tr>
 <tr>
-<td align="center">STRING（字符串）</td>
-<td align="center">EMBSTR（简单动态字符串）</td>
+<td align="center">表Table</td>
+<td align="center">类型Type</td>
 </tr>
 <tr>
-<td align="center">STRING（字符串）</td>
-<td align="center">RAW（简单动态字符串）</td>
+<td align="center">数据行Row</td>
+<td align="center">文档Document</td>
 </tr>
 <tr>
-<td align="center">LIST（列表）</td>
-<td align="center">QUICKLIST（快表）</td>
+<td align="center">数据列Column</td>
+<td align="center">字段Field</td>
 </tr>
 <tr>
-<td align="center">LIST（列表）</td>
-<td align="center">LINKEDLIST（快表）</td>
-</tr>
-<tr>
-<td align="center">SET（集合）</td>
-<td align="center">INTSET（整数集合）</td>
-</tr>
-<tr>
-<td align="center">SET（集合）</td>
-<td align="center">HT（哈希表）</td>
-</tr>
-<tr>
-<td align="center">ZSET（有序集合</td>
-<td align="center">ZIPLIST（压缩列表）</td>
-</tr>
-<tr>
-<td align="center">ZSET（有序集合）</td>
-<td align="center">SKIPLIST（跳表）</td>
-</tr>
-<tr>
-<td align="center">HASH（哈希）</td>
-<td align="center">ZIPLIST（压缩列表）</td>
-</tr>
-<tr>
-<td align="center">HASH（哈希）</td>
-<td align="center">HT（哈希表）</td>
+<td align="center">约束 Schema</td>
+<td align="center">映射Mapping</td>
 </tr>
 </tbody></table>
+<h3 id="Query-DSL"><a href="#Query-DSL" class="headerlink" title="Query DSL"></a>Query DSL</h3>
       
     </div>
     <footer>
       
-        
-          <div class="alignleft">
-            <a href="/2020/07/20/Redis底层数据结构/#more" class="more-link">Read More</a>
-          </div>
         
         
       
@@ -176,31 +145,39 @@
 
 
 
-  <article id="post-Redis" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-JSR303" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T13:39:04.000Z"><a href="/2020/07/19/Redis/">2020-07-19</a></time>
+        <time class="dt-published" datetime="2020-07-25T03:25:27.000Z"><a href="/2020/07/25/JSR303/">2020-07-25</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/19/Redis/">Redis</a></h1>
+    <h1 class="title"><a href="/2020/07/25/JSR303/">JSR303</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="Q1：Redis-有什么特点？"><a href="#Q1：Redis-有什么特点？" class="headerlink" title="Q1：Redis 有什么特点？"></a>Q1：Redis 有什么特点？</h3><h4 id="基于键值对的数据结构服务器"><a href="#基于键值对的数据结构服务器" class="headerlink" title="基于键值对的数据结构服务器"></a>基于键值对的数据结构服务器</h4><p>Redis 中的值不仅可以是字符串，还可以是具体的数据结构，这样不仅能应用于多种场景开发，也可以提高开发效率。它主要提供五种数据结构：字符串、哈希、列表、集合、有序集合，同时在字符串的基础上演变出了 Bitmaps 和 HyperLogLog 两种数据结构，Redis 3.2 还加入了有关 GEO 地理信息定位的功能。</p>
+        <h3 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>在Controller的入参处加上<code>@Valid</code>关键字</li>
+<li>给参数对象添加需要的注解(也可自定义注解),定义Message提示</li>
+<li>可以用BindingResult捕捉异常，处理异常</li>
+<li>全局异常管理(ControllerAdvice)</li>
+<li>可用分组校验</li>
+</ol>
+<h4 id="实现自定义注解"><a href="#实现自定义注解" class="headerlink" title="实现自定义注解"></a>实现自定义注解</h4><ol>
+<li>仿造NotNull注解写</li>
+<li>实现校验类</li>
+</ol>
+<h4 id="全局异常管理"><a href="#全局异常管理" class="headerlink" title="全局异常管理"></a>全局异常管理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobleExceptionHandler</span> </span>&#123;</span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(value = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">Result</span>&lt;<span class="title">String</span>&gt; <span class="title">exceptionHandler</span>(<span class="title">HttpServletRequest</span> <span class="title">request</span>,<span class="title">Exception</span> <span class="title">e</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> MethodArgumentNotValidException)&#123;</span><br><span class="line">            MethodArgumentNotValidException ex = (MethodArgumentNotValidException) e;</span><br><span class="line">            List&lt;FieldError&gt; fieldErrors = ex.getBindingResult().getFieldErrors();</span><br><span class="line">            <span class="comment">//多个错误，取第一个</span></span><br><span class="line">            FieldError error = fieldErrors.get(<span class="number">0</span>);</span><br><span class="line">            String msg = error.getDefaultMessage();</span><br><span class="line">            <span class="keyword">return</span> Result.error(CodeMsg.BIND_ERROR.fillArgs(msg));</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> Result.error(CodeMsg.SERVER_ERROR);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
-        
-          <div class="alignleft">
-            <a href="/2020/07/19/Redis/#more" class="more-link">Read More</a>
-          </div>
         
         
       
@@ -212,33 +189,36 @@
 
 
 
-  <article id="post-MySQL" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-OSS对象存储" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T10:48:36.000Z"><a href="/2020/07/19/MySQL/">2020-07-19</a></time>
+        <time class="dt-published" datetime="2020-07-25T02:22:23.000Z"><a href="/2020/07/25/OSS对象存储/">2020-07-25</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/19/MySQL/">MySQL</a></h1>
+    <h1 class="title"><a href="/2020/07/25/OSS对象存储/">OSS对象存储</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="MySQL-的逻辑架构"><a href="#MySQL-的逻辑架构" class="headerlink" title="MySQL 的逻辑架构"></a>MySQL 的逻辑架构</h3><p>第一层是服务器层，主要提供连接处理、授权认证、安全等功能。</p>
-<p>第二层实现了 MySQL 核心服务功能，包括查询解析、分析、优化、缓存以及日期和时间等所有内置函数，所有跨存储引擎的功能都在这一层实现，例如存储过程、触发器、视图等。</p>
-<p>第三层是存储引擎层，存储引擎负责 MySQL 中数据的存储和提取。服务器通过 API 与存储引擎通信，这些接口屏蔽了不同存储引擎的差异，使得差异对上层查询过程透明。除了会解析外键定义的 InnoDB 外，存储引擎不会解析 SQL，不同存储引擎之间也不会相互通信，只是简单响应上层服务器请求。</p>
+        <h3 id="服务端签名后直传"><a href="#服务端签名后直传" class="headerlink" title="服务端签名后直传"></a>服务端签名后直传</h3><ol>
+<li>用户向应用服务器请求上传Policy</li>
+<li>应用服务器返回上传Policy</li>
+<li>用户直接上传数据到OSS</li>
+</ol>
+<h3 id="引入-Spring-Cloud-AliCloud-OSS"><a href="#引入-Spring-Cloud-AliCloud-OSS" class="headerlink" title="引入 Spring Cloud AliCloud OSS"></a>引入 Spring Cloud AliCloud OSS</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alicloud-oss<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="如何使用-OSS-API"><a href="#如何使用-OSS-API" class="headerlink" title="如何使用 OSS API"></a>如何使用 OSS API</h3><h4 id="配置-OSS"><a href="#配置-OSS" class="headerlink" title="配置 OSS"></a>配置 OSS</h4><p>使用 Spring Cloud AliCloud OSS 之前，需要在 application.properties 中加入以下配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.cloud.alicloud.access-key:</span> <span class="string">你的阿里云AK</span></span><br><span class="line"><span class="attr">spring.cloud.alicloud.secret-key:</span> <span class="string">你的阿里云SK</span></span><br><span class="line"><span class="attr">spring.cloud.alicloud.oss.endpoint:</span> <span class="string">***.aliyuncs.com</span></span><br></pre></td></tr></table></figure>
+<h4 id="签名直传服务响应客户端发送给应用服务器的GET消息"><a href="#签名直传服务响应客户端发送给应用服务器的GET消息" class="headerlink" title="签名直传服务响应客户端发送给应用服务器的GET消息"></a>签名直传服务响应客户端发送给应用服务器的GET消息</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">        String accessId = <span class="string">"&lt;yourAccessKeyId&gt;"</span>; <span class="comment">// 请填写您的AccessKeyId。</span></span><br><span class="line">        String accessKey = <span class="string">"&lt;yourAccessKeySecret&gt;"</span>; <span class="comment">// 请填写您的AccessKeySecret。</span></span><br><span class="line">        String endpoint = <span class="string">"oss-cn-hangzhou.aliyuncs.com"</span>; <span class="comment">// 请填写您的 endpoint。</span></span><br><span class="line">        String bucket = <span class="string">"bucket-name"</span>; <span class="comment">// 请填写您的 bucketname 。</span></span><br><span class="line">        String host = <span class="string">"https://"</span> + bucket + <span class="string">"."</span> + endpoint; <span class="comment">// host的格式为 bucketname.endpoint</span></span><br><span class="line">        <span class="comment">// callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。</span></span><br><span class="line">        String callbackUrl = <span class="string">"http://88.88.88.88:8888"</span>;</span><br><span class="line">        String dir = <span class="string">"user-dir-prefix/"</span>; <span class="comment">// 用户上传文件时指定的前缀。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建OSSClient实例。</span></span><br><span class="line">        OSS ossClient = <span class="keyword">new</span> OSSClientBuilder().build(endpoint, accessId, accessKey);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">long</span> expireTime = <span class="number">30</span>;</span><br><span class="line">            <span class="keyword">long</span> expireEndTime = System.currentTimeMillis() + expireTime * <span class="number">1000</span>;</span><br><span class="line">            Date expiration = <span class="keyword">new</span> Date(expireEndTime);</span><br><span class="line">            <span class="comment">// PostObject请求最大可支持的文件大小为5 GB，即CONTENT_LENGTH_RANGE为5*1024*1024*1024。</span></span><br><span class="line">            PolicyConditions policyConds = <span class="keyword">new</span> PolicyConditions();</span><br><span class="line">            policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, <span class="number">0</span>, <span class="number">1048576000</span>);</span><br><span class="line">            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);</span><br><span class="line"></span><br><span class="line">            String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);</span><br><span class="line">            <span class="keyword">byte</span>[] binaryData = postPolicy.getBytes(<span class="string">"utf-8"</span>);</span><br><span class="line">            String encodedPolicy = BinaryUtil.toBase64String(binaryData);</span><br><span class="line">            String postSignature = ossClient.calculatePostSignature(postPolicy);</span><br><span class="line"></span><br><span class="line">            Map&lt;String, String&gt; respMap = <span class="keyword">new</span> LinkedHashMap&lt;String, String&gt;();</span><br><span class="line">            respMap.put(<span class="string">"accessid"</span>, accessId);</span><br><span class="line">            respMap.put(<span class="string">"policy"</span>, encodedPolicy);</span><br><span class="line">            respMap.put(<span class="string">"signature"</span>, postSignature);</span><br><span class="line">            respMap.put(<span class="string">"dir"</span>, dir);</span><br><span class="line">            respMap.put(<span class="string">"host"</span>, host);</span><br><span class="line">            respMap.put(<span class="string">"expire"</span>, String.valueOf(expireEndTime / <span class="number">1000</span>));</span><br><span class="line">            <span class="comment">// respMap.put("expire", formatISO8601Date(expiration));</span></span><br><span class="line"></span><br><span class="line">            JSONObject jasonCallback = <span class="keyword">new</span> JSONObject();</span><br><span class="line">            jasonCallback.put(<span class="string">"callbackUrl"</span>, callbackUrl);</span><br><span class="line">            jasonCallback.put(<span class="string">"callbackBody"</span>,</span><br><span class="line">                    <span class="string">"filename=$&#123;object&#125;&amp;size=$&#123;size&#125;&amp;mimeType=$&#123;mimeType&#125;&amp;height=$&#123;imageInfo.height&#125;&amp;width=$&#123;imageInfo.width&#125;"</span>);</span><br><span class="line">            jasonCallback.put(<span class="string">"callbackBodyType"</span>, <span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">            String base64CallbackBody = BinaryUtil.toBase64String(jasonCallback.toString().getBytes());</span><br><span class="line">            respMap.put(<span class="string">"callback"</span>, base64CallbackBody);</span><br><span class="line"></span><br><span class="line">            JSONObject ja1 = JSONObject.fromObject(respMap);</span><br><span class="line">            <span class="comment">// System.out.println(ja1.toString());</span></span><br><span class="line">            response.setHeader(<span class="string">"Access-Control-Allow-Origin"</span>, <span class="string">"*"</span>);</span><br><span class="line">            response.setHeader(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"GET, POST"</span>);</span><br><span class="line">            response(request, response, ja1.toString());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// Assert.fail(e.getMessage());</span></span><br><span class="line">            System.out.println(e.getMessage());</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123; </span><br><span class="line">            ossClient.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     <footer>
       
-        
-          <div class="alignleft">
-            <a href="/2020/07/19/MySQL/#more" class="more-link">Read More</a>
-          </div>
         
         
       
@@ -250,145 +230,209 @@
 
 
 
-  <article id="post-设计模式" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-Gateway" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T10:08:10.000Z"><a href="/2020/07/19/设计模式/">2020-07-19</a></time>
+        <time class="dt-published" datetime="2020-07-24T08:51:07.000Z"><a href="/2020/07/24/Gateway/">2020-07-24</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/19/设计模式/">设计模式</a></h1>
+    <h1 class="title"><a href="/2020/07/24/Gateway/">Gateway</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="设计模式的分类，你知道哪些设计模式"><a href="#设计模式的分类，你知道哪些设计模式" class="headerlink" title="设计模式的分类，你知道哪些设计模式"></a>设计模式的分类，你知道哪些设计模式</h3><ul>
-<li><p>创建型： 在创建对象的同时隐藏创建逻辑，不使用 new 直接实例化对象，程序在判断需要创建哪些对象时更灵活。包括工厂/抽象工厂/单例/建造者/原型模式。</p>
+        <h3 id="接入"><a href="#接入" class="headerlink" title="接入"></a>接入</h3><p>To include Spring Cloud Gateway in your project, use the starter with a group ID of org.springframework.cloud and an artifact ID of spring-cloud-starter-gateway.</p>
+<h3 id="怎么工作"><a href="#怎么工作" class="headerlink" title="怎么工作"></a>怎么工作</h3><ul>
+<li><p>Route: The basic building block of the gateway. It is defined by an ID, a destination URI, a collection of predicates, and a collection of filters. A route is matched if the aggregate predicate is true.</p>
 </li>
-<li><p>结构型： 通过类和接口间的继承和引用实现创建复杂结构的对象。包括适配器/桥接模式/过滤器/组合/装饰器/外观/享元/代理模式。</p>
+<li><p>Predicate: This is a Java 8 Function Predicate. The input type is a Spring Framework ServerWebExchange. This lets you match on anything from the HTTP request, such as headers or parameters.</p>
 </li>
-<li><p>行为型： 通过类之间不同通信方式实现不同行为。包括责任链/命名/解释器/迭代器/中介者/备忘录/观察者/状态/策略/模板/访问者模式。</p>
+<li><p>Filter: These are instances of Spring Framework GatewayFilter that have been constructed with a specific factory. Here, you can modify requests and responses before or after sending the downstream request.</p>
 </li>
 </ul>
-<h3 id="设计模式有哪些原则？"><a href="#设计模式有哪些原则？" class="headerlink" title="设计模式有哪些原则？"></a>设计模式有哪些原则？</h3><ul>
-<li><p>开闭原则：OOP 中最基础的原则，指一个软件实体（类、模块、方法等）应该对扩展开放，对修改关闭。强调用抽象构建框架，用实现扩展细节，提高代码的可复用性和可维护性。</p>
+<p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/Gateway-2020-07-24-17-02-17.png" alt="Gateway-2020-07-24-17-02-17"></p>
+<p>Clients make requests to Spring Cloud Gateway. If the Gateway Handler Mapping determines that a request matches a route, it is sent to the Gateway Web Handler. This handler runs the request through a filter chain that is specific to the request. The reason the filters are divided by the dotted line is that filters can run logic both before and after the proxy request is sent. All “pre” filter logic is executed. Then the proxy request is made. After the proxy request is made, the “post” filter logic is run.</p>
+<h3 id="配置案例"><a href="#配置案例" class="headerlink" title="配置案例"></a>配置案例</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">after_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">https://example.org</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cookie</span></span><br><span class="line">          <span class="attr">args:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">mycookie</span></span><br><span class="line">            <span class="attr">regexp:</span> <span class="string">mycookievalue</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-OpenFeign" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:22:32.000Z"><a href="/2020/07/24/OpenFeign/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/OpenFeign/">OpenFeign</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>To include Feign in your project use the starter with group org.springframework.cloud and artifact id spring-cloud-starter-openfeign。</p>
+<h3 id="spring-boot-app"><a href="#spring-boot-app" class="headerlink" title="spring boot app"></a>spring boot app</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Client-java"><a href="#Client-java" class="headerlink" title="Client.java"></a>Client.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(<span class="string">"stores"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StoreClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET, value = <span class="string">"/stores"</span>)</span><br><span class="line">    <span class="function">List&lt;Store&gt; <span class="title">getStores</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET, value = <span class="string">"/stores"</span>)</span><br><span class="line">    <span class="function">Page&lt;Store&gt; <span class="title">getStores</span><span class="params">(Pageable pageable)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.POST, value = <span class="string">"/stores/&#123;storeId&#125;"</span>, consumes = <span class="string">"application/json"</span>)</span><br><span class="line">    <span class="function">Store <span class="title">update</span><span class="params">(@PathVariable(<span class="string">"storeId"</span>)</span> Long storeId, Store store)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="请求拦截器RequestInterceptor"><a href="#请求拦截器RequestInterceptor" class="headerlink" title="请求拦截器RequestInterceptor"></a>请求拦截器RequestInterceptor</h3><p>可以重新设置请求头</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LittleFeignConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"requestInterceptor"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> RequestInterceptor <span class="title">requestInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RequestInterceptor()&#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate requestTemplate)</span> </span>&#123;</span><br><span class="line">                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">                <span class="keyword">if</span>(requestAttributes != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    HttpServletRequest request = requestAttributes.getRequest();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 同步请求头数据</span></span><br><span class="line">                    <span class="keyword">if</span>(request !=<span class="keyword">null</span>)&#123;</span><br><span class="line">                        String cookie = request.getHeader(<span class="string">"Cookie"</span>);</span><br><span class="line">                        requestTemplate.header(<span class="string">"Cookie"</span>,cookie);</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Nacos" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:10:39.000Z"><a href="/2020/07/24/Nacos/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Nacos/">Nacos</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h3><p>Nacos 是阿里巴巴开源的一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p><a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases</a></p>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>进入解压后文件夹或编译打包好的文件夹，找到如下相对文件夹 nacos/bin，并对照操作系统实际情况之下如下命令。</p>
+<h3 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h3><h4 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h4><p>Spring Cloud Nacos Discovery 遵循了 spring cloud common 标准，实现了 AutoServiceRegistration、ServiceRegistry、Registration 这三个接口。</p>
+<p>在 spring cloud 应用的启动阶段，监听了 WebServerInitializedEvent 事件，当Web容器初始化完成后，即收到 WebServerInitializedEvent 事件后，会触发注册的动作，调用 ServiceRegistry 的 register 方法，将服务注册到 Nacos Server。</p>
+<h4 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h4><p>NacosServerList 实现了 com.netflix.loadbalancer.ServerList 接口，并在 @ConditionOnMissingBean 的条件下进行自动注入，默认集成了Ribbon。</p>
+<p>如果需要有更加自定义的可以使用 @Autowired 注入一个 NacosRegistration 实例，通过其持有的 NamingService 字段内容直接调用 Nacos API。</p>
+<h4 id="接入"><a href="#接入" class="headerlink" title="接入"></a>接入</h4><ol>
+<li>首先，修改 pom.xml 文件，引入 Nacos Discovery Starter。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>在应用的 /src/main/resources/application.yaml 配置文件中配置 Nacos Server 地址<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  <span class="attr">spring.cloud.nacos.discovery.server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line"><span class="string">```</span> </span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">使用</span> <span class="string">@EnableDiscoveryClient</span> <span class="string">注解开启服务注册与发现功能</span></span><br><span class="line"><span class="string">```java</span></span><br><span class="line"><span class="string">@SpringBootApplication</span></span><br><span class="line"> <span class="string">@EnableDiscoveryClient</span></span><br><span class="line"> <span class="string">public</span> <span class="string">class</span> <span class="string">ProviderApplication</span> <span class="string">&#123;</span></span><br><span class="line"></span><br><span class="line"> 	<span class="string">public</span> <span class="string">static</span> <span class="string">void</span> <span class="string">main(String[]</span> <span class="string">args)</span> <span class="string">&#123;</span></span><br><span class="line"> 		<span class="string">SpringApplication.run(ProviderApplication.class,</span> <span class="string">args);</span></span><br><span class="line"> 	<span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"> 	<span class="string">@RestController</span></span><br><span class="line"> 	<span class="string">class</span> <span class="string">EchoController</span> <span class="string">&#123;</span></span><br><span class="line"> 		<span class="string">@GetMapping(value</span> <span class="string">=</span> <span class="string">"/echo/&#123;string&#125;"</span><span class="string">)</span></span><br><span class="line"> 		<span class="string">public</span> <span class="string">String</span> <span class="string">echo(@PathVariable</span> <span class="string">String</span> <span class="string">string)</span> <span class="string">&#123;</span></span><br><span class="line"> 				<span class="string">return</span> <span class="string">string;</span></span><br><span class="line"> 		<span class="string">&#125;</span></span><br><span class="line"> 	<span class="string">&#125;</span></span><br><span class="line"> <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
 </li>
-<li><p>单一职责原则：一个类、接口或方法只负责一个职责，降低代码复杂度以及变更引起的风险。</p>
+</ol>
+<h3 id="服务配置"><a href="#服务配置" class="headerlink" title="服务配置"></a>服务配置</h3><h4 id="Nacos-Config-数据结构"><a href="#Nacos-Config-数据结构" class="headerlink" title="Nacos Config 数据结构"></a>Nacos Config 数据结构</h4><p>Nacos Client 从 Nacos Server 端获取数据时，调用的是此接口 ConfigService.getConfig(String dataId, String group, long timeoutMs)。</p>
+<h4 id="自动注入"><a href="#自动注入" class="headerlink" title="自动注入"></a>自动注入</h4><p>Nacos Config Starter 实现了 org.springframework.cloud.bootstrap.config.PropertySourceLocator接口，并将优先级设置成了最高。</p>
+<p>在 Spring Cloud 应用启动阶段，会主动从 Nacos Server 端获取对应的数据，并将获取到的数据转换成 PropertySource 且注入到 Environment 的 PropertySources 属性中，所以使用 @Value 注解也能直接获取 Nacos Server 端配置的内容。</p>
+<h4 id="动态刷新"><a href="#动态刷新" class="headerlink" title="动态刷新"></a>动态刷新</h4><p>Nacos Config Starter 默认为所有获取数据成功的 Nacos 的配置项添加了监听功能，在监听到服务端配置发生变化时会实时触发 org.springframework.cloud.context.refresh.ContextRefresher 的 refresh 方法 。</p>
+<h4 id="接入-1"><a href="#接入-1" class="headerlink" title="接入"></a>接入</h4><ol>
+<li>首先，修改 pom.xml 文件，引入 Nacos Config Starter。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>在应用的 /src/main/resources/bootstrap.properties 配置文件中配置 Nacos Config 元数据<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name:</span> <span class="string">nacos-config-example</span></span><br><span class="line"> <span class="attr">spring.cloud.nacos.config.server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br></pre></td></tr></table></figure></li>
+<li>完成上述两步后，应用会从 Nacos Config 中获取相应的配置，并添加在 Spring Environment 的 PropertySources 中。这里我们使用 @Value 注解来将对应的配置注入到 SampleController 的 userName 和 age 字段，并添加 @RefreshScope 打开动态刷新功能<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Value</span>(<span class="string">"$&#123;user.name&#125;"</span>)</span><br><span class="line">	String userName;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Value</span>(<span class="string">"$&#123;user.age&#125;"</span>)</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>依赖倒置原则：程序应该依赖于抽象类或接口，而不是具体的实现类。</p>
-</li>
-<li><p>接口隔离原则：将不同功能定义在不同接口中实现接口隔离，避免了类依赖它不需要的接口，减少了接口之间依赖的冗余性和复杂性。</p>
-</li>
-<li><p>里氏替换原则：开闭原则的补充，规定了任何父类可以出现的地方子类都一定可以出现，可以约束继承泛滥，加强程序健壮性。</p>
-</li>
-<li><p>迪米特原则：也叫最少知道原则，每个模块对其他模块都要尽可能少地了解和依赖，降低代码耦合度。</p>
-</li>
-<li><p>合成/聚合原则：尽量使用组合(has-a)/聚合(contains-a)而不是继承(is-a)达到软件复用的目的，避免滥用继承带来的方法污染和方法爆炸，方法污染指父类的行为通过继承传递给子类，但子类并不具备执行此行为的能力；方法爆炸指继承树不断扩大，底层类拥有的方法过于繁杂，导致很容易选择错误。</p>
-</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-配置git-ssh" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T07:48:13.000Z"><a href="/2020/07/24/配置git-ssh/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/配置git-ssh/">配置git-ssh</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "&#123;email address&#125;"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 测试</span></span><br><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Vagrant" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T06:58:09.000Z"><a href="/2020/07/24/Vagrant/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Vagrant/">Vagrant</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>安装地址: <a href="https://www.vagrantup.com/downloads" target="_blank" rel="noopener">https://www.vagrantup.com/downloads</a></li>
+<li>仓库地址: <a href="https://app.vagrantup.com/boxes/search/" target="_blank" rel="noopener">https://app.vagrantup.com/boxes/search/</a></li>
+<li>相关命令行: <a href="https://www.vagrantup.com/docs/cli" target="_blank" rel="noopener">https://www.vagrantup.com/docs/cli</a><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3></li>
 </ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-数据结构" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T09:31:47.000Z"><a href="/2020/07/19/数据结构/">2020-07-19</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/19/数据结构/">数据结构</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="B树和B-树的区别？"><a href="#B树和B-树的区别？" class="headerlink" title="B树和B+树的区别？"></a>B树和B+树的区别？</h3><p>B 树中每个节点同时存储 key 和 data，而 B+ 树中只有叶子节点才存储 data，非叶子节点只存储 key。InnoDB 对 B+ 树进行了优化，在每个叶子节点上增加了一个指向相邻叶子节点的链表指针，形成了带有顺序指针的 B+ 树，提高区间访问的性能。</p>
-<p>B+ 树的优点在于：① 由于 B+ 树在非叶子节点上不含数据信息，因此在内存页中能够存放更多的 key，数据存放得更加紧密，具有更好的空间利用率，访问叶子节点上关联的数据也具有更好的缓存命中率。② B+树的叶子结点都是相连的，因此对整棵树的遍历只需要一次线性遍历叶子节点即可。而 B 树则需要进行每一层的递归遍历，相邻的元素可能在内存中不相邻，所以缓存命中性没有 B+树好。但是 B 树也有优点，由于每个节点都包含 key 和 value，因此经常访问的元素可能离根节点更近，访问也更迅速。</p>
-<h3 id="希尔排序的原理"><a href="#希尔排序的原理" class="headerlink" title="希尔排序的原理"></a>希尔排序的原理</h3><p>把记录按下标的一定增量分组，对每组进行直接插入排序，每次排序后减小增量，当增量减至 1 时排序完毕。</p>
-<h3 id="堆排序的原理"><a href="#堆排序的原理" class="headerlink" title="堆排序的原理"></a>堆排序的原理</h3><p>将待排序记录看作完全二叉树，可以建立大根堆或小根堆，大根堆中每个节点的值都不小于它的子节点值，小根堆中每个节点的值都不大于它的子节点值。</p>
-<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
-<h3 id="归并排序的原理"><a href="#归并排序的原理" class="headerlink" title="归并排序的原理"></a>归并排序的原理</h3>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-线程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T06:19:10.000Z"><a href="/2020/07/19/线程/">2020-07-19</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/19/线程/">线程</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="线程通信的方式有哪些？"><a href="#线程通信的方式有哪些？" class="headerlink" title="线程通信的方式有哪些？"></a>线程通信的方式有哪些？</h3><p>命令式编程中线程的通信机制有两种，共享内存和消息传递。在共享内存的并发模型里线程间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。在消息传递的并发模型里线程间没有公共状态，必须通过发送消息来显式通信。Java 并发采用共享内存模型，线程之间的通信总是隐式进行，整个通信过程对程序员完全透明。</p>
+<h4 id="初始化CentOS7"><a href="#初始化CentOS7" class="headerlink" title="初始化CentOS7"></a>初始化CentOS7</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init contos/7</span><br></pre></td></tr></table></figure>
+<h4 id="运行虚拟机"><a href="#运行虚拟机" class="headerlink" title="运行虚拟机"></a>运行虚拟机</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>volatile 告知程序任何对变量的读需要从主内存中获取，写必须同步刷新回主内存，保证所有线程对变量访问的可见性。</p>
-</li>
-<li><p>synchronized 确保多个线程在同一时刻只能有一个处于方法或同步块中，保证线程对变量访问的原子性、可见性和有序性。</p>
-</li>
-<li><p>等待通知机制指一个线程 A 调用了对象的 wait 方法进入等待状态，另一线程 B 调用了对象的 notify/notifyAll 方法，线程 A 收到通知后结束阻塞并执行后序操作。对象上的 wait 和 notify/notifyAll 如同开关信号，完成等待方和通知方的交互。如果一个线程执行了某个线程的 join 方法，这个线程就会阻塞等待执行了 join 方法的线程终止，这里-涉及等待/通知机制。join 底层通过 wait 实现，线程终止时会调用自身的 notifyAll 方法，通知所有等待在该线程对象上的线程。</p>
-</li>
-<li><p>管道 IO 流用于线程间数据传输，媒介为内存。PipedOutputStream 和 PipedWriter 是输出流，相当于生产者，PipedInputStream 和 PipedReader 是输入流，相当于消费者。管道流使用一个默认大小为 1KB 的循环缓冲数组。输入流从缓冲数组读数据，输出流往缓冲数组中写数据。当数组已满时，输出流所在线程阻塞；当数组首次为空时，输入流所在线程阻塞。</p>
-</li>
-<li><p>ThreadLocal 是线程共享变量，但它可以为每个线程创建单独的副本，副本值是线程私有的，互相之间不影响。</p>
-</li>
+<li>用户: root</li>
+<li>密码: vagrant</li>
 </ul>
-<h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><p>ThreadLoacl 是线程共享变量，主要用于一个线程内跨类、方法传递数据。ThreadLoacl 有一个静态内部类 ThreadLocalMap，其 Key 是 ThreadLocal 对象，值是 Entry 对象，Entry 中只有一个 Object 类的 vaule 值。ThreadLocal 是线程共享的，但 ThreadLocalMap 是每个线程私有的。ThreadLocal 主要有 set、get 和 remove 三个方法。</p>
-<p>set 方法</p>
-<p>首先获取当前线程，然后再获取当前线程对应的 ThreadLocalMap 类型的对象 map。如果 map 存在就直接设置值，key 是当前的 ThreadLocal 对象，value 是传入的参数。</p>
-<p>如果 map 不存在就通过 createMap 方法为当前线程创建一个 ThreadLocalMap 对象再设置值。</p>
-<p>get 方法</p>
-<p>首先获取当前线程，然后再获取当前线程对应的 ThreadLocalMap 类型的对象 map。如果 map 存在就以当前 ThreadLocal 对象作为 key 获取 Entry 类型的对象 e，如果 e 存在就返回它的 value 属性。</p>
-<p>如果 e 不存在或者 map 不存在，就调用 setInitialValue 方法先为当前线程创建一个 ThreadLocalMap 对象然后返回默认的初始值 null。</p>
-<p>remove 方法</p>
-<p>首先通过当前线程获取其对应的 ThreadLocalMap 类型的对象 m，如果 m 不为空，就解除 ThreadLocal 这个 key 及其对应的 value 值的联系。</p>
-<p>存在的问题</p>
-<p>线程复用会产生脏数据，由于线程池会重用 Thread 对象，因此与 Thread 绑定的 ThreadLocal 也会被重用。如果没有调用 remove 清理与线程相关的 ThreadLocal 信息，那么假如下一个线程没有调用 set 设置初始值就可能 get 到重用的线程信息。</p>
-<p>ThreadLocal 还存在内存泄漏的问题，由于 ThreadLocal 是弱引用，但 Entry 的 value 是强引用，因此当 ThreadLocal 被垃圾回收后，value 依旧不会被释放。因此需要及时调用 remove 方法进行清理操作。</p>
-<h3 id="JDK7-的-ConcurrentHashMap-原理？"><a href="#JDK7-的-ConcurrentHashMap-原理？" class="headerlink" title="JDK7 的 ConcurrentHashMap 原理？"></a>JDK7 的 ConcurrentHashMap 原理？</h3><p>ConcurrentHashMap 用于解决 HashMap 的线程不安全和 HashTable 的并发效率低，HashTable 之所以效率低是因为所有线程都必须竞争同一把锁，假如容器里有多把锁，每一把锁用于锁容器的部分数据，那么多线程访问容器不同数据段的数据时，线程间就不会存在锁竞争，从而有效提高并发效率，这就是 ConcurrentHashMap 的锁分段技术。首先将数据分成 Segment 数据段，然后给每一个数据段配一把锁，当一个线程占用锁访问其中一个段的数据时，其他段的数据也能被其他线程访问。</p>
-<h3 id="JDK8-的-ConcurrentHashMap-原理？"><a href="#JDK8-的-ConcurrentHashMap-原理？" class="headerlink" title="JDK8 的 ConcurrentHashMap 原理？"></a>JDK8 的 ConcurrentHashMap 原理？</h3><p>主要对 JDK7 做了三点改造：① 取消分段锁机制，进一步降低冲突概率。② 引入红黑树结构，同一个哈希槽上的元素个数超过一定阈值后，单向链表改为红黑树结构。③ 使用了更加优化的方式统计集合内的元素数量。具体优化表现在：在 put、resize 和 size 方法中设计元素总数的更新和计算都避免了锁，使用 CAS 代替。</p>
-<p>get 同样不需要同步，put 操作时如果没有出现哈希冲突，就使用 CAS 添加元素，否则使用 synchronized 加锁添加元素。</p>
-<p>当某个槽内的元素个数达到 7 且 table 容量不小于 64 时，链表转为红黑树。当某个槽内的元素减少到 6 时，由红黑树重新转为链表。在转化过程中，使用同步块锁住当前槽的首元素，防止其他线程对当前槽进行增删改操作，转化完成后利用 CAS 替换原有链表。由于 TreeNode 节点也存储了 next 引用，因此红黑树转为链表很简单，只需从 first 元素开始遍历所有节点，并把节点从 TreeNode 转为 Node 类型即可，当构造好新链表后同样用 CAS 替换红黑树。</p>
+<h4 id="ssh链接"><a href="#ssh链接" class="headerlink" title="ssh链接"></a>ssh链接</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
 
+<h4 id="修改虚拟机默认地址"><a href="#修改虚拟机默认地址" class="headerlink" title="修改虚拟机默认地址"></a>修改虚拟机默认地址</h4><p>修改配置文件Vagrantfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;private_network&quot;, ip:&quot;192.168.56.10&quot;</span><br></pre></td></tr></table></figure>
+<p>ip地址要VirtualBox虚拟网卡的ip地址相匹配</p>
+<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant restart</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
@@ -404,145 +448,33 @@
 
 
 
-  <article id="post-AQS" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-Docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T06:04:55.000Z"><a href="/2020/07/19/AQS/">2020-07-19</a></time>
+        <time class="dt-published" datetime="2020-07-24T06:56:08.000Z"><a href="/2020/07/24/Docker/">2020-07-24</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/07/19/AQS/">AQS</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="AQS-了解吗？"><a href="#AQS-了解吗？" class="headerlink" title="AQS 了解吗？"></a>AQS 了解吗？</h3><p>AQS 队列同步器是用来构建锁或其他同步组件的基础框架，它使用一个 volatile int state 变量作为共享资源，如果线程获取资源失败，则进入同步队列等待；如果获取成功就执行临界区代码，释放资源时会通知同步队列中的等待线程。</p>
-<p>同步器的主要使用方式是继承，子类通过继承同步器并实现它的抽象方法来管理同步状态，对同步状态进行更改需要使用同步器提供的 3个方法 getState、setState 和 compareAndSetState ，它们保证状态改变是安全的。子类推荐被定义为自定义同步组件的静态内部类，同步器自身没有实现任何同步接口，它仅仅定义若干同步状态获取和释放的方法，同步器既支持独占式也支持共享式。</p>
-<p>同步器是实现锁的关键，在锁的实现中聚合同步器，利用同步器实现锁的语义。锁面向使用者，定义了使用者与锁交互的接口，隐藏实现细节；同步器面向锁的实现者，简化了锁的实现方式，屏蔽了同步状态管理、线程排队、等待与唤醒等底层操作。</p>
-<p>每当有新线程请求资源时都会进入一个等待队列，只有当持有锁的线程释放锁资源后该线程才能持有资源。等待队列通过双向链表实现，线程被封装在链表的 Node 节点中，Node 的等待状态包括：CANCELLED（线程已取消）、SIGNAL（线程需要唤醒）、CONDITION （线程正在等待）、PROPAGATE（后继节点会传播唤醒操作，只在共享模式下起作用）。</p>
-<h3 id="AQS-有哪两种模式？"><a href="#AQS-有哪两种模式？" class="headerlink" title="AQS 有哪两种模式？"></a>AQS 有哪两种模式？</h3><ul>
-<li><p>独占模式表示锁只会被一个线程占用，其他线程必须等到持有锁的线程释放锁后才能获取锁，同一时间只能有一个线程获取到锁。</p>
-</li>
-<li><p>共享模式表示多个线程获取同一个锁有可能成功，ReadLock 就采用共享模式。</p>
-</li>
-<li><p>独占模式通过 acquire 和 release 方法获取和释放锁，共享模式通过 acquireShared 和 releaseShared 方法获取和释放锁。</p>
-</li>
-</ul>
-<h3 id="AQS-独占式获取-释放锁的原理"><a href="#AQS-独占式获取-释放锁的原理" class="headerlink" title="AQS 独占式获取/释放锁的原理"></a>AQS 独占式获取/释放锁的原理</h3><p>获取同步状态时，调用 acquire 方法，维护一个同步队列，使用 tryAcquire 方法安全地获取线程同步状态，获取失败的线程会被构造同步节点并通过 addWaiter 方法加入到同步队列的尾部，在队列中自旋。之后调用 acquireQueued 方法使得该节点以死循环的方式获取同步状态，如果获取不到则阻塞，被阻塞线程的唤醒主要依靠前驱节点的出队或被中断实现，移出队列或停止自旋的条件是前驱节点是头结点且成功获取了同步状态。</p>
-<p>释放同步状态时，同步器调用 tryRelease 方法释放同步状态，然后调用 unparkSuccessor 方法唤醒头节点的后继节点，使后继节点重新尝试获取同步状态。</p>
-<h3 id="为什么只有前驱节点是头节点时才能尝试获取同步状态？"><a href="#为什么只有前驱节点是头节点时才能尝试获取同步状态？" class="headerlink" title="为什么只有前驱节点是头节点时才能尝试获取同步状态？"></a>为什么只有前驱节点是头节点时才能尝试获取同步状态？</h3><ul>
-<li><p>头节点是成功获取到同步状态的节点，后继节点的线程被唤醒后需要检查自己的前驱节点是否是头节点。</p>
-</li>
-<li><p>目的是维护同步队列的 FIFO 原则，节点和节点在循环检查的过程中基本不通信，而是简单判断自己的前驱是否为头节点，这样就使节点的释放规则符合 FIFO，并且也便于对过早通知的处理，过早通知指前驱节点不是头节点的线程由于中断被唤醒。</p>
-</li>
-</ul>
-<h3 id="AQS-共享式式获取-释放锁的原理？"><a href="#AQS-共享式式获取-释放锁的原理？" class="headerlink" title="AQS 共享式式获取/释放锁的原理？"></a>AQS 共享式式获取/释放锁的原理？</h3><ul>
-<li><p>获取同步状态时，调用 acquireShared 方法，该方法调用 tryAcquireShared 方法尝试获取同步状态，返回值为 int 类型，返回值不小于于 0 表示能获取同步状态。因此在共享式获取锁的自旋过程中，成功获取同步状态并退出自旋的条件就是该方法的返回值不小于0。</p>
-</li>
-<li><p>释放同步状态时，调用 releaseShared 方法，释放后会唤醒后续处于等待状态的节点。它和独占式的区别在于 tryReleaseShared 方法必须确保同步状态安全释放，通过循环 CAS 保证，因为释放同步状态的操作会同时来自多个线程。</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-并发" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T05:55:43.000Z"><a href="/2020/07/19/并发/">2020-07-19</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/19/并发/">并发</a></h1>
+    <h1 class="title"><a href="/2020/07/24/Docker/">Docker</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="final-可以保证可见性吗？"><a href="#final-可以保证可见性吗？" class="headerlink" title="final 可以保证可见性吗？"></a>final 可以保证可见性吗？</h3><p>final 可以保证可见性，被 final 修饰的字段在构造方法中一旦被初始化完成，并且构造方法没有把 this 引用传递出去，在其他线程中就能看见 final 字段值。</p>
-<p>在旧的 JMM 中，一个严重缺陷是线程可能看到 final 值改变。比如一个线程看到一个 int 类型 final 值为 0，此时该值是未初始化前的零值，一段时间后该值被某线程初始化，再去读这个 final 值会发现值变为 1。</p>
-<p>为修复该漏洞，JSR-133 为 final 域增加重排序规则：只要对象是正确构造的（被构造对象的引用在构造方法中没有逸出），那么不需要使用同步就可以保证任意线程都能看到这个 final 域初始化后的值。</p>
-<p>写 final 域重排序规则</p>
-<p>禁止把 final 域的写重排序到构造方法之外，编译器会在 final 域的写后，构造方法的 return 前，插入一个 Store Store 屏障。确保在对象引用为任意线程可见之前，对象的 final 域已经初始化过。</p>
-<p>读 final 域重排序规则</p>
-<p>在一个线程中，初次读对象引用和初次读该对象包含的 final 域，JMM 禁止处理器重排序这两个操作。编译器在读 final 域操作的前面插入一个 Load Load 屏障，确保在读一个对象的 final 域前一定会先读包含这个 final 域的对象引用。</p>
+        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>虚拟化容器</li>
+<li>安装: <a href="https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community" target="_blank" rel="noopener">https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community</a></li>
+<li>安装文档: <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="noopener">https://docs.docker.com/engine/install/centos/</a>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/07/19/并发/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-JVM" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T05:44:54.000Z"><a href="/2020/07/19/JVM/">2020-07-19</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/19/JVM/">JVM</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><h4 id="创建对象的过程是什么？"><a href="#创建对象的过程是什么？" class="headerlink" title="创建对象的过程是什么？"></a>创建对象的过程是什么？</h4><ul>
-<li>字节码角度<ul>
-<li>NEW： 如果找不到 Class 对象则进行类加载。加载成功后在堆中分配内存，从 Object 到本类路径上的所有属性都要分配。分配完毕后进行零值设置。最后将指向实例对象的引用变量压入虚拟机栈顶。</li>
-<li>DUP：  在栈顶复制引用变量，这时栈顶有两个指向堆内实例的引用变量。两个引用变量的目的不同，栈底的引用用于赋值或保存局部变量表，栈顶的引用作为句柄调用相关方法。</li>
-<li>INVOKESPECIAL： 通过栈顶的引用变量调用 init 方法。</li>
-</ul>
-</li>
-<li>执行角度<ul>
-<li>当 JVM 遇到字节码 new 指令时，首先将检查该指令的参数能否在常量池中定位到一个类的符号引用，并检查引用代表的类是否已被加载、解析和初始化，如果没有就先执行类加载。</li>
-<li>在类加载检查通过后虚拟机将为新生对象分配内存。</li>
-<li>内存分配完成后虚拟机将成员变量设为零值，保证对象的实例字段可以不赋初值就使用。</li>
-<li>设置对象头，包括哈希码、GC 信息、锁信息、对象所属类的类元信息等。</li>
-<li>执行 init 方法，初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量。</li>
-</ul>
-</li>
-</ul>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/19/JVM/#more" class="more-link">Read More</a>
+            <a href="/2020/07/24/Docker/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -599,9 +531,13 @@
   
     <li><a href="/categories/code/SpringMVC/">SpringMVC</a><small>1</small></li>
   
+    <li><a href="/categories/Term/">Term</a><small>1</small></li>
+  
     <li><a href="/categories/code/">code</a><small>1</small></li>
   
     <li><a href="/categories/command/">command</a><small>2</small></li>
+  
+    <li><a href="/categories/config/">config</a><small>19</small></li>
   
   </ul>
 </div>
@@ -612,9 +548,7 @@
   <h3 class="title">Tags</h3>
   <ul class="entry">
   
-    <li><a href="/tags/Array/">Array</a><small>21</small></li>
-  
-    <li><a href="/tags/Arrays/">Arrays</a><small>1</small></li>
+    <li><a href="/tags/Array/">Array</a><small>22</small></li>
   
     <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
@@ -629,6 +563,8 @@
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+  
+    <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
     <li><a href="/tags/GC/">GC</a><small>1</small></li>
   
@@ -650,11 +586,17 @@
   
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
+    <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
   
     <li><a href="/tags/Sort/">Sort</a><small>2</small></li>
   
     <li><a href="/tags/SpinLock/">SpinLock</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloud/">SpringCloud</a><small>1</small></li>
+  
+    <li><a href="/tags/SpringCloudAlibaba/">SpringCloudAlibaba</a><small>1</small></li>
   
     <li><a href="/tags/SpringMVC/">SpringMVC</a><small>1</small></li>
   
@@ -666,17 +608,27 @@
   
     <li><a href="/tags/Two-Pointers/">Two Pointers</a><small>9</small></li>
   
+    <li><a href="/tags/VM/">VM</a><small>1</small></li>
+  
     <li><a href="/tags/aqs/">aqs</a><small>1</small></li>
+  
+    <li><a href="/tags/cache/">cache</a><small>1</small></li>
   
     <li><a href="/tags/cammand/">cammand</a><small>1</small></li>
   
-    <li><a href="/tags/command/">command</a><small>2</small></li>
+    <li><a href="/tags/check/">check</a><small>1</small></li>
+  
+    <li><a href="/tags/command/">command</a><small>4</small></li>
   
     <li><a href="/tags/datastruction/">datastruction</a><small>1</small></li>
   
     <li><a href="/tags/designpatterns/">designpatterns</a><small>1</small></li>
   
-    <li><a href="/tags/git/">git</a><small>2</small></li>
+    <li><a href="/tags/docker/">docker</a><small>1</small></li>
+  
+    <li><a href="/tags/feign/">feign</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>3</small></li>
   
     <li><a href="/tags/java/">java</a><small>2</small></li>
   
@@ -688,15 +640,33 @@
   
     <li><a href="/tags/memory/">memory</a><small>1</small></li>
   
+    <li><a href="/tags/mq/">mq</a><small>1</small></li>
+  
+    <li><a href="/tags/network/">network</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
+  
+    <li><a href="/tags/oss/">oss</a><small>1</small></li>
+  
+    <li><a href="/tags/password/">password</a><small>1</small></li>
   
     <li><a href="/tags/redis/">redis</a><small>1</small></li>
   
     <li><a href="/tags/reference/">reference</a><small>1</small></li>
   
+    <li><a href="/tags/session/">session</a><small>1</small></li>
+  
     <li><a href="/tags/singleton/">singleton</a><small>1</small></li>
   
+    <li><a href="/tags/springcloudalibaba/">springcloudalibaba</a><small>1</small></li>
+  
+    <li><a href="/tags/term/">term</a><small>1</small></li>
+  
     <li><a href="/tags/thread/">thread</a><small>1</small></li>
+  
+    <li><a href="/tags/transaction/">transaction</a><small>1</small></li>
   
     <li><a href="/tags/workflow/">workflow</a><small>1</small></li>
   
