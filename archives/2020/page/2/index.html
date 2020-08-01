@@ -50,6 +50,87 @@
 
 
   
+    <article id="post-redis-缓存和分布式锁" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T03:38:20.000Z"><a href="/2020/07/26/redis-缓存和分布式锁/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/redis-缓存和分布式锁/">redis-缓存和分布式锁</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="整合redis"><a href="#整合redis" class="headerlink" title="整合redis"></a>整合redis</h3><ol>
+<li>引入data-redis-starter</li>
+<li>简单配置redis的host等信息</li>
+<li>使用SpringBoot自动配置好的StringRedisTemplate来操作redis</li>
+</ol>
+<h3 id="读模式缓存"><a href="#读模式缓存" class="headerlink" title="读模式缓存"></a>读模式缓存</h3><ul>
+<li>即时性、数据一致性要求不高的</li>
+<li>访问量大且更新频率不高的数据</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data= cache.load(id);</span><br><span class="line"><span class="keyword">if</span>(data == <span class="keyword">null</span>)&#123;</span><br><span class="line">    data = db.load(id);</span><br><span class="line">    cache.put(id,data);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/26/redis-缓存和分布式锁/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-nginx" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T02:57:54.000Z"><a href="/2020/07/26/nginx/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/nginx/">nginx</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/nginx-2020-07-26-11-04-25.png" alt="nginx-2020-07-26-11-04-25"></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/26/nginx/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-配置网络" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -404,93 +485,6 @@
 
 
   
-    <article id="post-Vagrant" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T06:58:09.000Z"><a href="/2020/07/24/Vagrant/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/Vagrant/">Vagrant</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
-<li>安装地址: <a href="https://www.vagrantup.com/downloads" target="_blank" rel="noopener">https://www.vagrantup.com/downloads</a></li>
-<li>仓库地址: <a href="https://app.vagrantup.com/boxes/search/" target="_blank" rel="noopener">https://app.vagrantup.com/boxes/search/</a></li>
-<li>相关命令行: <a href="https://www.vagrantup.com/docs/cli" target="_blank" rel="noopener">https://www.vagrantup.com/docs/cli</a><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3></li>
-</ul>
-<h4 id="初始化CentOS7"><a href="#初始化CentOS7" class="headerlink" title="初始化CentOS7"></a>初始化CentOS7</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init contos/7</span><br></pre></td></tr></table></figure>
-<h4 id="运行虚拟机"><a href="#运行虚拟机" class="headerlink" title="运行虚拟机"></a>运行虚拟机</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
-<ul>
-<li>用户: root</li>
-<li>密码: vagrant</li>
-</ul>
-<h4 id="ssh链接"><a href="#ssh链接" class="headerlink" title="ssh链接"></a>ssh链接</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
-
-<h4 id="修改虚拟机默认地址"><a href="#修改虚拟机默认地址" class="headerlink" title="修改虚拟机默认地址"></a>修改虚拟机默认地址</h4><p>修改配置文件Vagrantfile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;private_network&quot;, ip:&quot;192.168.56.10&quot;</span><br></pre></td></tr></table></figure>
-<p>ip地址要VirtualBox虚拟网卡的ip地址相匹配</p>
-<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant restart</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-Docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T06:56:08.000Z"><a href="/2020/07/24/Docker/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/Docker/">Docker</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
-<li>虚拟化容器</li>
-<li>安装: <a href="https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community" target="_blank" rel="noopener">https://hub.docker.com/search?q=&amp;type=edition&amp;offering=community</a></li>
-<li>安装文档: <a href="https://docs.docker.com/engine/install/centos/" target="_blank" rel="noopener">https://docs.docker.com/engine/install/centos/</a>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/24/Docker/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -528,7 +522,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>50</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -557,7 +551,11 @@
   
     <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
+    <li><a href="/tags/Binary-Indexed-Tree/">Binary Indexed Tree</a><small>1</small></li>
+  
     <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/Breadth-first-Search/">Breadth-first Search</a><small>1</small></li>
   
     <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
@@ -565,7 +563,7 @@
   
     <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
   
-    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
   
@@ -579,7 +577,9 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+  
+    <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   
     <li><a href="/tags/Linked-List/">Linked List</a><small>5</small></li>
   
@@ -592,6 +592,8 @@
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
+    <li><a href="/tags/Segment-Tree/">Segment Tree</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
   

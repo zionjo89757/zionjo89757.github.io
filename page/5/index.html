@@ -46,6 +46,99 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-并发" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T05:55:43.000Z"><a href="/2020/07/19/并发/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/并发/">并发</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="final-可以保证可见性吗？"><a href="#final-可以保证可见性吗？" class="headerlink" title="final 可以保证可见性吗？"></a>final 可以保证可见性吗？</h3><p>final 可以保证可见性，被 final 修饰的字段在构造方法中一旦被初始化完成，并且构造方法没有把 this 引用传递出去，在其他线程中就能看见 final 字段值。</p>
+<p>在旧的 JMM 中，一个严重缺陷是线程可能看到 final 值改变。比如一个线程看到一个 int 类型 final 值为 0，此时该值是未初始化前的零值，一段时间后该值被某线程初始化，再去读这个 final 值会发现值变为 1。</p>
+<p>为修复该漏洞，JSR-133 为 final 域增加重排序规则：只要对象是正确构造的（被构造对象的引用在构造方法中没有逸出），那么不需要使用同步就可以保证任意线程都能看到这个 final 域初始化后的值。</p>
+<p>写 final 域重排序规则</p>
+<p>禁止把 final 域的写重排序到构造方法之外，编译器会在 final 域的写后，构造方法的 return 前，插入一个 Store Store 屏障。确保在对象引用为任意线程可见之前，对象的 final 域已经初始化过。</p>
+<p>读 final 域重排序规则</p>
+<p>在一个线程中，初次读对象引用和初次读该对象包含的 final 域，JMM 禁止处理器重排序这两个操作。编译器在读 final 域操作的前面插入一个 Load Load 屏障，确保在读一个对象的 final 域前一定会先读包含这个 final 域的对象引用。</p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/并发/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-JVM" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T05:44:54.000Z"><a href="/2020/07/19/JVM/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/JVM/">JVM</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><h4 id="创建对象的过程是什么？"><a href="#创建对象的过程是什么？" class="headerlink" title="创建对象的过程是什么？"></a>创建对象的过程是什么？</h4><ul>
+<li>字节码角度<ul>
+<li>NEW： 如果找不到 Class 对象则进行类加载。加载成功后在堆中分配内存，从 Object 到本类路径上的所有属性都要分配。分配完毕后进行零值设置。最后将指向实例对象的引用变量压入虚拟机栈顶。</li>
+<li>DUP：  在栈顶复制引用变量，这时栈顶有两个指向堆内实例的引用变量。两个引用变量的目的不同，栈底的引用用于赋值或保存局部变量表，栈顶的引用作为句柄调用相关方法。</li>
+<li>INVOKESPECIAL： 通过栈顶的引用变量调用 init 方法。</li>
+</ul>
+</li>
+<li>执行角度<ul>
+<li>当 JVM 遇到字节码 new 指令时，首先将检查该指令的参数能否在常量池中定位到一个类的符号引用，并检查引用代表的类是否已被加载、解析和初始化，如果没有就先执行类加载。</li>
+<li>在类加载检查通过后虚拟机将为新生对象分配内存。</li>
+<li>内存分配完成后虚拟机将成员变量设为零值，保证对象的实例字段可以不赋初值就使用。</li>
+<li>设置对象头，包括哈希码、GC 信息、锁信息、对象所属类的类元信息等。</li>
+<li>执行 init 方法，初始化成员变量，执行实例化代码块，调用类的构造方法，并把堆内对象的首地址赋值给引用变量。</li>
+</ul>
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/19/JVM/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-BIO-NIO-AIO" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -482,81 +575,6 @@
 
 
 
-  <article id="post-类加载过程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T11:37:34.000Z"><a href="/2020/07/18/类加载过程/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/类加载过程/">类加载过程</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h3><p>类的加载就是将class文件中的二进制数据读取到内存中，然后将该字节流所代表的静态数据结构转化为方法区中运行的数据结构，并且在堆内存中生成一个java.lang.Class对象作为访问方法区数据结构的入口</p>
-<h3 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h3><p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B-2020-07-18-19-40-57.png" alt="类加载过程-2020-07-18-19-40-57"></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/类加载过程/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-52-N-Queens-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T07:31:51.000Z"><a href="/2020/07/18/52-N-Queens-II/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/52-N-Queens-II/">52. N-Queens II</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>与51类似<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">totalNQueens</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] rule = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        Arrays.fill(rule,-<span class="number">1</span>);</span><br><span class="line">        count = <span class="number">0</span>;</span><br><span class="line">        NextQ(rule,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">NextQ</span><span class="params">(<span class="keyword">int</span>[] rule, <span class="keyword">int</span> row)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = rule.length;</span><br><span class="line">        <span class="keyword">if</span>(row &gt;= n)&#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> flag;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">            flag = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; row; j++ )&#123;</span><br><span class="line">                <span class="keyword">if</span>(rule[j] == i  || j - rule[j] ==  row - i || j + rule[j] ==  row + i) &#123;</span><br><span class="line">                    flag  = <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>)&#123;</span><br><span class="line">                rule[row] = i;</span><br><span class="line">                NextQ(rule, row+<span class="number">1</span>);</span><br><span class="line">                rule[row] = -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -593,7 +611,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>50</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -622,7 +640,11 @@
   
     <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
+    <li><a href="/tags/Binary-Indexed-Tree/">Binary Indexed Tree</a><small>1</small></li>
+  
     <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/Breadth-first-Search/">Breadth-first Search</a><small>1</small></li>
   
     <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
@@ -630,7 +652,7 @@
   
     <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
   
-    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
   
@@ -644,7 +666,9 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+  
+    <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   
     <li><a href="/tags/Linked-List/">Linked List</a><small>5</small></li>
   
@@ -657,6 +681,8 @@
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
+    <li><a href="/tags/Segment-Tree/">Segment Tree</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
   

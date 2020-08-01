@@ -50,6 +50,106 @@
 
 
   
+    <article id="post-32-Longest-Valid-Parentheses" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T03:08:16.000Z"><a href="/2020/07/17/32-Longest-Valid-Parentheses/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/32-Longest-Valid-Parentheses/">32. Longest Valid Parentheses</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given a string containing just the characters ‘(‘ and ‘)’, find the length of the longest valid (well-formed) parentheses substring.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>动态规划</li>
+<li><code>dp[i]</code> 表示以下标 i 字符结尾的最长有效括号的长度<ul>
+<li>if $s[i] = \text{‘)’}s[i]=‘)’ 且 s[i - 1] = \text{‘(’}s[i−1]=‘(’$<ul>
+<li>$dp[i]=dp[i−2]+2$</li>
+</ul>
+</li>
+<li>if $s[i]=‘)’ 且 s[i - 1] = \text{‘)’}s[i−1]=‘)’$<ul>
+<li>if $s[i - \textit{dp}[i - 1] - 1] = \text{‘(’}s[i−dp[i−1]−1]=‘(’$<ul>
+<li>$dp[i]=dp[i−1]+dp[i−dp[i−1]−2]+2$<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">longestValidParentheses</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> maxans = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> dp[] = <span class="keyword">new</span> <span class="keyword">int</span>[s.length()];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.charAt(i) == <span class="string">')'</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (s.charAt(i - <span class="number">1</span>) == <span class="string">'('</span>) &#123;</span><br><span class="line">                    dp[i] = (i &gt;= <span class="number">2</span> ? dp[i - <span class="number">2</span>] : <span class="number">0</span>) + <span class="number">2</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (i - dp[i - <span class="number">1</span>] &gt; <span class="number">0</span> &amp;&amp; s.charAt(i - dp[i - <span class="number">1</span>] - <span class="number">1</span>) == <span class="string">'('</span>) &#123;</span><br><span class="line">                    dp[i] = dp[i - <span class="number">1</span>] + ((i - dp[i - <span class="number">1</span>]) &gt;= <span class="number">2</span> ? dp[i - dp[i - <span class="number">1</span>] - <span class="number">2</span>] : <span class="number">0</span>) + <span class="number">2</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                maxans = Math.max(maxans, dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> maxans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-31-Next-Permutation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T03:01:28.000Z"><a href="/2020/07/17/31-Next-Permutation/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/31-Next-Permutation/">31. Next Permutation</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.</p>
+</blockquote>
+<blockquote>
+<p>If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).</p>
+</blockquote>
+<blockquote>
+<p>The replacement must be in-place and use only constant extra memory.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>从尾到头搜索后一个数比前一个数的大的情况<ul>
+<li>如果存在这种情况：互换</li>
+<li>如果没有，整个数列反转<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nextPermutation</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123; </span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">int</span> i = len - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> temp ;</span><br><span class="line">        <span class="keyword">int</span> j;</span><br><span class="line">        <span class="keyword">while</span>( i - <span class="number">1</span> &gt;= <span class="number">0</span> &amp;&amp; nums[i] &lt;= nums[i - <span class="number">1</span>])&#123;</span><br><span class="line">            i--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(i == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j&lt;len/<span class="number">2</span>;j++)&#123;</span><br><span class="line">                temp = nums[j];</span><br><span class="line">                nums[j] = nums[len -<span class="number">1</span> - j];</span><br><span class="line">                nums[len -<span class="number">1</span> - j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            temp = nums[i-<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">for</span>(j = i; j &lt; len; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(temp &gt;= nums[j]) <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            nums[i - <span class="number">1</span>] = nums[j - <span class="number">1</span>];</span><br><span class="line">            nums[j - <span class="number">1</span>] = temp;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j&lt;(len-i)/<span class="number">2</span>;j++)&#123;</span><br><span class="line">                temp = nums[j + i];</span><br><span class="line">                nums[j + i] = nums[len - <span class="number">1</span> - j];</span><br><span class="line">                nums[len -<span class="number">1</span> - j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-30-Substring-with-Concatenation-of-All-Words" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -374,85 +474,6 @@
 
 
   
-    <article id="post-17-Letter-Combinations-of-a-Phone-Number" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-16T02:52:51.000Z"><a href="/2020/07/16/17-Letter-Combinations-of-a-Phone-Number/">2020-07-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/16/17-Letter-Combinations-of-a-Phone-Number/">17. Letter Combinations of a Phone Number</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.</p>
-</blockquote>
-<blockquote>
-<p>A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>层序遍历<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">letterCombinations</span><span class="params">(String digits)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;String&gt; ls = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">3</span>;</span><br><span class="line">        <span class="keyword">int</span> offset = <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">char</span> d;</span><br><span class="line">        ArrayList&lt;String&gt; temp_ls;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; digits.length(); i++)&#123;</span><br><span class="line">            d = digits.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(d &lt; <span class="string">'7'</span>) &#123;</span><br><span class="line">                j = <span class="number">3</span>;</span><br><span class="line">                offset = (d - <span class="string">'2'</span>) *<span class="number">3</span>;</span><br><span class="line">                </span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(d == <span class="string">'7'</span>)&#123;</span><br><span class="line">                j = <span class="number">4</span>;</span><br><span class="line">                offset = <span class="number">15</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(d == <span class="string">'8'</span>)&#123;</span><br><span class="line">                j = <span class="number">3</span>;</span><br><span class="line">                offset = <span class="number">19</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                j = <span class="number">4</span>;</span><br><span class="line">                offset = <span class="number">22</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            temp_ls = ls;</span><br><span class="line">            ls = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">            <span class="keyword">if</span>(temp_ls.size() == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; j; k++)&#123;</span><br><span class="line">                    ls.add(<span class="string">""</span> + (<span class="keyword">char</span>)(<span class="string">'a'</span>+ offset + k));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> l = <span class="number">0</span>; l &lt; temp_ls.size(); l++)&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; j; k++)&#123;</span><br><span class="line">                        ls.add(temp_ls.get(l) + (<span class="keyword">char</span>)(<span class="string">'a'</span>+ offset + k));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ls;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-16-3Sum-Closest" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-16T02:48:53.000Z"><a href="/2020/07/16/16-3Sum-Closest/">2020-07-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/16/16-3Sum-Closest/">16. 3Sum Closest</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>与15题类似<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">threeSumClosest</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> max = Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length-<span class="number">2</span>; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; nums.length-<span class="number">1</span>; j++)&#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> k = j+<span class="number">1</span>; k &lt; nums.length; k++)&#123;</span><br><span class="line">                    s = nums[i]+nums[j]+nums[k];</span><br><span class="line">                    <span class="keyword">if</span>(s == target) <span class="keyword">return</span> s;</span><br><span class="line">                    <span class="keyword">if</span>(Math.abs( s - target) &lt; max )</span><br><span class="line">                    &#123;</span><br><span class="line">                        max = Math.abs( s - target);</span><br><span class="line">                        r = s;   </span><br><span class="line">                    &#125;      </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -490,7 +511,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>50</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -519,7 +540,11 @@
   
     <li><a href="/tags/Backtracking/">Backtracking</a><small>11</small></li>
   
+    <li><a href="/tags/Binary-Indexed-Tree/">Binary Indexed Tree</a><small>1</small></li>
+  
     <li><a href="/tags/Binary-Search/">Binary Search</a><small>5</small></li>
+  
+    <li><a href="/tags/Breadth-first-Search/">Breadth-first Search</a><small>1</small></li>
   
     <li><a href="/tags/ClassLoader/">ClassLoader</a><small>1</small></li>
   
@@ -527,7 +552,7 @@
   
     <li><a href="/tags/DataStruction/">DataStruction</a><small>1</small></li>
   
-    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>2</small></li>
+    <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
     <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
   
@@ -541,7 +566,9 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>1</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+  
+    <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   
     <li><a href="/tags/Linked-List/">Linked List</a><small>5</small></li>
   
@@ -554,6 +581,8 @@
     <li><a href="/tags/OOM/">OOM</a><small>1</small></li>
   
     <li><a href="/tags/Oauth2/">Oauth2</a><small>1</small></li>
+  
+    <li><a href="/tags/Segment-Tree/">Segment Tree</a><small>1</small></li>
   
     <li><a href="/tags/Sliding-Window/">Sliding Window</a><small>1</small></li>
   
