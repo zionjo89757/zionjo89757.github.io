@@ -50,6 +50,51 @@
 
 
   
+    <article id="post-871-Minimum-Number-of-Refueling-Stops" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-01T07:21:27.000Z"><a href="/2020/08/01/871-Minimum-Number-of-Refueling-Stops/">2020-08-01</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/08/01/871-Minimum-Number-of-Refueling-Stops/">871. Minimum Number of Refueling Stops</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>A car travels from a starting position to a destination which is target miles east of the starting position.<br>Along the way, there are gas stations.  Each station[i] represents a gas station that is station[i][0] miles east of the starting position, and has station[i][1] liters of gas.<br>The car starts with an infinite tank of gas, which initially has startFuel liters of fuel in it.  It uses 1 liter of gas per 1 mile that it drives.<br>When the car reaches a gas station, it may stop and refuel, transferring all the gas from the station into the car.<br>What is the least number of refueling stops the car must make in order to reach its destination?  If it cannot reach the destination, return -1.<br>Note that if the car reaches a gas station with 0 fuel left, the car can still refuel there.  If the car reaches the destination with 0 fuel left, it is still considered to have arrived.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>堆<ul>
+<li>每驶过一个加油站，记住这个加油站有多少油。不需要立即决定要不要在这个加油站加油，如果后面有油量更多的加油站显然优先选择后面的加油。</li>
+<li>如果当前油量不够抵达下一个加油站，必须得从之前的加油站中找一个来加油，贪心选择最大油量储备的加油站就好了。</li>
+<li>定义 pq（优先队列）为一个保存了驶过加油站油量的最大堆，定义当前油量为 tank。</li>
+<li>如果当前油量为负数（意味着当前油量不够抵达当前位置），那就必须在驶过的加油站找一个油量储备最大来加油。</li>
+<li>如果在某个位置油量为负，且没有加油站可用了，那就不可能完成这个任务。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minRefuelStops</span><span class="params">(<span class="keyword">int</span> target, <span class="keyword">int</span> tank, <span class="keyword">int</span>[][] stations)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// pq is a maxheap of gas station capacities</span></span><br><span class="line">        PriorityQueue&lt;Integer&gt; pq = <span class="keyword">new</span> PriorityQueue(Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, prev = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] station: stations) &#123;</span><br><span class="line">            <span class="keyword">int</span> location = station[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> capacity = station[<span class="number">1</span>];</span><br><span class="line">            tank -= location - prev;</span><br><span class="line">            <span class="keyword">while</span> (!pq.isEmpty() &amp;&amp; tank &lt; <span class="number">0</span>) &#123;  <span class="comment">// must refuel in past</span></span><br><span class="line">                tank += pq.poll();</span><br><span class="line">                ans++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (tank &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            pq.offer(capacity);</span><br><span class="line">            prev = location;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Repeat body for station = (target, inf)</span></span><br><span class="line">        &#123;</span><br><span class="line">            tank -= target - prev;</span><br><span class="line">            <span class="keyword">while</span> (!pq.isEmpty() &amp;&amp; tank &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                tank += pq.poll();</span><br><span class="line">                ans++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (tank &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-407-Trapping-Rain-Water-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -162,7 +207,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>53</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -205,7 +250,7 @@
   
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>7</small></li>
   
     <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
@@ -217,7 +262,7 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>4</small></li>
   
     <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   

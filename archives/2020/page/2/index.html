@@ -50,6 +50,53 @@
 
 
   
+    <article id="post-SpringCache" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T05:37:00.000Z"><a href="/2020/07/26/SpringCache/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/SpringCache/">SpringCache</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>自定义配置类RedisCacheConfiguration</p>
+<h3 id="缓存注解"><a href="#缓存注解" class="headerlink" title="缓存注解"></a>缓存注解</h3><p>@EnableCaching：开启缓存功能<br>@Cacheable：定义缓存，用于触发缓存<br>@CachePut：定义更新缓存，触发缓存更新<br>@CacheEvict：定义清除缓存，触发缓存清除<br>@Caching：组合定义多种缓存功能<br>@CacheConfig：定义公共设置，位于class之上</p>
+<h3 id="Cacheable-CachePut"><a href="#Cacheable-CachePut" class="headerlink" title="@Cacheable/@CachePut"></a>@Cacheable/@CachePut</h3><ul>
+<li>cacheNames 缓存名称,默认为空串</li>
+<li>cacheManager 指定cacheManager若不指定则使用默认的cacheManager,这里使用了上面定义的 permission</li>
+<li>key 缓存的键,可使用字符串,入参,以及 #root root里有caches,method,args,target,targetClass可供使用</li>
+<li>condition 条件,只用满足条件注解才生效,如下只有参数menuId==2时才生效</li>
+<li>unless 与condition 类似,不过它可以处理返回值,如下只有返回的对象(#result)中的enable属性为1才生效,但是需要注意如果使用返回值中的某一个属性进行比较,但返回值是一个null,就会报错,unless是除非的意思,也就是说当unless中的条件满足时注解不生效</li>
+</ul>
+<h3 id="CacheEvict"><a href="#CacheEvict" class="headerlink" title="@CacheEvict"></a>@CacheEvict</h3><ul>
+<li>同上</li>
+<li>allEntries=true 删除同一个cache(cacheName相同)下的所有键</li>
+<li>beforeInvocation=true 无论方法有没有执行成功都删除缓存</li>
+</ul>
+<h3 id="KeyGenerator"><a href="#KeyGenerator" class="headerlink" title="KeyGenerator"></a>KeyGenerator</h3><p>某些业务不必每个cache都手动指定key,我们可以定义一定的策略自动生成key, 首先定义一个KeyGenerator放到spring容器中, KeyGenerator接口的generate方法有三个参数,当前对象,注解所在方法,方法的入参,如下定义一个简单的由类名+方法名+入参生成的key</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>(<span class="string">"myKeyGenerator"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">public</span> KeyGenerator <span class="title">menuKeyGenerator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> (target, method, params) -&gt; &#123;</span><br><span class="line">           String baseName = target.getClass().getSimpleName() + <span class="string">":"</span> + method.getName();</span><br><span class="line">           <span class="keyword">if</span> (params.length == <span class="number">0</span>) &#123;</span><br><span class="line">               <span class="keyword">return</span> baseName;</span><br><span class="line">           &#125;</span><br><span class="line">           baseName = baseName + <span class="string">":"</span>;</span><br><span class="line">           <span class="keyword">for</span> (Object param : params) &#123;</span><br><span class="line">               baseName = baseName + param.toString() + <span class="string">","</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> baseName;</span><br><span class="line">       &#125;;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-redis-缓存和分布式锁" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -451,40 +498,6 @@
 
 
   
-    <article id="post-配置git-ssh" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T07:48:13.000Z"><a href="/2020/07/24/配置git-ssh/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/配置git-ssh/">配置git-ssh</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C "&#123;email address&#125;"</span><br><span class="line"><span class="meta">#</span><span class="bash"> 测试</span></span><br><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -522,7 +535,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>53</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -565,7 +578,7 @@
   
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>7</small></li>
   
     <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
@@ -577,7 +590,7 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>4</small></li>
   
     <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   

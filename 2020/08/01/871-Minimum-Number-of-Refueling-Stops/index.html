@@ -3,15 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>线程 | Zionjo Blogs</title>
+  <title>871. Minimum Number of Refueling Stops | Zionjo Blogs</title>
   <meta name="author" content="Zion Jo">
   
-  <meta name="description" content="线程通信的方式有哪些？命令式编程中线程的通信机制有两种，共享内存和消息传递。在共享内存的并发模型里线程间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。在消息传递的并发模型里线程间没有公共状态，必须通过发送消息来显式通信。Java 并发采用共享内存模型，线程之间的通信总是隐式进行，整个通">
+  <meta name="description" content="Problem
+A car travels from a starting position to a destination which is target miles east of the starting position.Along the way, there are gas stati">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="线程"/>
+  <meta property="og:title" content="871. Minimum Number of Refueling Stops"/>
   <meta property="og:site_name" content="Zionjo Blogs"/>
 
   
@@ -47,52 +48,36 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-线程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-871-Minimum-Number-of-Refueling-Stops" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-19T06:19:10.000Z"><a href="/2020/07/19/线程/">2020-07-19</a></time>
+        <time class="dt-published" datetime="2020-08-01T07:21:27.000Z"><a href="/2020/08/01/871-Minimum-Number-of-Refueling-Stops/">2020-08-01</a></time>
       
       
   
-    <h1 class="p-name title" itemprop="headline name">线程</h1>
+    <h1 class="p-name title" itemprop="headline name">871. Minimum Number of Refueling Stops</h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h3 id="线程通信的方式有哪些？"><a href="#线程通信的方式有哪些？" class="headerlink" title="线程通信的方式有哪些？"></a>线程通信的方式有哪些？</h3><p>命令式编程中线程的通信机制有两种，共享内存和消息传递。在共享内存的并发模型里线程间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。在消息传递的并发模型里线程间没有公共状态，必须通过发送消息来显式通信。Java 并发采用共享内存模型，线程之间的通信总是隐式进行，整个通信过程对程序员完全透明。</p>
-<ul>
-<li><p>volatile 告知程序任何对变量的读需要从主内存中获取，写必须同步刷新回主内存，保证所有线程对变量访问的可见性。</p>
-</li>
-<li><p>synchronized 确保多个线程在同一时刻只能有一个处于方法或同步块中，保证线程对变量访问的原子性、可见性和有序性。</p>
-</li>
-<li><p>等待通知机制指一个线程 A 调用了对象的 wait 方法进入等待状态，另一线程 B 调用了对象的 notify/notifyAll 方法，线程 A 收到通知后结束阻塞并执行后序操作。对象上的 wait 和 notify/notifyAll 如同开关信号，完成等待方和通知方的交互。如果一个线程执行了某个线程的 join 方法，这个线程就会阻塞等待执行了 join 方法的线程终止，这里-涉及等待/通知机制。join 底层通过 wait 实现，线程终止时会调用自身的 notifyAll 方法，通知所有等待在该线程对象上的线程。</p>
-</li>
-<li><p>管道 IO 流用于线程间数据传输，媒介为内存。PipedOutputStream 和 PipedWriter 是输出流，相当于生产者，PipedInputStream 和 PipedReader 是输入流，相当于消费者。管道流使用一个默认大小为 1KB 的循环缓冲数组。输入流从缓冲数组读数据，输出流往缓冲数组中写数据。当数组已满时，输出流所在线程阻塞；当数组首次为空时，输入流所在线程阻塞。</p>
-</li>
-<li><p>ThreadLocal 是线程共享变量，但它可以为每个线程创建单独的副本，副本值是线程私有的，互相之间不影响。</p>
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>A car travels from a starting position to a destination which is target miles east of the starting position.<br>Along the way, there are gas stations.  Each station[i] represents a gas station that is station[i][0] miles east of the starting position, and has station[i][1] liters of gas.<br>The car starts with an infinite tank of gas, which initially has startFuel liters of fuel in it.  It uses 1 liter of gas per 1 mile that it drives.<br>When the car reaches a gas station, it may stop and refuel, transferring all the gas from the station into the car.<br>What is the least number of refueling stops the car must make in order to reach its destination?  If it cannot reach the destination, return -1.<br>Note that if the car reaches a gas station with 0 fuel left, the car can still refuel there.  If the car reaches the destination with 0 fuel left, it is still considered to have arrived.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>堆<ul>
+<li>每驶过一个加油站，记住这个加油站有多少油。不需要立即决定要不要在这个加油站加油，如果后面有油量更多的加油站显然优先选择后面的加油。</li>
+<li>如果当前油量不够抵达下一个加油站，必须得从之前的加油站中找一个来加油，贪心选择最大油量储备的加油站就好了。</li>
+<li>定义 pq（优先队列）为一个保存了驶过加油站油量的最大堆，定义当前油量为 tank。</li>
+<li>如果当前油量为负数（意味着当前油量不够抵达当前位置），那就必须在驶过的加油站找一个油量储备最大来加油。</li>
+<li>如果在某个位置油量为负，且没有加油站可用了，那就不可能完成这个任务。</li>
+</ul>
 </li>
 </ul>
-<h3 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h3><p>ThreadLoacl 是线程共享变量，主要用于一个线程内跨类、方法传递数据。ThreadLoacl 有一个静态内部类 ThreadLocalMap，其 Key 是 ThreadLocal 对象，值是 Entry 对象，Entry 中只有一个 Object 类的 vaule 值。ThreadLocal 是线程共享的，但 ThreadLocalMap 是每个线程私有的。ThreadLocal 主要有 set、get 和 remove 三个方法。</p>
-<p>set 方法</p>
-<p>首先获取当前线程，然后再获取当前线程对应的 ThreadLocalMap 类型的对象 map。如果 map 存在就直接设置值，key 是当前的 ThreadLocal 对象，value 是传入的参数。</p>
-<p>如果 map 不存在就通过 createMap 方法为当前线程创建一个 ThreadLocalMap 对象再设置值。</p>
-<p>get 方法</p>
-<p>首先获取当前线程，然后再获取当前线程对应的 ThreadLocalMap 类型的对象 map。如果 map 存在就以当前 ThreadLocal 对象作为 key 获取 Entry 类型的对象 e，如果 e 存在就返回它的 value 属性。</p>
-<p>如果 e 不存在或者 map 不存在，就调用 setInitialValue 方法先为当前线程创建一个 ThreadLocalMap 对象然后返回默认的初始值 null。</p>
-<p>remove 方法</p>
-<p>首先通过当前线程获取其对应的 ThreadLocalMap 类型的对象 m，如果 m 不为空，就解除 ThreadLocal 这个 key 及其对应的 value 值的联系。</p>
-<p>存在的问题</p>
-<p>线程复用会产生脏数据，由于线程池会重用 Thread 对象，因此与 Thread 绑定的 ThreadLocal 也会被重用。如果没有调用 remove 清理与线程相关的 ThreadLocal 信息，那么假如下一个线程没有调用 set 设置初始值就可能 get 到重用的线程信息。</p>
-<p>ThreadLocal 还存在内存泄漏的问题，由于 ThreadLocal 是弱引用，但 Entry 的 value 是强引用，因此当 ThreadLocal 被垃圾回收后，value 依旧不会被释放。因此需要及时调用 remove 方法进行清理操作。</p>
-<h3 id="JDK7-的-ConcurrentHashMap-原理？"><a href="#JDK7-的-ConcurrentHashMap-原理？" class="headerlink" title="JDK7 的 ConcurrentHashMap 原理？"></a>JDK7 的 ConcurrentHashMap 原理？</h3><p>ConcurrentHashMap 用于解决 HashMap 的线程不安全和 HashTable 的并发效率低，HashTable 之所以效率低是因为所有线程都必须竞争同一把锁，假如容器里有多把锁，每一把锁用于锁容器的部分数据，那么多线程访问容器不同数据段的数据时，线程间就不会存在锁竞争，从而有效提高并发效率，这就是 ConcurrentHashMap 的锁分段技术。首先将数据分成 Segment 数据段，然后给每一个数据段配一把锁，当一个线程占用锁访问其中一个段的数据时，其他段的数据也能被其他线程访问。</p>
-<h3 id="JDK8-的-ConcurrentHashMap-原理？"><a href="#JDK8-的-ConcurrentHashMap-原理？" class="headerlink" title="JDK8 的 ConcurrentHashMap 原理？"></a>JDK8 的 ConcurrentHashMap 原理？</h3><p>主要对 JDK7 做了三点改造：① 取消分段锁机制，进一步降低冲突概率。② 引入红黑树结构，同一个哈希槽上的元素个数超过一定阈值后，单向链表改为红黑树结构。③ 使用了更加优化的方式统计集合内的元素数量。具体优化表现在：在 put、resize 和 size 方法中设计元素总数的更新和计算都避免了锁，使用 CAS 代替。</p>
-<p>get 同样不需要同步，put 操作时如果没有出现哈希冲突，就使用 CAS 添加元素，否则使用 synchronized 加锁添加元素。</p>
-<p>当某个槽内的元素个数达到 7 且 table 容量不小于 64 时，链表转为红黑树。当某个槽内的元素减少到 6 时，由红黑树重新转为链表。在转化过程中，使用同步块锁住当前槽的首元素，防止其他线程对当前槽进行增删改操作，转化完成后利用 CAS 替换原有链表。由于 TreeNode 节点也存储了 next 引用，因此红黑树转为链表很简单，只需从 first 元素开始遍历所有节点，并把节点从 TreeNode 转为 Node 类型即可，当构造好新链表后同样用 CAS 替换红黑树。</p>
-
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minRefuelStops</span><span class="params">(<span class="keyword">int</span> target, <span class="keyword">int</span> tank, <span class="keyword">int</span>[][] stations)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// pq is a maxheap of gas station capacities</span></span><br><span class="line">        PriorityQueue&lt;Integer&gt; pq = <span class="keyword">new</span> PriorityQueue(Collections.reverseOrder());</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>, prev = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span>[] station: stations) &#123;</span><br><span class="line">            <span class="keyword">int</span> location = station[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">int</span> capacity = station[<span class="number">1</span>];</span><br><span class="line">            tank -= location - prev;</span><br><span class="line">            <span class="keyword">while</span> (!pq.isEmpty() &amp;&amp; tank &lt; <span class="number">0</span>) &#123;  <span class="comment">// must refuel in past</span></span><br><span class="line">                tank += pq.poll();</span><br><span class="line">                ans++;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (tank &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">            pq.offer(capacity);</span><br><span class="line">            prev = location;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Repeat body for station = (target, inf)</span></span><br><span class="line">        &#123;</span><br><span class="line">            tank -= target - prev;</span><br><span class="line">            <span class="keyword">while</span> (!pq.isEmpty() &amp;&amp; tank &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                tank += pq.poll();</span><br><span class="line">                ans++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (tank &lt; <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
@@ -100,13 +85,13 @@
         
   
   <div class="categories">
-    <a href="/categories/Interview/">Interview</a>
+    <a href="/categories/LeetCode/">LeetCode</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/thread/">thread</a>
+    <a href="/tags/Dynamic-Programming/">Dynamic Programming</a>, <a href="/tags/Heap/">Heap</a>
   </div>
 
         

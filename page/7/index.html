@@ -46,6 +46,45 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-44-Wildcard-Matching" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T06:47:39.000Z"><a href="/2020/07/18/44-Wildcard-Matching/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/44-Wildcard-Matching/">44. Wildcard Matching</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for ‘?’ and ‘*’.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>动态规划 <code>f[i][j]</code>表示s的第i位以后与p的第j位以后是否匹配<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (p.charAt(j) == <span class="string">'*'</span>) f[i][j] = f[i][j + <span class="number">1</span>] || f[i + <span class="number">1</span>][j];</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (p.charAt(j) == <span class="string">'?'</span> || s.charAt(i) == p.charAt(j)) f[i][j] = f[i + <span class="number">1</span>][j + <span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMatch</span><span class="params">(String s, String p)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;   </span><br><span class="line">        <span class="comment">// init base cases</span></span><br><span class="line">        <span class="keyword">int</span> m = s.length(), n = p.length();</span><br><span class="line">        <span class="keyword">boolean</span>[][] f = <span class="keyword">new</span> <span class="keyword">boolean</span>[m + <span class="number">1</span>][n + <span class="number">1</span>];</span><br><span class="line">        f[m][n] = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = n - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j) <span class="keyword">if</span> (p.charAt(j) == <span class="string">'*'</span>) f[m][j] = <span class="keyword">true</span>; <span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// DP</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = m - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = n - <span class="number">1</span>; j &gt;= <span class="number">0</span>; --j)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (p.charAt(j) == <span class="string">'*'</span>) f[i][j] = f[i][j + <span class="number">1</span>] || f[i + <span class="number">1</span>][j];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (p.charAt(j) == <span class="string">'?'</span> || s.charAt(i) == p.charAt(j)) f[i][j] = f[i + <span class="number">1</span>][j + <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> f[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-43-Multiply-Strings" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -458,46 +497,6 @@
 
 
 
-  <article id="post-HashMap底层实现" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-17T12:34:28.000Z"><a href="/2020/07/17/HashMap底层实现/">2020-07-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/17/HashMap底层实现/">HashMap底层实现</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="基本属性"><a href="#基本属性" class="headerlink" title="基本属性"></a>基本属性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">362498820763181265L</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">4</span>; <span class="comment">// aka 16</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;<span class="comment">//最大容量</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> DEFAULT_LOAD_FACTOR = <span class="number">0.75f</span>;<span class="comment">//默认填充比</span></span><br><span class="line">    <span class="comment">//当add一个元素到某个位桶，其链表长度达到8时将链表转换为红黑树</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TREEIFY_THRESHOLD = <span class="number">8</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNTREEIFY_THRESHOLD = <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_TREEIFY_CAPACITY = <span class="number">64</span>;</span><br><span class="line">    <span class="keyword">transient</span> Node&lt;k,v&gt;[] table;<span class="comment">//存储元素的数组</span></span><br><span class="line">    <span class="keyword">transient</span> Set&lt;map.entry&lt;k,v&gt;&gt; entrySet;</span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">int</span> size;<span class="comment">//存放元素的个数</span></span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">int</span> modCount;<span class="comment">//被修改的次数fast-fail机制</span></span><br><span class="line">    <span class="keyword">int</span> threshold;<span class="comment">//临界值 当实际大小(容量*填充比)超过临界值时，会进行扩容 </span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">float</span> loadFactor;<span class="comment">//填充比</span></span><br></pre></td></tr></table></figure>
-<h3 id="取hash值"><a href="#取hash值" class="headerlink" title="取hash值"></a>取hash值</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JDK1.8</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> h;</span><br><span class="line">        <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="储存方式"><a href="#储存方式" class="headerlink" title="储存方式"></a>储存方式</h3><ul>
-<li>JDK1.8之前，由数组+链表组成，插入单链表表头的方式</li>
-<li>JDK1.8之后，变化为数组+链表+红黑树的存储方式，当链表长度超过阈值（8）时，将链表转换为红黑树。在性能上进一步得到提升。
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/17/HashMap底层实现/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -534,7 +533,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>53</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -577,7 +576,7 @@
   
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>7</small></li>
   
     <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
@@ -589,7 +588,7 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>4</small></li>
   
     <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   

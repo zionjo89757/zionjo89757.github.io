@@ -50,6 +50,45 @@
 
 
   
+    <article id="post-22-Generate-Parentheses" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-16T03:13:24.000Z"><a href="/2020/07/16/22-Generate-Parentheses/">2020-07-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/16/22-Generate-Parentheses/">22. Generate Parentheses</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>DFS+减枝</li>
+<li>flag: 目前还需要几个<code>)</code><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">generateParenthesis</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; ls = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        generateLastParenthesis(<span class="string">""</span>, <span class="number">0</span>, ls, n);</span><br><span class="line">        <span class="keyword">return</span> ls;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">generateLastParenthesis</span><span class="params">(String pre,<span class="keyword">int</span> flag,List&lt;String&gt; ls, <span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(pre.length() == num*<span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (flag == <span class="number">0</span>)&#123;</span><br><span class="line">                ls.add(pre);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>( flag + <span class="number">1</span> &lt;= num)&#123;</span><br><span class="line">                generateLastParenthesis(pre+<span class="string">'('</span>,flag+<span class="number">1</span>,ls,num);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(flag - <span class="number">1</span> &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">                generateLastParenthesis(pre+<span class="string">')'</span>,flag-<span class="number">1</span>,ls,num);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-19-Remove-Nth-Node-From-End-of-List" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -430,55 +469,6 @@
 
 
   
-    <article id="post-12-Integer-to-Roman" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-15T08:53:43.000Z"><a href="/2020/07/15/12-Integer-to-Roman/">2020-07-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/15/12-Integer-to-Roman/">12. Integer to Roman</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Symbol       Value</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>For example, two is written as II in Roman numeral, just two one’s added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.</p>
-</blockquote>
-<blockquote>
-<p>Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:</p>
-</blockquote>
-<blockquote>
-<p>I can be placed before V (5) and X (10) to make 4 and 9.<br>X can be placed before L (50) and C (100) to make 40 and 90.<br>C can be placed before D (500) and M (1000) to make 400 and 900.<br>Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>找规律，没营养</li>
-<li>注意讨论每一位的49即可<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">intToRoman</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] symbol = &#123;<span class="string">'I'</span>,<span class="string">'V'</span>,<span class="string">'X'</span>,<span class="string">'L'</span>,<span class="string">'C'</span>,<span class="string">'D'</span>,<span class="string">'M'</span>&#125;;</span><br><span class="line">        String roman = <span class="string">""</span>;</span><br><span class="line">        String newS;</span><br><span class="line">        <span class="keyword">int</span> numnew;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(num &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            numnew = num % <span class="number">10</span>;</span><br><span class="line">            newS = <span class="string">""</span>;</span><br><span class="line">            <span class="keyword">if</span>(numnew == <span class="number">4</span>)</span><br><span class="line">            newS = <span class="string">""</span> + symbol[index] + symbol[index+<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(numnew == <span class="number">9</span>)</span><br><span class="line">            newS = <span class="string">""</span> + symbol[index] + symbol[index+<span class="number">2</span>];</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(numnew &gt;= <span class="number">5</span>) newS = <span class="string">""</span> + symbol[index+<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (numnew % <span class="number">5</span>) ; i++)</span><br><span class="line">                &#123;</span><br><span class="line">                    newS = newS + symbol[index];</span><br><span class="line">                &#125; </span><br><span class="line">            &#125;</span><br><span class="line">            roman =  newS + roman ;</span><br><span class="line">            num = num/<span class="number">10</span>;</span><br><span class="line">            index = index + <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> roman;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -516,7 +506,7 @@
   
     <li><a href="/categories/Java/">Java</a><small>11</small></li>
   
-    <li><a href="/categories/LeetCode/">LeetCode</a><small>52</small></li>
+    <li><a href="/categories/LeetCode/">LeetCode</a><small>53</small></li>
   
     <li><a href="/categories/Linux/">Linux</a><small>1</small></li>
   
@@ -559,7 +549,7 @@
   
     <li><a href="/tags/Divide-and-Conquer/">Divide and Conquer</a><small>3</small></li>
   
-    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>6</small></li>
+    <li><a href="/tags/Dynamic-Programming/">Dynamic Programming</a><small>7</small></li>
   
     <li><a href="/tags/ElasticSearch/">ElasticSearch</a><small>1</small></li>
   
@@ -571,7 +561,7 @@
   
     <li><a href="/tags/HashMap/">HashMap</a><small>1</small></li>
   
-    <li><a href="/tags/Heap/">Heap</a><small>3</small></li>
+    <li><a href="/tags/Heap/">Heap</a><small>4</small></li>
   
     <li><a href="/tags/Line-Sweep/">Line Sweep</a><small>1</small></li>
   
