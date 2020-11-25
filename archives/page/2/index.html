@@ -50,6 +50,52 @@
 
 
   
+    <article id="post-密码的加密存储" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-26T09:09:20.000Z"><a href="/2020/07/26/密码的加密存储/">2020-07-26</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/26/密码的加密存储/">密码的加密存储</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="MD5"><a href="#MD5" class="headerlink" title="MD5"></a>MD5</h3><ul>
+<li>信息摘要算法<ul>
+<li>压缩性</li>
+<li>容易计算</li>
+<li>抗修改性</li>
+<li>强抗碰撞</li>
+<li>不可逆</li>
+</ul>
+</li>
+</ul>
+<h3 id="盐值加密"><a href="#盐值加密" class="headerlink" title="盐值加密"></a>盐值加密</h3><ul>
+<li>给密码加随机值</li>
+<li>储存方式：<code>$1$sale_value$MD5_value</code></li>
+</ul>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">BCryptPasswordEncoder passwordEncoder = <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">String encode = passwordEncode.encode(<span class="string">"123456"</span>);</span><br><span class="line"><span class="keyword">boolean</span> matches = passwordEncoder.matches(<span class="string">"123456"</span>,encode);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-SpringCache" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -427,61 +473,6 @@
 
 <h3 id="请求拦截器RequestInterceptor"><a href="#请求拦截器RequestInterceptor" class="headerlink" title="请求拦截器RequestInterceptor"></a>请求拦截器RequestInterceptor</h3><p>可以重新设置请求头</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LittleFeignConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"requestInterceptor"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> RequestInterceptor <span class="title">requestInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RequestInterceptor()&#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate requestTemplate)</span> </span>&#123;</span><br><span class="line">                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">                <span class="keyword">if</span>(requestAttributes != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    HttpServletRequest request = requestAttributes.getRequest();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 同步请求头数据</span></span><br><span class="line">                    <span class="keyword">if</span>(request !=<span class="keyword">null</span>)&#123;</span><br><span class="line">                        String cookie = request.getHeader(<span class="string">"Cookie"</span>);</span><br><span class="line">                        requestTemplate.header(<span class="string">"Cookie"</span>,cookie);</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-Nacos" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T08:10:39.000Z"><a href="/2020/07/24/Nacos/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/Nacos/">Nacos</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Nacos"><a href="#Nacos" class="headerlink" title="Nacos"></a>Nacos</h3><p>Nacos 是阿里巴巴开源的一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p><a href="https://github.com/alibaba/nacos/releases" target="_blank" rel="noopener">https://github.com/alibaba/nacos/releases</a></p>
-<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>进入解压后文件夹或编译打包好的文件夹，找到如下相对文件夹 nacos/bin，并对照操作系统实际情况之下如下命令。</p>
-<h3 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h3><h4 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h4><p>Spring Cloud Nacos Discovery 遵循了 spring cloud common 标准，实现了 AutoServiceRegistration、ServiceRegistry、Registration 这三个接口。</p>
-<p>在 spring cloud 应用的启动阶段，监听了 WebServerInitializedEvent 事件，当Web容器初始化完成后，即收到 WebServerInitializedEvent 事件后，会触发注册的动作，调用 ServiceRegistry 的 register 方法，将服务注册到 Nacos Server。</p>
-<h4 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h4><p>NacosServerList 实现了 com.netflix.loadbalancer.ServerList 接口，并在 @ConditionOnMissingBean 的条件下进行自动注入，默认集成了Ribbon。</p>
-<p>如果需要有更加自定义的可以使用 @Autowired 注入一个 NacosRegistration 实例，通过其持有的 NamingService 字段内容直接调用 Nacos API。</p>
-<h4 id="接入"><a href="#接入" class="headerlink" title="接入"></a>接入</h4><ol>
-<li>首先，修改 pom.xml 文件，引入 Nacos Discovery Starter。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>在应用的 /src/main/resources/application.yaml 配置文件中配置 Nacos Server 地址<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  <span class="attr">spring.cloud.nacos.discovery.server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line"><span class="string">```</span> </span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">使用</span> <span class="string">@EnableDiscoveryClient</span> <span class="string">注解开启服务注册与发现功能</span></span><br><span class="line"><span class="string">```java</span></span><br><span class="line"><span class="string">@SpringBootApplication</span></span><br><span class="line"> <span class="string">@EnableDiscoveryClient</span></span><br><span class="line"> <span class="string">public</span> <span class="string">class</span> <span class="string">ProviderApplication</span> <span class="string">&#123;</span></span><br><span class="line"></span><br><span class="line"> 	<span class="string">public</span> <span class="string">static</span> <span class="string">void</span> <span class="string">main(String[]</span> <span class="string">args)</span> <span class="string">&#123;</span></span><br><span class="line"> 		<span class="string">SpringApplication.run(ProviderApplication.class,</span> <span class="string">args);</span></span><br><span class="line"> 	<span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line"> 	<span class="string">@RestController</span></span><br><span class="line"> 	<span class="string">class</span> <span class="string">EchoController</span> <span class="string">&#123;</span></span><br><span class="line"> 		<span class="string">@GetMapping(value</span> <span class="string">=</span> <span class="string">"/echo/&#123;string&#125;"</span><span class="string">)</span></span><br><span class="line"> 		<span class="string">public</span> <span class="string">String</span> <span class="string">echo(@PathVariable</span> <span class="string">String</span> <span class="string">string)</span> <span class="string">&#123;</span></span><br><span class="line"> 				<span class="string">return</span> <span class="string">string;</span></span><br><span class="line"> 		<span class="string">&#125;</span></span><br><span class="line"> 	<span class="string">&#125;</span></span><br><span class="line"> <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="服务配置"><a href="#服务配置" class="headerlink" title="服务配置"></a>服务配置</h3><h4 id="Nacos-Config-数据结构"><a href="#Nacos-Config-数据结构" class="headerlink" title="Nacos Config 数据结构"></a>Nacos Config 数据结构</h4><p>Nacos Client 从 Nacos Server 端获取数据时，调用的是此接口 ConfigService.getConfig(String dataId, String group, long timeoutMs)。</p>
-<h4 id="自动注入"><a href="#自动注入" class="headerlink" title="自动注入"></a>自动注入</h4><p>Nacos Config Starter 实现了 org.springframework.cloud.bootstrap.config.PropertySourceLocator接口，并将优先级设置成了最高。</p>
-<p>在 Spring Cloud 应用启动阶段，会主动从 Nacos Server 端获取对应的数据，并将获取到的数据转换成 PropertySource 且注入到 Environment 的 PropertySources 属性中，所以使用 @Value 注解也能直接获取 Nacos Server 端配置的内容。</p>
-<h4 id="动态刷新"><a href="#动态刷新" class="headerlink" title="动态刷新"></a>动态刷新</h4><p>Nacos Config Starter 默认为所有获取数据成功的 Nacos 的配置项添加了监听功能，在监听到服务端配置发生变化时会实时触发 org.springframework.cloud.context.refresh.ContextRefresher 的 refresh 方法 。</p>
-<h4 id="接入-1"><a href="#接入-1" class="headerlink" title="接入"></a>接入</h4><ol>
-<li>首先，修改 pom.xml 文件，引入 Nacos Config Starter。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>在应用的 /src/main/resources/bootstrap.properties 配置文件中配置 Nacos Config 元数据<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.application.name:</span> <span class="string">nacos-config-example</span></span><br><span class="line"> <span class="attr">spring.cloud.nacos.config.server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br></pre></td></tr></table></figure></li>
-<li>完成上述两步后，应用会从 Nacos Config 中获取相应的配置，并添加在 Spring Environment 的 PropertySources 中。这里我们使用 @Value 注解来将对应的配置注入到 SampleController 的 userName 和 age 字段，并添加 @RefreshScope 打开动态刷新功能<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Value</span>(<span class="string">"$&#123;user.name&#125;"</span>)</span><br><span class="line">	String userName;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Value</span>(<span class="string">"$&#123;user.age&#125;"</span>)</span><br><span class="line">	<span class="keyword">int</span> age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
 
       
     </div>

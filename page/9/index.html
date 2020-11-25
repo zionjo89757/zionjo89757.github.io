@@ -46,6 +46,58 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-37-Sudoku-Solver" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T03:46:37.000Z"><a href="/2020/07/17/37-Sudoku-Solver/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/37-Sudoku-Solver/">37. Sudoku Solver</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Write a program to solve a Sudoku puzzle by filling the empty cells.</p>
+</blockquote>
+<blockquote>
+<p>A sudoku solution must satisfy all of the following rules:</p>
+</blockquote>
+<blockquote>
+<p>Each of the digits 1-9 must occur exactly once in each row.<br>Each of the digits 1-9 must occur exactly once in each column.<br>Each of the the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.<br>Empty cells are indicated by the character ‘.’.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>回溯法<ul>
+<li>是否可以放子：是<ul>
+<li>放子</li>
+<li>放下一个</li>
+<li>失败 取子<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">int</span> N = n*n;</span><br><span class="line">    <span class="comment">//rule </span></span><br><span class="line">    <span class="keyword">int</span> [][] rows = <span class="keyword">new</span> <span class="keyword">int</span> [N][N+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> [][] columns = <span class="keyword">new</span> <span class="keyword">int</span>[N][N+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> [][] boxes = <span class="keyword">new</span> <span class="keyword">int</span>[N][N+<span class="number">1</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">char</span>[][] board;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">boolean</span> sudokuSolved = <span class="keyword">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">couldPlace</span><span class="params">(<span class="keyword">int</span> d, <span class="keyword">int</span> row ,<span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> idx = (row/n)*n+col/n;</span><br><span class="line">        <span class="keyword">return</span> rows[row][d] + columns[col][d]+boxes[idx][d] == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">placeNumber</span><span class="params">(<span class="keyword">int</span> d,<span class="keyword">int</span> row,<span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> idx = (row/n)*n+col/n;</span><br><span class="line">        rows[row][d]++;</span><br><span class="line">        columns[col][d]++;</span><br><span class="line">        boxes[idx][d]++;</span><br><span class="line">        board[row][col] = (<span class="keyword">char</span>)(d+<span class="string">'0'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">placeNextNumbers</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((col == N-<span class="number">1</span>) &amp;&amp; (row == N-<span class="number">1</span>)) sudokuSolved = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(col == N-<span class="number">1</span>) backtrack(row+<span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">else</span> backtrack(row, col+<span class="number">1</span>);</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeNumber</span><span class="params">(<span class="keyword">int</span> d, <span class="keyword">int</span> row, <span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> idx = (row/n)*n+col/n;</span><br><span class="line">        rows[row][d]--;</span><br><span class="line">        columns[col][d]--;</span><br><span class="line">        boxes[idx][d]--;</span><br><span class="line">        board[row][col] = <span class="string">'.'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="keyword">int</span> row, <span class="keyword">int</span> col)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(board[row][col] == <span class="string">'.'</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> d = <span class="number">1</span>; d&lt;= N; d++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(couldPlace(d, row, col))&#123;</span><br><span class="line">                    placeNumber(d, row, col);</span><br><span class="line">                    placeNextNumbers(row, col);</span><br><span class="line">                    <span class="keyword">if</span>(!sudokuSolved) removeNumber(d, row, col);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> placeNextNumbers(row, col);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">solveSudoku</span><span class="params">(<span class="keyword">char</span>[][] board)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.board = board;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;N ; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j&lt;N ; j++)&#123;</span><br><span class="line">                <span class="keyword">char</span> num = board[i][j];</span><br><span class="line">                <span class="keyword">if</span>(num != <span class="string">'.'</span>)&#123;</span><br><span class="line">                    <span class="keyword">int</span> d = Character.getNumericValue(num);</span><br><span class="line">                    placeNumber(d, i, j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        backtrack(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-36-Valid-Sudoku" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -437,45 +489,6 @@
 <h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
 <li>双指针</li>
 <li>注意指针的赋值顺序<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">swapPairs</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(head == <span class="keyword">null</span>) <span class="keyword">return</span> head;</span><br><span class="line">        ListNode node1 = head;</span><br><span class="line">        <span class="keyword">if</span>(head.next == <span class="keyword">null</span>) <span class="keyword">return</span> head;</span><br><span class="line">        ListNode node2 = head.next;</span><br><span class="line">        head = node2;</span><br><span class="line">        ListNode temp_head = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">            node1.next = node2.next;</span><br><span class="line">            node2.next = node1;</span><br><span class="line">            <span class="keyword">if</span>(temp_head != <span class="keyword">null</span>) temp_head.next = node2;</span><br><span class="line">            temp_head = node1;</span><br><span class="line">            <span class="keyword">if</span>(temp_head.next == <span class="keyword">null</span>) <span class="keyword">break</span>;</span><br><span class="line">            node1 = temp_head.next;</span><br><span class="line">            <span class="keyword">if</span>(node1.next == <span class="keyword">null</span>) <span class="keyword">break</span>;</span><br><span class="line">            node2 = node1.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-23-Merge-k-Sorted-Lists" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-16T03:24:50.000Z"><a href="/2020/07/16/23-Merge-k-Sorted-Lists/">2020-07-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/16/23-Merge-k-Sorted-Lists/">23. Merge k Sorted Lists</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>可以两两归并</li>
-<li>也可以<strong>使用优先队列合并</strong><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeKLists</span><span class="params">(ListNode[] lists)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(lists.length == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        ListNode result = lists[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i &lt; lists.length; i++)&#123;</span><br><span class="line">            result = mergeTwoLists(result,lists[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">mergeTwoLists</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        ListNode l3 = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode temp = l3;</span><br><span class="line">        <span class="keyword">while</span>(l1 != <span class="keyword">null</span> &amp;&amp; l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(l1.val &gt; l2.val)&#123;</span><br><span class="line">                temp.next = <span class="keyword">new</span> ListNode(l2.val);</span><br><span class="line">                l2 = l2.next;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                temp.next = <span class="keyword">new</span> ListNode(l1.val);</span><br><span class="line">                l1 = l1.next;</span><br><span class="line">                temp = temp.next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(l1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            temp.next = l1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(l2 != <span class="keyword">null</span>)&#123;</span><br><span class="line">            temp.next = l2;</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> l3.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       

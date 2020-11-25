@@ -46,6 +46,44 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-45-Jump-Game-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T06:58:46.000Z"><a href="/2020/07/18/45-Jump-Game-II/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/45-Jump-Game-II/">45. Jump Game II</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
+<p>Given an array of non-negative integers, you are initially positioned at the first index of the array.<br>Each element in the array represents your maximum jump length at that position.<br>Your goal is to reach the last index in the minimum number of jumps.</p>
+</blockquote>
+<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
+<li>跳的下一步应该选择下一步最远能够到达的地方<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">jump</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> jumps = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> maxReach = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> nextJump = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i &lt; nums.length-<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// check if we can reach from current position</span></span><br><span class="line">            <span class="keyword">if</span>(i+nums[i] &gt;= nums.length-<span class="number">1</span>)&#123;</span><br><span class="line">                jumps++;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// next jump is the one that maximizes the reach</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>; j &lt;= i+nums[i]; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(j+nums[j] &gt; maxReach)&#123;</span><br><span class="line">                    maxReach = j+nums[j];</span><br><span class="line">                    nextJump = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(i == nextJump)&#123;</span><br><span class="line">                <span class="comment">// no progress</span></span><br><span class="line">                jumps = -<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                i = nextJump;</span><br><span class="line">                jumps++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> jumps;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-44-Wildcard-Matching" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -445,47 +483,6 @@
           <div class="alignleft">
             <a href="/2020/07/17/JUC-Lock/#more" class="more-link">Read More</a>
           </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-红黑树" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-17T13:51:27.000Z"><a href="/2020/07/17/红黑树/">2020-07-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/17/红黑树/">红黑树</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><ul>
-<li>红黑树是一种特化的AVL树（平衡二叉树），都是在进行插入和删除操作时通过特定操作保持二叉查找树的平衡，从而获得较高的查找性能。它的左右子树高差有可能大于 1，所以红黑树不是严格意义上的平衡二叉树<h3 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h3></li>
-<li>节点是红色或黑色</li>
-<li>根节点是黑色</li>
-<li>所有叶子都是黑色。（叶子是NULL节点）</li>
-<li>每个红色节点的两个子节点都是黑色。</li>
-<li>从任一节点到其每个叶子的所有路径都包含相同数目的黑色节点。<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3></li>
-<li>从根到叶子的最长的可能路径不多于最短的可能路径的两倍长。结果是这个树大致上是平衡的。<h3 id="如果调整"><a href="#如果调整" class="headerlink" title="如果调整"></a>如果调整</h3><a href="https://baijiahao.baidu.com/s?id=1641940303518144126&wfr=spider&for=pc" target="_blank" rel="noopener">红黑树</a></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
         
         
       
