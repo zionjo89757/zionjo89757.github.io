@@ -46,6 +46,85 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-自旋锁" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T15:42:06.000Z"><a href="/2020/07/17/自旋锁/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/自旋锁/">自旋锁</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h3><p>自旋锁是指当一个线程尝试获取某个锁时，如果该锁已被其他线程占用，就一直循环检测锁是否被释放，而不是进入线程挂起或睡眠状态。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpinLock</span> <span class="keyword">implements</span> <span class="title">Lock</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  use thread itself as  synchronization state</span></span><br><span class="line"><span class="comment">     *  使用Owner Thread作为同步状态，比使用一个简单的boolean flag可以携带更多信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;Thread&gt; owner = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * reentrant count of a thread, no need to be volatile</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        <span class="comment">// if re-enter, increment the count.</span></span><br><span class="line">        <span class="keyword">if</span> (t == owner.get()) &#123;</span><br><span class="line">            ++count;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//spin</span></span><br><span class="line">        <span class="keyword">while</span> (!owner.compareAndSet(<span class="keyword">null</span>, t)) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread t = Thread.currentThread();</span><br><span class="line">        <span class="comment">//only the owner could do unlock;</span></span><br><span class="line">        <span class="keyword">if</span> (t == owner.get()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// reentrant count not zero, just decrease the counter.</span></span><br><span class="line">                --count;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// compareAndSet is not need here, already checked</span></span><br><span class="line">                owner.set(<span class="keyword">null</span>);</span><br><span class="line">                <span class="comment">//owner.compareAndSet(t, null)</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-JUC-Lock" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-17T14:39:01.000Z"><a href="/2020/07/17/JUC-Lock/">2020-07-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/17/JUC-Lock/">JUC Lock</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h3><blockquote>
+<p>Lock实现提供了比使用synchronized方法和语句可获得的更广泛的锁定操作。</p>
+</blockquote>
+<p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/JUC-Lock-2020-07-17-23-01-57.png" alt="JUC-Lock-2020-07-17-23-01-57"></p>
+<ul>
+<li><code>void lock()</code>: 获取一个锁，如果锁当前被其他线程获得，当前的线程将被休眠。</li>
+<li><code>boolean tryLock()</code>: 尝试获取一个锁，如果当前锁被其他线程持有，则返回false，不会使当前线程休眠。</li>
+<li><code>boolean tryLock(long timeout,TimeUnit unit)</code>: 如果获取了锁定立即返回true，如果别的线程正持有锁，会等待参数给定的时间，在等待的过程中，如果获取了锁定，就返回true，如果等待超时，返回false。</li>
+<li><code>void lockInterruptibly()</code>: 如果获取了锁，立即返回；如果没有获取锁，当前线程处于休眠状态，直到获取锁，或者当前线程被别的线程中断。</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/17/JUC-Lock/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-红黑树" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -1402,114 +1481,6 @@
 
 
 
-  <article id="post-40-Combination-Sum-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-17T04:04:58.000Z"><a href="/2020/07/17/40-Combination-Sum-II/">2020-07-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/17/40-Combination-Sum-II/">40. Combination Sum II</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.</p>
-</blockquote>
-<blockquote>
-<p>Each number in candidates may only be used once in the combination.</p>
-</blockquote>
-<blockquote>
-<p>Note:</p>
-</blockquote>
-<blockquote>
-<p>All numbers (including target) will be positive integers.<br>The solution set must not contain duplicate combinations.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>排序方便比较</li>
-<li><ul>
-<li>回溯法</li>
-</ul>
-</li>
-<li>已经等于了 收集</li>
-<li>大于结果了 返回</li>
-<li>小于：<ul>
-<li>放下</li>
-<li>放下一个</li>
-<li>取出<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; combinationSum2(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        Arrays.sort(candidates);</span><br><span class="line">        res = <span class="keyword">new</span> ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">        combSum(candidates,target,<span class="number">0</span>,<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combSum</span><span class="params">(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target,<span class="keyword">int</span> index ,List&lt;Integer&gt; ls)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(index &gt;= candidates.length) <span class="keyword">return</span>;</span><br><span class="line">        List&lt;Integer&gt; temp_ls = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span>(ls != <span class="keyword">null</span>)&#123;</span><br><span class="line">            temp_ls.addAll(ls);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> temp = candidates[index];</span><br><span class="line">        <span class="comment">//temp_ls.add(temp);</span></span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(index + num &lt; candidates.length &amp;&amp; candidates[index + num] == temp ) num++;</span><br><span class="line">        <span class="keyword">if</span>( target == temp) &#123;</span><br><span class="line">            temp_ls.add(temp);</span><br><span class="line">            res.add(temp_ls);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(target &lt; temp) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= num ; i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(target == temp*i ) &#123;</span><br><span class="line">                    res.add(temp_ls);</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                combSum(candidates,target - temp*i,index+num,temp_ls);</span><br><span class="line">                temp_ls.add(temp);    </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-39-Combination-Sum" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-17T03:55:22.000Z"><a href="/2020/07/17/39-Combination-Sum/">2020-07-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/17/39-Combination-Sum/">39. Combination Sum</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), find all unique combinations in candidates where the candidate numbers sums to target.</p>
-</blockquote>
-<blockquote>
-<p>The same repeated number may be chosen from candidates unlimited number of times.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>回溯法</li>
-<li>已经等于了 收集</li>
-<li>大于结果了 返回</li>
-<li>小于：<ul>
-<li>放下</li>
-<li>放下一个</li>
-<li>取出<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; combinationSum(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        Arrays.sort(candidates);</span><br><span class="line">        res = <span class="keyword">new</span> ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">        combSum(candidates,target,<span class="number">0</span>,<span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">combSum</span><span class="params">(<span class="keyword">int</span>[] candidates, <span class="keyword">int</span> target,<span class="keyword">int</span> index ,List&lt;Integer&gt; ls)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(index &gt;= candidates.length) <span class="keyword">return</span>;</span><br><span class="line">        List&lt;Integer&gt; temp_ls = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line">        <span class="keyword">if</span>(ls != <span class="keyword">null</span>)&#123;</span><br><span class="line">            temp_ls.addAll(ls);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> temp = candidates[index];</span><br><span class="line">        <span class="comment">//temp_ls.add(temp);</span></span><br><span class="line">        <span class="keyword">if</span>( target == temp) &#123;</span><br><span class="line">            temp_ls.add(temp);</span><br><span class="line">            res.add(temp_ls);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(target &lt; temp) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; temp*i &lt;= target;i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(temp*i == target) &#123;</span><br><span class="line">                    res.add(temp_ls);</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    combSum(candidates,target - temp*i,index+<span class="number">1</span>,temp_ls);</span><br><span class="line">                temp_ls.add(temp);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -1541,6 +1512,8 @@
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
     <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
+    <li><a href="/categories/JS/">JS</a><small>2</small></li>
   
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
@@ -1676,6 +1649,10 @@
     <li><a href="/tags/network/">network</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/nodejs/">nodejs</a><small>1</small></li>
+  
+    <li><a href="/tags/npm/">npm</a><small>1</small></li>
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   

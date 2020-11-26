@@ -50,6 +50,97 @@
 
 
   
+    <article id="post-4种引用" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:11:23.000Z"><a href="/2020/07/18/4种引用/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/4种引用/">4种引用</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="对象的生命周期"><a href="#对象的生命周期" class="headerlink" title="对象的生命周期"></a>对象的生命周期</h3><ol>
+<li>创建阶段(Created)<ol>
+<li>为对象分配存储空间</li>
+<li>开始构造对象</li>
+<li>从超类到子类对static成员进行初始化超类成员变量按顺序初始化，递归调用超类的构造方法</li>
+<li>子类成员变量按顺序初始化，子类构造方法调用</li>
+<li>一旦对象被创建，并被分派给某些变量赋值，这个对象的状态就切换到了应用阶段</li>
+</ol>
+</li>
+<li>应用阶段(In Use) 对象至少被一个强引用持有着</li>
+<li>不可见阶段(Invisible) 当一个对象处于不可见阶段时，说明程序本身不再持有该对象的任何强引用，虽然该这些引用仍然是存在着的。简单说就是程序的执行已经超出了该对象的作用域了。</li>
+<li>不可达阶段(Unreachable)对象处于不可达阶段是指该对象不再被任何GC-root所持有。</li>
+<li>收集阶段(Collected) 当垃圾回收器发现该对象已经处于“不可达阶段”并且垃圾回收器已经对该对象的内存空间重新分配做好准备时，则对象进入了“收集阶段”。如果该对象已经重写了finalize()方法，则会去执行该方法的终端操作。</li>
+<li>终结阶段(Finalized)当对象执行完finalize()方法后仍然处于不可达状态时，则该对象进入终结阶段。在该阶段是等待垃圾回收器对该对象空间进行回收。</li>
+<li>对象空间重分配阶段(De-allocated)垃圾回收器对该对象的所占用的内存空间进行回收或者再分配了，则该对象彻底消失了，称之为“对象空间重新分配阶段”。
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/4种引用/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-JVM参数调优" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-18T13:09:48.000Z"><a href="/2020/07/18/JVM参数调优/">2020-07-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/18/JVM参数调优/">JVM参数调优</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="JVM分析工具"><a href="#JVM分析工具" class="headerlink" title=" JVM分析工具"></a> JVM分析工具</h3><ol>
+<li>jps:查看运行的HotSpot VM进程</li>
+<li>jmap命令: 用来查看当前系统中jvm进程 heap dump的情况，包括对象的数量，对象所占内存的大小</li>
+<li>jmap -heap PID：查看jvm配置和使用情况； jmap -dump PID ：生成堆内存快照</li>
+<li>jstat命令：主要是用来监控 heap size 和 jvm垃圾回收情况，尤其是gc情况的监控，如果老年代多次发生full gc，那么很可能是内存泄漏导致。 推荐：jstat -gcutil PID 返回百分比的形式显示堆使用情况以及GC情况 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">S0&#x2F;S1：幸存者区</span><br><span class="line">E：伊甸园区，初生区</span><br><span class="line">0：老年代</span><br><span class="line">M：元空间</span><br><span class="line">YGC：年轻带回收次数</span><br><span class="line">YGCT：年轻带回收花费时间（秒）</span><br><span class="line">FGC：full GC</span><br><span class="line">FGC：full GC花费时间（秒）</span><br><span class="line">GCT：GC总时间（秒）</span><br></pre></td></tr></table></figure></li>
+<li>jstack PID ：打印所有线程的堆栈信息
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/07/18/JVM参数调优/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-垃圾回收机制" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -367,87 +458,6 @@
 
 
   
-    <article id="post-47-Permutations-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T07:12:44.000Z"><a href="/2020/07/18/47-Permutations-II/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/47-Permutations-II/">47. Permutations II</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a collection of numbers that might contain duplicates, return all possible unique permutations.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>回溯操作</li>
-<li>达到链长则反复</li>
-<li>增加重复判断<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; list =<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    ArrayList&lt;Integer&gt; asdd = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; permuteUnique(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(nums.length &lt;= <span class="number">0</span>) <span class="keyword">return</span> list;</span><br><span class="line">        <span class="keyword">if</span>(nums.length == <span class="number">1</span>)&#123;<span class="comment">//如果长度为1则直接返回</span></span><br><span class="line">            asdd.add(nums[<span class="number">0</span>]);</span><br><span class="line">            list.add(asdd);</span><br><span class="line">            <span class="keyword">return</span> list;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[] v = <span class="keyword">new</span> <span class="keyword">int</span>[nums.length];<span class="comment">//记录改位置是否呗使用</span></span><br><span class="line">        Arrays.sort(nums);<span class="comment">//排序，也可以不排序，但是时间复杂度较高</span></span><br><span class="line">        co1(list,asdd,nums,v);<span class="comment">//递归调用</span></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">co1</span><span class="params">(List&lt;List&lt;Integer&gt;&gt; list,List&lt;Integer&gt; cc,<span class="keyword">int</span>[] nums,<span class="keyword">int</span> v[])</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(cc.size() == nums.length)&#123;<span class="comment">//退出递归条件：当list长度等于数组长度时代表已经遍历完，可以退出</span></span><br><span class="line">            list.add(<span class="keyword">new</span> ArrayList&lt;&gt;(cc));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            <span class="comment">//#############排序实现         </span></span><br><span class="line">            <span class="keyword">if</span>(v[i] != <span class="number">1</span>) &#123; <span class="comment">//如果改位置已被使用则直接跳过           </span></span><br><span class="line">                <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; nums[i] == nums[i-<span class="number">1</span>] &amp;&amp; v[i - <span class="number">1</span>] != <span class="number">1</span>)&#123;<span class="comment">//去除重复的值，如果该位置的值为5，上一个位置的也为5，则冲突，跳过</span></span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                cc.add(nums[i]);<span class="comment">//加入List</span></span><br><span class="line">                v[i] = <span class="number">1</span>;<span class="comment">//标记该位置已被使用</span></span><br><span class="line">                co1(list, cc, nums,v);<span class="comment">//递归查找List的下一个位置</span></span><br><span class="line">                v[i] = <span class="number">0</span>;<span class="comment">//递归完成之后，复原该位置未被使用</span></span><br><span class="line">                cc.remove(cc.size() - <span class="number">1</span>);<span class="comment">//还原该位置，移除</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//##############</span></span><br><span class="line">            <span class="comment">/**不排序实现</span></span><br><span class="line"><span class="comment">            boolean flag = true;</span></span><br><span class="line"><span class="comment">            for(int f = 0; f &lt; i; f++)&#123;</span></span><br><span class="line"><span class="comment">                if(i &gt; 0 &amp;&amp; nums[i] == nums[i-1] &amp;&amp; v[i - 1] != 1)&#123;</span></span><br><span class="line"><span class="comment">                    flag = false;</span></span><br><span class="line"><span class="comment">                    break;</span></span><br><span class="line"><span class="comment">                &#125;</span></span><br><span class="line"><span class="comment">            &#125;</span></span><br><span class="line"><span class="comment">            if(v[i] != 1 &amp;&amp; flag) &#123;</span></span><br><span class="line"><span class="comment">                cc.add(nums[i]);</span></span><br><span class="line"><span class="comment">                v[i] = 1;</span></span><br><span class="line"><span class="comment">                co1(list, cc, nums,v);</span></span><br><span class="line"><span class="comment">                v[i] = 0;</span></span><br><span class="line"><span class="comment">                cc.remove(cc.size() - 1);</span></span><br><span class="line"><span class="comment">            &#125;**/</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-46-Permutations" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T07:10:31.000Z"><a href="/2020/07/18/46-Permutations/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/46-Permutations/">46. Permutations</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a collection of distinct integers, return all possible permutations.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><p><strong>递归</strong></p>
-<ul>
-<li>选取数组中第一个数字</li>
-<li>递归</li>
-<li>合并<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; permute(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        List&lt;Integer&gt; numArray = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i : nums)&#123;</span><br><span class="line">            numArray.add(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> permute2(numArray);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; permute2(List&lt;Integer&gt; ls) &#123;</span><br><span class="line">        List&lt;Integer&gt; numArray;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; temp;</span><br><span class="line">        List&lt;Integer&gt; input;</span><br><span class="line">        Integer temp_int;</span><br><span class="line">       </span><br><span class="line">    </span><br><span class="line">        <span class="keyword">if</span>(ls.size() == <span class="number">1</span>)&#123;</span><br><span class="line">            numArray = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            numArray.add(ls.get(<span class="number">0</span>));</span><br><span class="line">            res.add(numArray);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; ls.size(); i++)&#123;</span><br><span class="line">                input = <span class="keyword">new</span> ArrayList&lt;Integer&gt;(ls);</span><br><span class="line">                temp_int = input.remove(i);</span><br><span class="line">                temp = permute2(input);</span><br><span class="line">                <span class="keyword">for</span>(List&lt;Integer&gt; l : temp)&#123;</span><br><span class="line">                    l.add(<span class="number">0</span>,temp_int);</span><br><span class="line">                    res.add(l);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -480,6 +490,8 @@
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
     <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
+    <li><a href="/categories/JS/">JS</a><small>2</small></li>
   
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
@@ -615,6 +627,10 @@
     <li><a href="/tags/network/">network</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/nodejs/">nodejs</a><small>1</small></li>
+  
+    <li><a href="/tags/npm/">npm</a><small>1</small></li>
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   

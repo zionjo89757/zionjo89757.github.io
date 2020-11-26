@@ -50,6 +50,99 @@
 
 
   
+    <article id="post-设计模式" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T10:08:10.000Z"><a href="/2020/07/19/设计模式/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/设计模式/">设计模式</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="设计模式的分类，你知道哪些设计模式"><a href="#设计模式的分类，你知道哪些设计模式" class="headerlink" title="设计模式的分类，你知道哪些设计模式"></a>设计模式的分类，你知道哪些设计模式</h3><ul>
+<li><p>创建型： 在创建对象的同时隐藏创建逻辑，不使用 new 直接实例化对象，程序在判断需要创建哪些对象时更灵活。包括工厂/抽象工厂/单例/建造者/原型模式。</p>
+</li>
+<li><p>结构型： 通过类和接口间的继承和引用实现创建复杂结构的对象。包括适配器/桥接模式/过滤器/组合/装饰器/外观/享元/代理模式。</p>
+</li>
+<li><p>行为型： 通过类之间不同通信方式实现不同行为。包括责任链/命名/解释器/迭代器/中介者/备忘录/观察者/状态/策略/模板/访问者模式。</p>
+</li>
+</ul>
+<h3 id="设计模式有哪些原则？"><a href="#设计模式有哪些原则？" class="headerlink" title="设计模式有哪些原则？"></a>设计模式有哪些原则？</h3><ul>
+<li><p>开闭原则：OOP 中最基础的原则，指一个软件实体（类、模块、方法等）应该对扩展开放，对修改关闭。强调用抽象构建框架，用实现扩展细节，提高代码的可复用性和可维护性。</p>
+</li>
+<li><p>单一职责原则：一个类、接口或方法只负责一个职责，降低代码复杂度以及变更引起的风险。</p>
+</li>
+<li><p>依赖倒置原则：程序应该依赖于抽象类或接口，而不是具体的实现类。</p>
+</li>
+<li><p>接口隔离原则：将不同功能定义在不同接口中实现接口隔离，避免了类依赖它不需要的接口，减少了接口之间依赖的冗余性和复杂性。</p>
+</li>
+<li><p>里氏替换原则：开闭原则的补充，规定了任何父类可以出现的地方子类都一定可以出现，可以约束继承泛滥，加强程序健壮性。</p>
+</li>
+<li><p>迪米特原则：也叫最少知道原则，每个模块对其他模块都要尽可能少地了解和依赖，降低代码耦合度。</p>
+</li>
+<li><p>合成/聚合原则：尽量使用组合(has-a)/聚合(contains-a)而不是继承(is-a)达到软件复用的目的，避免滥用继承带来的方法污染和方法爆炸，方法污染指父类的行为通过继承传递给子类，但子类并不具备执行此行为的能力；方法爆炸指继承树不断扩大，底层类拥有的方法过于繁杂，导致很容易选择错误。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-数据结构" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-19T09:31:47.000Z"><a href="/2020/07/19/数据结构/">2020-07-19</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/19/数据结构/">数据结构</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="B树和B-树的区别？"><a href="#B树和B-树的区别？" class="headerlink" title="B树和B+树的区别？"></a>B树和B+树的区别？</h3><p>B 树中每个节点同时存储 key 和 data，而 B+ 树中只有叶子节点才存储 data，非叶子节点只存储 key。InnoDB 对 B+ 树进行了优化，在每个叶子节点上增加了一个指向相邻叶子节点的链表指针，形成了带有顺序指针的 B+ 树，提高区间访问的性能。</p>
+<p>B+ 树的优点在于：① 由于 B+ 树在非叶子节点上不含数据信息，因此在内存页中能够存放更多的 key，数据存放得更加紧密，具有更好的空间利用率，访问叶子节点上关联的数据也具有更好的缓存命中率。② B+树的叶子结点都是相连的，因此对整棵树的遍历只需要一次线性遍历叶子节点即可。而 B 树则需要进行每一层的递归遍历，相邻的元素可能在内存中不相邻，所以缓存命中性没有 B+树好。但是 B 树也有优点，由于每个节点都包含 key 和 value，因此经常访问的元素可能离根节点更近，访问也更迅速。</p>
+<h3 id="希尔排序的原理"><a href="#希尔排序的原理" class="headerlink" title="希尔排序的原理"></a>希尔排序的原理</h3><p>把记录按下标的一定增量分组，对每组进行直接插入排序，每次排序后减小增量，当增量减至 1 时排序完毕。</p>
+<h3 id="堆排序的原理"><a href="#堆排序的原理" class="headerlink" title="堆排序的原理"></a>堆排序的原理</h3><p>将待排序记录看作完全二叉树，可以建立大根堆或小根堆，大根堆中每个节点的值都不小于它的子节点值，小根堆中每个节点的值都不大于它的子节点值。</p>
+<h3 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h3><p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<h3 id="归并排序的原理"><a href="#归并排序的原理" class="headerlink" title="归并排序的原理"></a>归并排序的原理</h3>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-线程" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -530,97 +623,6 @@
 
 
   
-    <article id="post-4种引用" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T13:11:23.000Z"><a href="/2020/07/18/4种引用/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/4种引用/">4种引用</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="对象的生命周期"><a href="#对象的生命周期" class="headerlink" title="对象的生命周期"></a>对象的生命周期</h3><ol>
-<li>创建阶段(Created)<ol>
-<li>为对象分配存储空间</li>
-<li>开始构造对象</li>
-<li>从超类到子类对static成员进行初始化超类成员变量按顺序初始化，递归调用超类的构造方法</li>
-<li>子类成员变量按顺序初始化，子类构造方法调用</li>
-<li>一旦对象被创建，并被分派给某些变量赋值，这个对象的状态就切换到了应用阶段</li>
-</ol>
-</li>
-<li>应用阶段(In Use) 对象至少被一个强引用持有着</li>
-<li>不可见阶段(Invisible) 当一个对象处于不可见阶段时，说明程序本身不再持有该对象的任何强引用，虽然该这些引用仍然是存在着的。简单说就是程序的执行已经超出了该对象的作用域了。</li>
-<li>不可达阶段(Unreachable)对象处于不可达阶段是指该对象不再被任何GC-root所持有。</li>
-<li>收集阶段(Collected) 当垃圾回收器发现该对象已经处于“不可达阶段”并且垃圾回收器已经对该对象的内存空间重新分配做好准备时，则对象进入了“收集阶段”。如果该对象已经重写了finalize()方法，则会去执行该方法的终端操作。</li>
-<li>终结阶段(Finalized)当对象执行完finalize()方法后仍然处于不可达状态时，则该对象进入终结阶段。在该阶段是等待垃圾回收器对该对象空间进行回收。</li>
-<li>对象空间重分配阶段(De-allocated)垃圾回收器对该对象的所占用的内存空间进行回收或者再分配了，则该对象彻底消失了，称之为“对象空间重新分配阶段”。
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/4种引用/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-JVM参数调优" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-18T13:09:48.000Z"><a href="/2020/07/18/JVM参数调优/">2020-07-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/18/JVM参数调优/">JVM参数调优</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="JVM分析工具"><a href="#JVM分析工具" class="headerlink" title=" JVM分析工具"></a> JVM分析工具</h3><ol>
-<li>jps:查看运行的HotSpot VM进程</li>
-<li>jmap命令: 用来查看当前系统中jvm进程 heap dump的情况，包括对象的数量，对象所占内存的大小</li>
-<li>jmap -heap PID：查看jvm配置和使用情况； jmap -dump PID ：生成堆内存快照</li>
-<li>jstat命令：主要是用来监控 heap size 和 jvm垃圾回收情况，尤其是gc情况的监控，如果老年代多次发生full gc，那么很可能是内存泄漏导致。 推荐：jstat -gcutil PID 返回百分比的形式显示堆使用情况以及GC情况 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">S0&#x2F;S1：幸存者区</span><br><span class="line">E：伊甸园区，初生区</span><br><span class="line">0：老年代</span><br><span class="line">M：元空间</span><br><span class="line">YGC：年轻带回收次数</span><br><span class="line">YGCT：年轻带回收花费时间（秒）</span><br><span class="line">FGC：full GC</span><br><span class="line">FGC：full GC花费时间（秒）</span><br><span class="line">GCT：GC总时间（秒）</span><br></pre></td></tr></table></figure></li>
-<li>jstack PID ：打印所有线程的堆栈信息
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/07/18/JVM参数调优/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -653,6 +655,8 @@
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
     <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
+    <li><a href="/categories/JS/">JS</a><small>2</small></li>
   
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
@@ -788,6 +792,10 @@
     <li><a href="/tags/network/">network</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/nodejs/">nodejs</a><small>1</small></li>
+  
+    <li><a href="/tags/npm/">npm</a><small>1</small></li>
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   

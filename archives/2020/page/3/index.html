@@ -50,6 +50,87 @@
 
 
   
+    <article id="post-Gateway" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:51:07.000Z"><a href="/2020/07/24/Gateway/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/Gateway/">Gateway</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="接入"><a href="#接入" class="headerlink" title="接入"></a>接入</h3><p>To include Spring Cloud Gateway in your project, use the starter with a group ID of org.springframework.cloud and an artifact ID of spring-cloud-starter-gateway.</p>
+<h3 id="怎么工作"><a href="#怎么工作" class="headerlink" title="怎么工作"></a>怎么工作</h3><ul>
+<li><p>Route: The basic building block of the gateway. It is defined by an ID, a destination URI, a collection of predicates, and a collection of filters. A route is matched if the aggregate predicate is true.</p>
+</li>
+<li><p>Predicate: This is a Java 8 Function Predicate. The input type is a Spring Framework ServerWebExchange. This lets you match on anything from the HTTP request, such as headers or parameters.</p>
+</li>
+<li><p>Filter: These are instances of Spring Framework GatewayFilter that have been constructed with a specific factory. Here, you can modify requests and responses before or after sending the downstream request.</p>
+</li>
+</ul>
+<p><img src="https://zionjo-picgo.oss-cn-shenzhen.aliyuncs.com/blogs/pictures/Gateway-2020-07-24-17-02-17.png" alt="Gateway-2020-07-24-17-02-17"></p>
+<p>Clients make requests to Spring Cloud Gateway. If the Gateway Handler Mapping determines that a request matches a route, it is sent to the Gateway Web Handler. This handler runs the request through a filter chain that is specific to the request. The reason the filters are divided by the dotted line is that filters can run logic both before and after the proxy request is sent. All “pre” filter logic is executed. Then the proxy request is made. After the proxy request is made, the “post” filter logic is run.</p>
+<h3 id="配置案例"><a href="#配置案例" class="headerlink" title="配置案例"></a>配置案例</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">after_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">https://example.org</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cookie</span></span><br><span class="line">          <span class="attr">args:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">mycookie</span></span><br><span class="line">            <span class="attr">regexp:</span> <span class="string">mycookievalue</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article id="post-OpenFeign" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-07-24T08:22:32.000Z"><a href="/2020/07/24/OpenFeign/">2020-07-24</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/07/24/OpenFeign/">OpenFeign</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><p>To include Feign in your project use the starter with group org.springframework.cloud and artifact id spring-cloud-starter-openfeign。</p>
+<h3 id="spring-boot-app"><a href="#spring-boot-app" class="headerlink" title="spring boot app"></a>spring boot app</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Client-java"><a href="#Client-java" class="headerlink" title="Client.java"></a>Client.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(<span class="string">"stores"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">StoreClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET, value = <span class="string">"/stores"</span>)</span><br><span class="line">    <span class="function">List&lt;Store&gt; <span class="title">getStores</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET, value = <span class="string">"/stores"</span>)</span><br><span class="line">    <span class="function">Page&lt;Store&gt; <span class="title">getStores</span><span class="params">(Pageable pageable)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.POST, value = <span class="string">"/stores/&#123;storeId&#125;"</span>, consumes = <span class="string">"application/json"</span>)</span><br><span class="line">    <span class="function">Store <span class="title">update</span><span class="params">(@PathVariable(<span class="string">"storeId"</span>)</span> Long storeId, Store store)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="请求拦截器RequestInterceptor"><a href="#请求拦截器RequestInterceptor" class="headerlink" title="请求拦截器RequestInterceptor"></a>请求拦截器RequestInterceptor</h3><p>可以重新设置请求头</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LittleFeignConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"requestInterceptor"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> RequestInterceptor <span class="title">requestInterceptor</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RequestInterceptor()&#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate requestTemplate)</span> </span>&#123;</span><br><span class="line">                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">                <span class="keyword">if</span>(requestAttributes != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    HttpServletRequest request = requestAttributes.getRequest();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 同步请求头数据</span></span><br><span class="line">                    <span class="keyword">if</span>(request !=<span class="keyword">null</span>)&#123;</span><br><span class="line">                        String cookie = request.getHeader(<span class="string">"Cookie"</span>);</span><br><span class="line">                        requestTemplate.header(<span class="string">"Cookie"</span>,cookie);</span><br><span class="line"></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
     <article id="post-Nacos" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -390,82 +471,6 @@
 
 
   
-    <article id="post-60-Permutation-Sequence" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:27:19.000Z"><a href="/2020/07/24/60-Permutation-Sequence/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/60-Permutation-Sequence/">60. Permutation Sequence</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p> The set <code>[1,2,3,...,n]</code> contains a total of n! unique permutations.<br>By listing and labeling all of the permutations in order, we get the following sequence for n = 3:<br>“123”<br>“132”<br>“213”<br>“231”<br>“312”<br>“321”<br>Given n and k, return the kth permutation sequence.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>深度搜索，回溯都可以<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPermutation</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> [] rest = <span class="keyword">new</span> <span class="keyword">boolean</span>[n];</span><br><span class="line">        String res = <span class="string">""</span>;</span><br><span class="line">        k = k-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> f = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;n;i++ )&#123;</span><br><span class="line">            f = f*i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = n-<span class="number">1</span>;i&gt;<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">int</span> j = k/f;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">0</span>,count=<span class="number">0</span>;t&lt;n;t++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(rest[t] == <span class="keyword">false</span>)&#123;</span><br><span class="line">                   count++;</span><br><span class="line">                   <span class="keyword">if</span>(count == j+<span class="number">1</span>)&#123;</span><br><span class="line">                        rest[t] = <span class="keyword">true</span>;</span><br><span class="line">                        res = res + (t+<span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125; </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            k = k%f;</span><br><span class="line">            f = f/i;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> t = <span class="number">0</span>;t&lt;n;t++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(rest[t] == <span class="keyword">false</span>)&#123;</span><br><span class="line">                res = res + (t+<span class="number">1</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
-    <article id="post-59-Spiral-Matrix-II" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-07-24T01:23:19.000Z"><a href="/2020/07/24/59-Spiral-Matrix-II/">2020-07-24</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/07/24/59-Spiral-Matrix-II/">59. Spiral Matrix II</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><blockquote>
-<p>Given a positive integer n, generate a square matrix filled with elements from 1 to n^2 in spiral order.</p>
-</blockquote>
-<h3 id="Thought"><a href="#Thought" class="headerlink" title="Thought"></a>Thought</h3><ul>
-<li>找规律，没营养<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[][] generateMatrix(<span class="keyword">int</span> n) &#123;</span><br><span class="line">        <span class="keyword">int</span>[][] res = <span class="keyword">new</span> <span class="keyword">int</span>[n][n];</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> right = n-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;right;i++) res[left][i] = count++;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=left;i&lt;right;i++) res[i][right] = count++;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=right;i&gt;left;i--) res[right][i] = count++;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=right;i&gt;left;i--) res[i][left] = count++;</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(left == right)&#123;</span><br><span class="line">            res[left][left] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  
 
   <nav id="pagination">
   
@@ -498,6 +503,8 @@
     <li><a href="/categories/command/Git/">Git</a><small>2</small></li>
   
     <li><a href="/categories/Interview/">Interview</a><small>10</small></li>
+  
+    <li><a href="/categories/JS/">JS</a><small>2</small></li>
   
     <li><a href="/categories/JVM/">JVM</a><small>7</small></li>
   
@@ -633,6 +640,10 @@
     <li><a href="/tags/network/">network</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/nodejs/">nodejs</a><small>1</small></li>
+  
+    <li><a href="/tags/npm/">npm</a><small>1</small></li>
   
     <li><a href="/tags/optimize/">optimize</a><small>1</small></li>
   
